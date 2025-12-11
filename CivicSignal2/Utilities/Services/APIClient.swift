@@ -15,7 +15,7 @@ final class APIClient {
        baseURL = APIConfig.baseURL
    }
 
-   // Generic request helper
+   // Generic request helper for decodable responses
    func request<T: Decodable>(
        _ path: String,
        method: String = "GET",
@@ -23,6 +23,17 @@ final class APIClient {
        authorized: Bool = true,
        responseType: T.Type
    ) async throws -> T {
+       let data = try await performRequest(path: path, method: method, body: body, authorized: authorized)
+       return try jsonDecoder.decode(T.self, from: data)
+   }
+   
+   // Request helper that returns raw data
+   private func performRequest(
+       path: String,
+       method: String = "GET",
+       body: Encodable? = nil,
+       authorized: Bool = true
+   ) async throws -> Data {
        // Build initial request
        let makeURLRequest: () throws -> URLRequest = {
            let url = self.baseURL.appendingPathComponent(path)
@@ -62,7 +73,21 @@ final class APIClient {
            throw APIError.httpStatus(code: http.statusCode, data: data)
        }
 
-       return try jsonDecoder.decode(T.self, from: data)
+       return data
+   }
+   
+   // Request helper that returns a dictionary
+   func requestDictionary(
+       _ path: String,
+       method: String = "GET",
+       body: Encodable? = nil,
+       authorized: Bool = true
+   ) async throws -> [String: Any] {
+       let data = try await performRequest(path: path, method: method, body: body, authorized: authorized)
+       guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+           throw NSError(domain: "APIClient", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to parse response as dictionary"])
+       }
+       return json
    }
 }
 

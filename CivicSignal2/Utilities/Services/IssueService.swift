@@ -211,13 +211,14 @@ enum IssueService {
             photos: photos,
             deviceInfo: deviceInfo
         )
+        
         do {
-            let response: [String: Any] = try await APIClient.shared.request(
+            // Use the new requestDictionary method to get a raw dictionary response
+            let response = try await APIClient.shared.requestDictionary(
                 "issues",
                 method: "POST",
                 body: body,
-                authorized: true,
-                responseType: [String: Any].self
+                authorized: true
             )
             
             // Debug print the raw response
@@ -234,7 +235,9 @@ enum IssueService {
             
             // Convert the issue data to JSON data and then decode to IssueDTO
             let jsonData = try JSONSerialization.data(withJSONObject: issueData)
-            let issue = try JSONDecoder().decode(IssueDTO.self, from: jsonData)
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let issue = try decoder.decode(IssueDTO.self, from: jsonData)
             
             let estimatedResponseTime = data["estimatedResponseTime"] as? String
             let message = response["message"] as? String
