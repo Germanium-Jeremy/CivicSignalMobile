@@ -191,11 +191,13 @@ class IssuesViewModel: ObservableObject {
         let status = filter.statusValue
         let result = await IssueService.getMyIssues(status: status, page: currentPage, limit: pageSize)
         
-        if case .success(let response) = result {
-            let newIssues = response.data.issues
-            updateIssues(newIssues, for: filter)
-            hasMore = newIssues.count >= pageSize
+        guard result.success, let response = result.data else {
+            print("Failed to load issues: \(result.error ?? "Unknown error")")
+            return
         }
+        let newIssues = response.data.issues
+        updateIssues(newIssues, for: filter)
+        hasMore = newIssues.count >= pageSize
     }
     
     private func loadAllIssues(loadMore: Bool = false) async {

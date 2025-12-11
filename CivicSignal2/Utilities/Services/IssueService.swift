@@ -165,12 +165,19 @@ enum IssueService {
             return ServiceResult(success: false, data: nil, error: "User not authenticated")
         }
         
-        return await APIClient.shared.request(
-            endpoint: "/issues/stats",
-            method: .get,
-            queryItems: [URLQueryItem(name: "userId", value: id)],
-            responseType: StatsResponse.self
-        )
+        do {
+            let res: StatsResponse = try await APIClient.shared.request(
+                "issues/stats?userId=\(id)",
+                responseType: StatsResponse.self
+            )
+            return ServiceResult(success: true, data: res, error: nil)
+        } catch let APIError.httpStatus(code, data) {
+            let msg = String(data: data, encoding: .utf8) ?? "Failed to fetch stats"
+            print("Stats error (\(code)): \(msg)")
+            return ServiceResult(success: false, data: nil, error: "Failed to fetch stats")
+        } catch {
+            return ServiceResult(success: false, data: nil, error: error.localizedDescription)
+        }
     }
 
     // MARK: Create Issue
@@ -247,24 +254,7 @@ enum IssueService {
         }
     }
 
-    // MARK: My Stats (client-side aggregation)
-    static func getMyStats() async -> ServiceResult<[String: Int]> {
-        let res = await getMyIssues(page: 1, limit: 1000)
-        guard res.success, let issues = res.data?.data.issues else {
-            return ServiceResult(success: false, data: nil, error: res.error ?? "Failed to fetch stats")
-        }
-        let counts = issues.reduce(into: [String: Int]()) { dict, issue in
-            dict[issue.status, default: 0] += 1
-        }
-        var stats: [String: Int] = [:]
-        stats["total"] = issues.count
-        stats["submitted"] = counts["submitted"] ?? 0
-        stats["acknowledged"] = counts["acknowledged"] ?? 0
-        stats["inProgress"] = counts["in_progress"] ?? 0
-        stats["resolved"] = counts["resolved"] ?? 0
-        stats["closed"] = counts["closed"] ?? 0
-        return ServiceResult(success: true, data: stats, error: nil)
-    }
+    // (client-side aggregation version of getMyStats removed to avoid duplicate signature)
 
     // MARK: Get Issue
     static func getIssue(id: String) async -> ServiceResult<IssueSingleResponse> {

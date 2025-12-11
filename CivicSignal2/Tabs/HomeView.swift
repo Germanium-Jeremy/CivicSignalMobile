@@ -16,34 +16,7 @@ struct HomeView: View {
             Color.mainBackground.ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Header
-                HStack {
-                    Circle()
-                        .fill(Color.lightGray)
-                        .frame(width: 40, height: 40)
-                    
-                    Spacer()
-                    
-                    Text("Home")
-                        .font(AppFont.title3)
-                        .foregroundColor(.almostBlack)
-                    
-                    Spacer()
-                    
-                    NavigationLink(destination: NotificationsView()) {
-                        ZStack {
-                            Circle()
-                                .stroke(Color.secondaryGreen.opacity(0.3), lineWidth: 2)
-                                .background(Circle().fill(Color.mainBackground))
-                                .frame(width: 36, height: 36)
-                            
-                            Image(systemName: "bell")
-                                .foregroundColor(.primaryBlue)
-                        }
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 12)
+                header
                 
                 if viewModel.isLoading && !isRefreshing {
                     ProgressView()
@@ -125,7 +98,33 @@ struct HomeView: View {
     }
     
     private var header: some View {
-        // ... keep existing header implementation ...
+        HStack {
+            Circle()
+                .fill(Color.lightGray)
+                .frame(width: 40, height: 40)
+            
+            Spacer()
+            
+            Text("Home")
+                .font(AppFont.title3)
+                .foregroundColor(.almostBlack)
+            
+            Spacer()
+            
+            NavigationLink(destination: NotificationsView()) {
+                ZStack {
+                    Circle()
+                        .stroke(Color.secondaryGreen.opacity(0.3), lineWidth: 2)
+                        .background(Circle().fill(Color.mainBackground))
+                        .frame(width: 36, height: 36)
+                    
+                    Image(systemName: "bell")
+                        .foregroundColor(.primaryBlue)
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
     }
     
     private var statsCard: some View {
@@ -214,26 +213,24 @@ class HomeViewModel: ObservableObject {
     
     private func fetchStats() async {
         let result = await IssueService.getMyStats()
-        switch result {
-        case .success(let response):
-            self.stats = Stats(
-                total: response.data.total,
-                resolved: response.data.resolved,
-                inProgress: response.data.inProgress
-            )
-        case .failure(let error):
-            print("Failed to fetch stats: \(error.localizedDescription)")
+        guard result.success, let response = result.data else {
+            print("Failed to fetch stats: \(result.error ?? "Unknown error")")
+            return
         }
+        self.stats = Stats(
+            total: response.data.total,
+            resolved: response.data.resolved,
+            inProgress: response.data.inProgress
+        )
     }
     
     private func fetchRecentIssues() async {
         let result = await IssueService.getMyIssues(limit: 5)
-        switch result {
-        case .success(let response):
-            recentIssues = response.data.issues
-        case .failure(let error):
-            print("Failed to fetch recent issues: \(error.localizedDescription)")
+        guard result.success, let response = result.data else {
+            print("Failed to fetch recent issues: \(result.error ?? "Unknown error")")
+            return
         }
+        recentIssues = response.data.issues
     }
 }
 

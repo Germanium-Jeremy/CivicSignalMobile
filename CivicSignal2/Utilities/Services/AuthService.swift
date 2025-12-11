@@ -65,20 +65,6 @@ struct ResendPhoneRequest: Encodable {
     let phone: String
 }
 
-// MARK: - AuthService result types
-
-struct ServiceResult<Value> {
-    let success: Bool
-    let data: Value?
-    let error: String?
-    let details: String?
-}
-
-/// For the special 403 login case
-struct VerificationRequiredInfo {
-    let emailVerified: Bool
-    let phoneVerified: Bool
-    let email: String?
     let phone: String?
     let message: String?
     let codesSent: Bool
