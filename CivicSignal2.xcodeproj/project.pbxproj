@@ -43,6 +43,7 @@
 		2C6948112EEAB800002B4C89 /* IssueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948102EEAB800002B4C89 /* IssueService.swift */; };
 		2C6948132EEAB817002B4C89 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948122EEAB817002B4C89 /* LocationService.swift */; };
 		2C6948152EEAB82E002B4C89 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948142EEAB82E002B4C89 /* TokenManager.swift */; };
+		2C69481B2EEAC923002B4C89 /* IssueDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 		2C6948102EEAB800002B4C89 /* IssueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueService.swift; sourceTree = "<group>"; };
 		2C6948122EEAB817002B4C89 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		2C6948142EEAB82E002B4C89 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
+		2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +201,7 @@
 				2C6947FD2EEAB6A9002B4C89 /* ReportEvidenceView.swift */,
 				2C6947FF2EEAB6E0002B4C89 /* ReportView.swift */,
 				2C6948012EEAB706002B4C89 /* SettingsView.swift */,
+				2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 				2C6947DC2EEAB388002B4C89 /* Fonts.swift in Sources */,
 				2C6947E62EEAB50E002B4C89 /* ForgotView.swift in Sources */,
 				2C69480D2EEAB7BB002B4C89 /* APIConfig.swift in Sources */,
+				2C69481B2EEAC923002B4C89 /* IssueDetailView.swift in Sources */,
 				2C6947F62EEAB645002B4C89 /* IssuesView.swift in Sources */,
 				2C6947EC2EEAB555002B4C89 /* VerifyEmailView.swift in Sources */,
 				2C6947DA2EEAB365002B4C89 /* Colors.swift in Sources */,
