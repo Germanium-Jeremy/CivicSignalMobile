@@ -61,31 +61,73 @@ struct ReportView: View {
                                 )
                         }
 
-                        // Location summary
-                        VStack(alignment: .leading, spacing: 6) {
+                        // Location section (optional)
+                        VStack(alignment: .leading, spacing: 12) {
                             HStack {
-                                Text("📍 Location")
-                                    .font(AppFont.body.weight(.semibold))
+                                Text("📍 Location (Optional)")
+                                    .font(AppFont.body.weight(.medium))
                                 Spacer()
-                                Button("Update") { Task { await fetchLocation() } }
+                                
+                                if draft.latitude != nil && draft.longitude != nil {
+                                    Button("Remove") {
+                                        draft.latitude = nil
+                                        draft.longitude = nil
+                                        draft.address = nil
+                                        draft.district = nil
+                                        draft.sector = nil
+                                    }
                                     .font(AppFont.footnote)
-                                    .foregroundColor(.primaryBlue)
+                                    .foregroundColor(.red)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.red.opacity(0.1))
+                                    .cornerRadius(8)
+                                } else {
+                                    Button("Add Location") { Task { await fetchLocation() } }
+                                        .font(AppFont.footnote)
+                                        .foregroundColor(.primaryBlue)
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 6)
+                                        .background(Color.primaryBlue.opacity(0.1))
+                                        .cornerRadius(8)
+                                }
                             }
-                            if let addr = draft.address { Text(addr).font(AppFont.footnote) }
-                            if draft.district != nil || draft.sector != nil {
-                                Text("\(draft.district ?? "") \(draft.sector ?? "")")
-                                    .font(AppFont.footnote)
-                                    .foregroundColor(.neutralGray)
-                            }
+                            
                             if let lat = draft.latitude, let lon = draft.longitude {
-                                Text("lat: \(lat), lon: \(lon)").font(AppFont.footnote).foregroundColor(.neutralGray)
+                                VStack(alignment: .leading, spacing: 6) {
+                                    if let addr = draft.address {
+                                        Text(addr)
+                                            .font(AppFont.footnote)
+                                            .foregroundColor(.almostBlack)
+                                    }
+                                    
+                                    if draft.district != nil || draft.sector != nil {
+                                        Text("\(draft.district ?? "") \(draft.sector ?? "")")
+                                            .font(AppFont.footnote)
+                                            .foregroundColor(.neutralGray)
+                                    }
+                                    
+                                    Text("Lat: \(String(format: "%.6f", lat)), Lon: \(String(format: "%.6f", lon))")
+                                        .font(AppFont.footnote)
+                                        .foregroundColor(.neutralGray)
+                                        .padding(.top, 4)
+                                }
+                                .padding(12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color.lightGray.opacity(0.3))
+                                .cornerRadius(12)
+                            } else {
+                                Text("No location added. Your report will be processed without location data.")
+                                    .font(AppFont.footnote)
+                                    .foregroundColor(.gray)
+                                    .padding(.top, 4)
                             }
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 12)
                         .background(
                             RoundedRectangle(cornerRadius: 18)
-                                .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
+                                .stroke(Color.accentGreen.opacity(0.3), lineWidth: 1)
                         )
                         
                         Button(action: { Task { await handleContinue() } }) {
@@ -188,8 +230,44 @@ struct ReportView: View {
 
     // MARK: - Continue
     private func handleContinue() async {
-        guard !draft.category.isEmpty else { show("Please select a category") ; return }
-        // description is optional; backend can handle empty and derive title
+        guard !draft.category.isEmpty else { 
+            show("Please select a category")
+            return 
+        }
+        
+        // Show confirmation dialog if no location is provided
+        if draft.latitude == nil || draft.longitude == nil {
+            let shouldContinue = await withCheckedContinuation { continuation in
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(
+                        title: "No Location Provided",
+                        message: "You're about to submit this report without location data. Would you like to continue?",
+                        preferredStyle: .alert
+                    )
+                    
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                        continuation.resume(returning: false)
+                    })
+                    
+                    alert.addAction(UIAlertAction(title: "Submit Anyway", style: .default) { _ in
+                        continuation.resume(returning: true)
+                    })
+                    
+                    // Present the alert
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let rootViewController = windowScene.windows.first?.rootViewController {
+                        rootViewController.present(alert, animated: true)
+                    } else {
+                        // Fallback if we can't present the alert
+                        continuation.resume(returning: true)
+                    }
+                }
+            }
+            
+            if !shouldContinue {
+                return
+            }
+        }
 
         // Build optional location
         var loc: IssueLocationDTO? = nil
@@ -205,11 +283,12 @@ struct ReportView: View {
             location: loc,
             photos: nil
         )
+        
         if res.success, let id = res.data?.data.issue._id {
             createdIssueId = id
             navigateToEvidence = true
         } else {
-            show(res.error ?? "Failed to create issue. Try again.")
+            show(res.error ?? "Failed to create issue. Please try again.")
         }
     }
     private func show(_ message: String) { alertTitle = "Error"; alertMessage = message; showAlert = true }
