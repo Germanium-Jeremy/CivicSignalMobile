@@ -101,12 +101,16 @@ struct CreateIssueRequest: Encodable {
 struct CreateIssueResponse: Codable {
     let success: Bool
     let message: String?
-    let data: DataField
+    let data: Data
     
-    struct DataField: Codable {
+    struct Data: Codable {
         let issue: IssueDTO
         let trackingNumber: String
         let estimatedResponseTime: String?
+        
+        private enum CodingKeys: String, CodingKey {
+            case issue, trackingNumber, estimatedResponseTime
+        }
     }
 }
 
@@ -208,14 +212,45 @@ enum IssueService {
             deviceInfo: deviceInfo
         )
         do {
-            let res: CreateIssueResponse = try await APIClient.shared.request(
+            let response: [String: Any] = try await APIClient.shared.request(
                 "issues",
                 method: "POST",
                 body: body,
                 authorized: true,
-                responseType: CreateIssueResponse.self
+                responseType: [String: Any].self
             )
-            return ServiceResult(success: true, data: res, error: nil)
+            
+            // Debug print the raw response
+            print("Raw response: \(response)")
+            
+            // Manually decode the response to handle the nested structure
+            guard let success = response["success"] as? Bool,
+                  let data = response["data"] as? [String: Any],
+                  let issueData = data["issue"] as? [String: Any],
+                  let trackingNumber = data["trackingNumber"] as? String else {
+                print("Failed to parse response: \(response)")
+                return ServiceResult(success: false, data: nil, error: "Failed to parse server response")
+            }
+            
+            // Convert the issue data to JSON data and then decode to IssueDTO
+            let jsonData = try JSONSerialization.data(withJSONObject: issueData)
+            let issue = try JSONDecoder().decode(IssueDTO.self, from: jsonData)
+            
+            let estimatedResponseTime = data["estimatedResponseTime"] as? String
+            let message = response["message"] as? String
+            
+            let responseObj = CreateIssueResponse(
+                success: success,
+                message: message,
+                data: CreateIssueResponse.Data(
+                    issue: issue,
+                    trackingNumber: trackingNumber,
+                    estimatedResponseTime: estimatedResponseTime
+                )
+            )
+            
+            print("Successfully created issue: \(responseObj)")
+            return ServiceResult(success: true, data: responseObj, error: nil)
         } catch let APIError.httpStatus(code, data) {
             let msg = String(data: data, encoding: .utf8) ?? "Failed to create issue"
             print("Create issue error (\(code)): \(msg)")
