@@ -44,6 +44,7 @@
 		2C6948132EEAB817002B4C89 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948122EEAB817002B4C89 /* LocationService.swift */; };
 		2C6948152EEAB82E002B4C89 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948142EEAB82E002B4C89 /* TokenManager.swift */; };
 		2C69481B2EEAC923002B4C89 /* IssueDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */; };
+		2CB281A72EEAFB1E006EF825 /* ServiceResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 		2C6948122EEAB817002B4C89 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		2C6948142EEAB82E002B4C89 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailView.swift; sourceTree = "<group>"; };
+		2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +262,7 @@
 		2C6948192EEAC42D002B4C89 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */,
 				2C6948072EEAB774002B4C89 /* ReportDraft.swift */,
 			);
 			path = Models;
@@ -397,6 +400,7 @@
 			files = (
 				2C6947AE2EEAB2B6002B4C89 /* ContentView.swift in Sources */,
 				2C6948022EEAB706002B4C89 /* SettingsView.swift in Sources */,
+				2CB281A72EEAFB1E006EF825 /* ServiceResult.swift in Sources */,
 				2C6947E02EEAB46C002B4C89 /* LoginView.swift in Sources */,
 				2C6948112EEAB800002B4C89 /* IssueService.swift in Sources */,
 				2C6947DC2EEAB388002B4C89 /* Fonts.swift in Sources */,

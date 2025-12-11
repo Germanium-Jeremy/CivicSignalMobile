@@ -50,7 +50,7 @@ struct RegisterView: View {
                     // Fields
                     VStack(spacing: 16) {
                         authTextField(placeholder: "Full Names", text: $fullName)
-                        authTextField(placeholder: "Email", text: $email)
+                        authTextField(placeholder: "Email", text: $email).textInputAutocapitalization(.never)
                         authTextField(placeholder: "Phone Number", text: $phone)
                         secureAuthField(placeholder: "Password", text: $password)
                     }

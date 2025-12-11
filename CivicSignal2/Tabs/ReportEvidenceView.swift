@@ -86,6 +86,7 @@ struct ReportEvidenceView: View {
             ImagePicker(images: $images, selectionLimit: 5)
         }
         .alert(alertTitle, isPresented: $showAlert) { Button("OK", role: .cancel) {} } message: { Text(alertMessage) }
+        .navigationBarBackButtonHidden(true)
     }
 
     private var header: some View {

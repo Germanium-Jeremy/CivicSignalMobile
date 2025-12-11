@@ -187,13 +187,14 @@ class IssueDetailViewModel: ObservableObject {
         defer { isLoading = false }
         
         let result = await IssueService.getIssue(id: id)
-        switch result {
-        case .success(let response):
+        
+        if result.success, let response = result.data {
             self.issue = response.data.issue
             self.error = nil
-        case .failure(let error):
-            self.error = error.localizedDescription
-            print("Failed to fetch issue: \(error.localizedDescription)")
+        } else {
+            let message = result.error ?? "Failed to fetch issue"
+            self.error = message
+            print("Failed to fetch issue: \(message)")
         }
     }
 }

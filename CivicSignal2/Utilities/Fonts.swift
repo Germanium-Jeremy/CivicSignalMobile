@@ -27,4 +27,6 @@ enum AppFont {
     static let subheadline = garamond(size: 15)
     static let footnote = garamond(size: 13)
     static let caption = garamond(size: 12)
+    static let headline = garamond(size: 17, weight: .semibold)
+    static let caption2 = garamond(size: 11)
 }

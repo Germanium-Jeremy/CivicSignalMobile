@@ -48,7 +48,7 @@ struct LoginView: View {
                     
                     // Fields
                     VStack(spacing: 16) {
-                        authTextField(placeholder: "Email", text: $email)
+                        authTextField(placeholder: "Email", text: $email).textInputAutocapitalization(.never)
                         secureAuthField(placeholder: "Password", text: $password)
                     }
                     

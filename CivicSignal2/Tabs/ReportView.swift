@@ -113,6 +113,7 @@ struct ReportView: View {
         .alert(alertTitle, isPresented: $showAlert) { Button("OK", role: .cancel) {} } message: { Text(alertMessage) }
         .sheet(isPresented: $showCategorySheet) { categorySheet }
         .sheet(isPresented: $showPrioritySheet) { prioritySheet }
+        .navigationBarBackButtonHidden(true)
     }
     
     private var header: some View {

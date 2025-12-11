@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         ZStack {
             Color.mainBackground
@@ -32,9 +34,6 @@ struct SettingsView: View {
     
     private var header: some View {
         HStack {
-            Image(systemName: "chevron.left")
-                .foregroundColor(.primaryBlue)
-            
             Spacer()
             
             Text("Profile")

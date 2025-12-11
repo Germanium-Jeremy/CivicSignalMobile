@@ -65,9 +65,13 @@ struct ResendPhoneRequest: Encodable {
     let phone: String
 }
 
-    let phone: String?
-    let message: String?
-    let codesSent: Bool
+struct VerificationRequiredInfo {
+	let emailVerified: Bool
+	let phoneVerified: Bool
+	let email: String?
+	let phone: String?
+	let message: String?
+	let codesSent: Bool
 }
 
 // For login we sometimes need extra info
