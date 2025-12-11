@@ -1,0 +1,751 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2C6947AC2EEAB2B6002B4C89 /* CivicSignal2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947AB2EEAB2B6002B4C89 /* CivicSignal2App.swift */; };
+		2C6947AE2EEAB2B6002B4C89 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947AD2EEAB2B6002B4C89 /* ContentView.swift */; };
+		2C6947B02EEAB2B6002B4C89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6947AF2EEAB2B6002B4C89 /* Assets.xcassets */; };
+		2C6947B32EEAB2B6002B4C89 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6947B22EEAB2B6002B4C89 /* Preview Assets.xcassets */; };
+		2C6947BD2EEAB2B6002B4C89 /* CivicSignal2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947BC2EEAB2B6002B4C89 /* CivicSignal2Tests.swift */; };
+		2C6947C72EEAB2B6002B4C89 /* CivicSignal2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947C62EEAB2B6002B4C89 /* CivicSignal2UITests.swift */; };
+		2C6947C92EEAB2B6002B4C89 /* CivicSignal2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947C82EEAB2B6002B4C89 /* CivicSignal2UITestsLaunchTests.swift */; };
+		2C6947D72EEAB31D002B4C89 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947D62EEAB31D002B4C89 /* SplashView.swift */; };
+		2C6947DA2EEAB365002B4C89 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947D92EEAB365002B4C89 /* Colors.swift */; };
+		2C6947DC2EEAB388002B4C89 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947DB2EEAB388002B4C89 /* Fonts.swift */; };
+		2C6947DE2EEAB442002B4C89 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947DD2EEAB442002B4C89 /* Styles.swift */; };
+		2C6947E02EEAB46C002B4C89 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947DF2EEAB46C002B4C89 /* LoginView.swift */; };
+		2C6947E22EEAB4AF002B4C89 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947E12EEAB4AF002B4C89 /* RegisterView.swift */; };
+		2C6947E42EEAB4E6002B4C89 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947E32EEAB4E6002B4C89 /* ConfirmationView.swift */; };
+		2C6947E62EEAB50E002B4C89 /* ForgotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947E52EEAB50E002B4C89 /* ForgotView.swift */; };
+		2C6947E82EEAB526002B4C89 /* ResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947E72EEAB526002B4C89 /* ResetView.swift */; };
+		2C6947EA2EEAB53E002B4C89 /* VerifyCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947E92EEAB53E002B4C89 /* VerifyCodeView.swift */; };
+		2C6947EC2EEAB555002B4C89 /* VerifyEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947EB2EEAB555002B4C89 /* VerifyEmailView.swift */; };
+		2C6947EE2EEAB576002B4C89 /* VerifyPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947ED2EEAB576002B4C89 /* VerifyPhoneView.swift */; };
+		2C6947F02EEAB5A6002B4C89 /* WaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947EF2EEAB5A6002B4C89 /* WaitingView.swift */; };
+		2C6947F32EEAB61A002B4C89 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947F22EEAB61A002B4C89 /* HomeView.swift */; };
+		2C6947F62EEAB645002B4C89 /* IssuesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947F52EEAB645002B4C89 /* IssuesView.swift */; };
+		2C6947F82EEAB65B002B4C89 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947F72EEAB65B002B4C89 /* MainTabView.swift */; };
+		2C6947FA2EEAB671002B4C89 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947F92EEAB671002B4C89 /* MapView.swift */; };
+		2C6947FC2EEAB68A002B4C89 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947FB2EEAB68A002B4C89 /* NotificationView.swift */; };
+		2C6947FE2EEAB6A9002B4C89 /* ReportEvidenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947FD2EEAB6A9002B4C89 /* ReportEvidenceView.swift */; };
+		2C6948002EEAB6E0002B4C89 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6947FF2EEAB6E0002B4C89 /* ReportView.swift */; };
+		2C6948022EEAB706002B4C89 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948012EEAB706002B4C89 /* SettingsView.swift */; };
+		2C6948052EEAB74E002B4C89 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948042EEAB74E002B4C89 /* ImagePicker.swift */; };
+		2C6948082EEAB774002B4C89 /* ReportDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948072EEAB774002B4C89 /* ReportDraft.swift */; };
+		2C69480B2EEAB7A6002B4C89 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480A2EEAB7A6002B4C89 /* APIClient.swift */; };
+		2C69480D2EEAB7BB002B4C89 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480C2EEAB7BB002B4C89 /* APIConfig.swift */; };
+		2C69480F2EEAB7E4002B4C89 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480E2EEAB7E4002B4C89 /* AuthService.swift */; };
+		2C6948112EEAB800002B4C89 /* IssueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948102EEAB800002B4C89 /* IssueService.swift */; };
+		2C6948132EEAB817002B4C89 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948122EEAB817002B4C89 /* LocationService.swift */; };
+		2C6948152EEAB82E002B4C89 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948142EEAB82E002B4C89 /* TokenManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2C6947B92EEAB2B6002B4C89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2C6947A02EEAB2B6002B4C89 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C6947A72EEAB2B6002B4C89;
+			remoteInfo = CivicSignal2;
+		};
+		2C6947C32EEAB2B6002B4C89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2C6947A02EEAB2B6002B4C89 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C6947A72EEAB2B6002B4C89;
+			remoteInfo = CivicSignal2;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2C6947A82EEAB2B6002B4C89 /* CivicSignal2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CivicSignal2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C6947AB2EEAB2B6002B4C89 /* CivicSignal2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CivicSignal2App.swift; sourceTree = "<group>"; };
+		2C6947AD2EEAB2B6002B4C89 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2C6947AF2EEAB2B6002B4C89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2C6947B22EEAB2B6002B4C89 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2C6947B82EEAB2B6002B4C89 /* CivicSignal2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CivicSignal2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C6947BC2EEAB2B6002B4C89 /* CivicSignal2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CivicSignal2Tests.swift; sourceTree = "<group>"; };
+		2C6947C22EEAB2B6002B4C89 /* CivicSignal2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CivicSignal2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C6947C62EEAB2B6002B4C89 /* CivicSignal2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CivicSignal2UITests.swift; sourceTree = "<group>"; };
+		2C6947C82EEAB2B6002B4C89 /* CivicSignal2UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CivicSignal2UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2C6947D62EEAB31D002B4C89 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		2C6947D92EEAB365002B4C89 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		2C6947DB2EEAB388002B4C89 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		2C6947DD2EEAB442002B4C89 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		2C6947DF2EEAB46C002B4C89 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		2C6947E12EEAB4AF002B4C89 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		2C6947E32EEAB4E6002B4C89 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
+		2C6947E52EEAB50E002B4C89 /* ForgotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotView.swift; sourceTree = "<group>"; };
+		2C6947E72EEAB526002B4C89 /* ResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetView.swift; sourceTree = "<group>"; };
+		2C6947E92EEAB53E002B4C89 /* VerifyCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyCodeView.swift; sourceTree = "<group>"; };
+		2C6947EB2EEAB555002B4C89 /* VerifyEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmailView.swift; sourceTree = "<group>"; };
+		2C6947ED2EEAB576002B4C89 /* VerifyPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPhoneView.swift; sourceTree = "<group>"; };
+		2C6947EF2EEAB5A6002B4C89 /* WaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingView.swift; sourceTree = "<group>"; };
+		2C6947F22EEAB61A002B4C89 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		2C6947F52EEAB645002B4C89 /* IssuesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuesView.swift; sourceTree = "<group>"; };
+		2C6947F72EEAB65B002B4C89 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		2C6947F92EEAB671002B4C89 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		2C6947FB2EEAB68A002B4C89 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		2C6947FD2EEAB6A9002B4C89 /* ReportEvidenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEvidenceView.swift; sourceTree = "<group>"; };
+		2C6947FF2EEAB6E0002B4C89 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
+		2C6948012EEAB706002B4C89 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		2C6948042EEAB74E002B4C89 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		2C6948072EEAB774002B4C89 /* ReportDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDraft.swift; sourceTree = "<group>"; };
+		2C69480A2EEAB7A6002B4C89 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		2C69480C2EEAB7BB002B4C89 /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
+		2C69480E2EEAB7E4002B4C89 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		2C6948102EEAB800002B4C89 /* IssueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueService.swift; sourceTree = "<group>"; };
+		2C6948122EEAB817002B4C89 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		2C6948142EEAB82E002B4C89 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2C6947A52EEAB2B6002B4C89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C6947B52EEAB2B6002B4C89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C6947BF2EEAB2B6002B4C89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2C69479F2EEAB2B6002B4C89 = {
+			isa = PBXGroup;
+			children = (
+				2C6947AA2EEAB2B6002B4C89 /* CivicSignal2 */,
+				2C6947BB2EEAB2B6002B4C89 /* CivicSignal2Tests */,
+				2C6947C52EEAB2B6002B4C89 /* CivicSignal2UITests */,
+				2C6947A92EEAB2B6002B4C89 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2C6947A92EEAB2B6002B4C89 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2C6947A82EEAB2B6002B4C89 /* CivicSignal2.app */,
+				2C6947B82EEAB2B6002B4C89 /* CivicSignal2Tests.xctest */,
+				2C6947C22EEAB2B6002B4C89 /* CivicSignal2UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2C6947AA2EEAB2B6002B4C89 /* CivicSignal2 */ = {
+			isa = PBXGroup;
+			children = (
+				2C6947F12EEAB607002B4C89 /* Tabs */,
+				2C6947D82EEAB347002B4C89 /* Utilities */,
+				2C6947D52EEAB2F8002B4C89 /* Auth */,
+				2C6947AB2EEAB2B6002B4C89 /* CivicSignal2App.swift */,
+				2C6947AD2EEAB2B6002B4C89 /* ContentView.swift */,
+				2C6947AF2EEAB2B6002B4C89 /* Assets.xcassets */,
+				2C6947B12EEAB2B6002B4C89 /* Preview Content */,
+			);
+			path = CivicSignal2;
+			sourceTree = "<group>";
+		};
+		2C6947B12EEAB2B6002B4C89 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				2C6947B22EEAB2B6002B4C89 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2C6947BB2EEAB2B6002B4C89 /* CivicSignal2Tests */ = {
+			isa = PBXGroup;
+			children = (
+				2C6947BC2EEAB2B6002B4C89 /* CivicSignal2Tests.swift */,
+			);
+			path = CivicSignal2Tests;
+			sourceTree = "<group>";
+		};
+		2C6947C52EEAB2B6002B4C89 /* CivicSignal2UITests */ = {
+			isa = PBXGroup;
+			children = (
+				2C6947C62EEAB2B6002B4C89 /* CivicSignal2UITests.swift */,
+				2C6947C82EEAB2B6002B4C89 /* CivicSignal2UITestsLaunchTests.swift */,
+			);
+			path = CivicSignal2UITests;
+			sourceTree = "<group>";
+		};
+		2C6947D52EEAB2F8002B4C89 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				2C6947D62EEAB31D002B4C89 /* SplashView.swift */,
+				2C6947DF2EEAB46C002B4C89 /* LoginView.swift */,
+				2C6947E12EEAB4AF002B4C89 /* RegisterView.swift */,
+				2C6947E32EEAB4E6002B4C89 /* ConfirmationView.swift */,
+				2C6947E52EEAB50E002B4C89 /* ForgotView.swift */,
+				2C6947E72EEAB526002B4C89 /* ResetView.swift */,
+				2C6947E92EEAB53E002B4C89 /* VerifyCodeView.swift */,
+				2C6947EB2EEAB555002B4C89 /* VerifyEmailView.swift */,
+				2C6947ED2EEAB576002B4C89 /* VerifyPhoneView.swift */,
+				2C6947EF2EEAB5A6002B4C89 /* WaitingView.swift */,
+			);
+			name = Auth;
+			sourceTree = "<group>";
+		};
+		2C6947D82EEAB347002B4C89 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				2C6948092EEAB794002B4C89 /* Services */,
+				2C6948062EEAB761002B4C89 /* Models */,
+				2C6948032EEAB71C002B4C89 /* Components */,
+				2C6947D92EEAB365002B4C89 /* Colors.swift */,
+				2C6947DB2EEAB388002B4C89 /* Fonts.swift */,
+				2C6947DD2EEAB442002B4C89 /* Styles.swift */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		2C6947F12EEAB607002B4C89 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				2C6947F22EEAB61A002B4C89 /* HomeView.swift */,
+				2C6947F52EEAB645002B4C89 /* IssuesView.swift */,
+				2C6947F72EEAB65B002B4C89 /* MainTabView.swift */,
+				2C6947F92EEAB671002B4C89 /* MapView.swift */,
+				2C6947FB2EEAB68A002B4C89 /* NotificationView.swift */,
+				2C6947FD2EEAB6A9002B4C89 /* ReportEvidenceView.swift */,
+				2C6947FF2EEAB6E0002B4C89 /* ReportView.swift */,
+				2C6948012EEAB706002B4C89 /* SettingsView.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		2C6948032EEAB71C002B4C89 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				2C6948042EEAB74E002B4C89 /* ImagePicker.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		2C6948062EEAB761002B4C89 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2C6948072EEAB774002B4C89 /* ReportDraft.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		2C6948092EEAB794002B4C89 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2C69480A2EEAB7A6002B4C89 /* APIClient.swift */,
+				2C69480C2EEAB7BB002B4C89 /* APIConfig.swift */,
+				2C69480E2EEAB7E4002B4C89 /* AuthService.swift */,
+				2C6948102EEAB800002B4C89 /* IssueService.swift */,
+				2C6948122EEAB817002B4C89 /* LocationService.swift */,
+				2C6948142EEAB82E002B4C89 /* TokenManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2C6947A72EEAB2B6002B4C89 /* CivicSignal2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C6947CC2EEAB2B6002B4C89 /* Build configuration list for PBXNativeTarget "CivicSignal2" */;
+			buildPhases = (
+				2C6947A42EEAB2B6002B4C89 /* Sources */,
+				2C6947A52EEAB2B6002B4C89 /* Frameworks */,
+				2C6947A62EEAB2B6002B4C89 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CivicSignal2;
+			productName = CivicSignal2;
+			productReference = 2C6947A82EEAB2B6002B4C89 /* CivicSignal2.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2C6947B72EEAB2B6002B4C89 /* CivicSignal2Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C6947CF2EEAB2B6002B4C89 /* Build configuration list for PBXNativeTarget "CivicSignal2Tests" */;
+			buildPhases = (
+				2C6947B42EEAB2B6002B4C89 /* Sources */,
+				2C6947B52EEAB2B6002B4C89 /* Frameworks */,
+				2C6947B62EEAB2B6002B4C89 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2C6947BA2EEAB2B6002B4C89 /* PBXTargetDependency */,
+			);
+			name = CivicSignal2Tests;
+			productName = CivicSignal2Tests;
+			productReference = 2C6947B82EEAB2B6002B4C89 /* CivicSignal2Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2C6947C12EEAB2B6002B4C89 /* CivicSignal2UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C6947D22EEAB2B6002B4C89 /* Build configuration list for PBXNativeTarget "CivicSignal2UITests" */;
+			buildPhases = (
+				2C6947BE2EEAB2B6002B4C89 /* Sources */,
+				2C6947BF2EEAB2B6002B4C89 /* Frameworks */,
+				2C6947C02EEAB2B6002B4C89 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2C6947C42EEAB2B6002B4C89 /* PBXTargetDependency */,
+			);
+			name = CivicSignal2UITests;
+			productName = CivicSignal2UITests;
+			productReference = 2C6947C22EEAB2B6002B4C89 /* CivicSignal2UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2C6947A02EEAB2B6002B4C89 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					2C6947A72EEAB2B6002B4C89 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					2C6947B72EEAB2B6002B4C89 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 2C6947A72EEAB2B6002B4C89;
+					};
+					2C6947C12EEAB2B6002B4C89 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 2C6947A72EEAB2B6002B4C89;
+					};
+				};
+			};
+			buildConfigurationList = 2C6947A32EEAB2B6002B4C89 /* Build configuration list for PBXProject "CivicSignal2" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2C69479F2EEAB2B6002B4C89;
+			productRefGroup = 2C6947A92EEAB2B6002B4C89 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2C6947A72EEAB2B6002B4C89 /* CivicSignal2 */,
+				2C6947B72EEAB2B6002B4C89 /* CivicSignal2Tests */,
+				2C6947C12EEAB2B6002B4C89 /* CivicSignal2UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2C6947A62EEAB2B6002B4C89 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C6947B32EEAB2B6002B4C89 /* Preview Assets.xcassets in Resources */,
+				2C6947B02EEAB2B6002B4C89 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C6947B62EEAB2B6002B4C89 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C6947C02EEAB2B6002B4C89 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2C6947A42EEAB2B6002B4C89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C6947AE2EEAB2B6002B4C89 /* ContentView.swift in Sources */,
+				2C6948022EEAB706002B4C89 /* SettingsView.swift in Sources */,
+				2C6947E02EEAB46C002B4C89 /* LoginView.swift in Sources */,
+				2C6948112EEAB800002B4C89 /* IssueService.swift in Sources */,
+				2C6947DC2EEAB388002B4C89 /* Fonts.swift in Sources */,
+				2C6947E62EEAB50E002B4C89 /* ForgotView.swift in Sources */,
+				2C69480D2EEAB7BB002B4C89 /* APIConfig.swift in Sources */,
+				2C6947F62EEAB645002B4C89 /* IssuesView.swift in Sources */,
+				2C6947EC2EEAB555002B4C89 /* VerifyEmailView.swift in Sources */,
+				2C6947DA2EEAB365002B4C89 /* Colors.swift in Sources */,
+				2C6947E82EEAB526002B4C89 /* ResetView.swift in Sources */,
+				2C69480B2EEAB7A6002B4C89 /* APIClient.swift in Sources */,
+				2C6948152EEAB82E002B4C89 /* TokenManager.swift in Sources */,
+				2C6947FE2EEAB6A9002B4C89 /* ReportEvidenceView.swift in Sources */,
+				2C6947EA2EEAB53E002B4C89 /* VerifyCodeView.swift in Sources */,
+				2C6947DE2EEAB442002B4C89 /* Styles.swift in Sources */,
+				2C6947E22EEAB4AF002B4C89 /* RegisterView.swift in Sources */,
+				2C6947F82EEAB65B002B4C89 /* MainTabView.swift in Sources */,
+				2C6947AC2EEAB2B6002B4C89 /* CivicSignal2App.swift in Sources */,
+				2C6947F02EEAB5A6002B4C89 /* WaitingView.swift in Sources */,
+				2C6947E42EEAB4E6002B4C89 /* ConfirmationView.swift in Sources */,
+				2C6948002EEAB6E0002B4C89 /* ReportView.swift in Sources */,
+				2C6947FA2EEAB671002B4C89 /* MapView.swift in Sources */,
+				2C6948132EEAB817002B4C89 /* LocationService.swift in Sources */,
+				2C6947F32EEAB61A002B4C89 /* HomeView.swift in Sources */,
+				2C6948082EEAB774002B4C89 /* ReportDraft.swift in Sources */,
+				2C6947EE2EEAB576002B4C89 /* VerifyPhoneView.swift in Sources */,
+				2C6948052EEAB74E002B4C89 /* ImagePicker.swift in Sources */,
+				2C6947D72EEAB31D002B4C89 /* SplashView.swift in Sources */,
+				2C6947FC2EEAB68A002B4C89 /* NotificationView.swift in Sources */,
+				2C69480F2EEAB7E4002B4C89 /* AuthService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C6947B42EEAB2B6002B4C89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C6947BD2EEAB2B6002B4C89 /* CivicSignal2Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C6947BE2EEAB2B6002B4C89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C6947C92EEAB2B6002B4C89 /* CivicSignal2UITestsLaunchTests.swift in Sources */,
+				2C6947C72EEAB2B6002B4C89 /* CivicSignal2UITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2C6947BA2EEAB2B6002B4C89 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2C6947A72EEAB2B6002B4C89 /* CivicSignal2 */;
+			targetProxy = 2C6947B92EEAB2B6002B4C89 /* PBXContainerItemProxy */;
+		};
+		2C6947C42EEAB2B6002B4C89 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2C6947A72EEAB2B6002B4C89 /* CivicSignal2 */;
+			targetProxy = 2C6947C32EEAB2B6002B4C89 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2C6947CA2EEAB2B6002B4C89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2C6947CB2EEAB2B6002B4C89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2C6947CD2EEAB2B6002B4C89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CivicSignal2/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.djeremy.CivicSignal2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2C6947CE2EEAB2B6002B4C89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CivicSignal2/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.djeremy.CivicSignal2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2C6947D02EEAB2B6002B4C89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.djeremy.CivicSignal2Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CivicSignal2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CivicSignal2";
+			};
+			name = Debug;
+		};
+		2C6947D12EEAB2B6002B4C89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.djeremy.CivicSignal2Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CivicSignal2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CivicSignal2";
+			};
+			name = Release;
+		};
+		2C6947D32EEAB2B6002B4C89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.djeremy.CivicSignal2UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CivicSignal2;
+			};
+			name = Debug;
+		};
+		2C6947D42EEAB2B6002B4C89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.djeremy.CivicSignal2UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CivicSignal2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2C6947A32EEAB2B6002B4C89 /* Build configuration list for PBXProject "CivicSignal2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C6947CA2EEAB2B6002B4C89 /* Debug */,
+				2C6947CB2EEAB2B6002B4C89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2C6947CC2EEAB2B6002B4C89 /* Build configuration list for PBXNativeTarget "CivicSignal2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C6947CD2EEAB2B6002B4C89 /* Debug */,
+				2C6947CE2EEAB2B6002B4C89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2C6947CF2EEAB2B6002B4C89 /* Build configuration list for PBXNativeTarget "CivicSignal2Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C6947D02EEAB2B6002B4C89 /* Debug */,
+				2C6947D12EEAB2B6002B4C89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2C6947D22EEAB2B6002B4C89 /* Build configuration list for PBXNativeTarget "CivicSignal2UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C6947D32EEAB2B6002B4C89 /* Debug */,
+				2C6947D42EEAB2B6002B4C89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2C6947A02EEAB2B6002B4C89 /* Project object */;
+}
