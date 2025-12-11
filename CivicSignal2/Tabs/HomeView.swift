@@ -16,7 +16,34 @@ struct HomeView: View {
             Color.mainBackground.ignoresSafeArea()
             
             VStack(spacing: 0) {
-                header
+                // Header
+                HStack {
+                    Circle()
+                        .fill(Color.lightGray)
+                        .frame(width: 40, height: 40)
+                    
+                    Spacer()
+                    
+                    Text("Home")
+                        .font(AppFont.title3)
+                        .foregroundColor(.almostBlack)
+                    
+                    Spacer()
+                    
+                    NavigationLink(destination: NotificationsView()) {
+                        ZStack {
+                            Circle()
+                                .stroke(Color.secondaryGreen.opacity(0.3), lineWidth: 2)
+                                .background(Circle().fill(Color.mainBackground))
+                                .frame(width: 36, height: 36)
+                            
+                            Image(systemName: "bell")
+                                .foregroundColor(.primaryBlue)
+                        }
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 12)
                 
                 if viewModel.isLoading && !isRefreshing {
                     ProgressView()
@@ -29,15 +56,57 @@ struct HomeView: View {
                                 .foregroundColor(.almostBlack)
                                 .padding(.top, 24)
                             
-                            statsCard
+                            // Stats Card
+                            VStack(alignment: .leading, spacing: 12) {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Submitted Issues")
+                                            .font(AppFont.footnote)
+                                            .foregroundColor(.mainBackground)
+                                        Text("\(viewModel.stats.total)")
+                                            .font(AppFont.title)
+                                            .foregroundColor(.mainBackground)
+                                    }
+                                    Spacer()
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Resolved Issues")
+                                            .font(AppFont.footnote)
+                                            .foregroundColor(.mainBackground)
+                                        Text("\(viewModel.stats.resolved)")
+                                            .font(AppFont.body)
+                                            .foregroundColor(.mainBackground)
+                                    }
+                                }
+                            }
+                            .padding(16)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.almostBlack)
+                            .cornerRadius(16)
                             
+                            // Recent Issues
                             VStack(alignment: .leading, spacing: 16) {
                                 Text("Previous Issues")
                                     .font(AppFont.title3)
                                     .foregroundColor(.almostBlack)
                                 
                                 if viewModel.recentIssues.isEmpty {
-                                    emptyIssuesCard
+                                    // Empty State
+                                    VStack(spacing: 16) {
+                                        Text("You haven't submitted any issue yet.")
+                                            .font(AppFont.body)
+                                            .multilineTextAlignment(.center)
+                                            .padding(.top, 24)
+                                        
+                                        NavigationLink(destination: ReportView()) {
+                                            Image(systemName: "plus.circle.fill")
+                                                .font(.system(size: 60))
+                                                .foregroundColor(.accentColor)
+                                        }
+                                        .padding(.bottom, 24)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.lightGray)
+                                    .cornerRadius(16)
                                 } else {
                                     ForEach(viewModel.recentIssues.prefix(3)) { issue in
                                         IssueRow(issue: issue)
@@ -110,9 +179,21 @@ struct HomeView: View {
 // MARK: - ViewModel
 @MainActor
 class HomeViewModel: ObservableObject {
+    struct Stats {
+        var total: Int
+        var resolved: Int
+        var inProgress: Int
+        
+        init(total: Int = 0, resolved: Int = 0, inProgress: Int = 0) {
+            self.total = total
+            self.resolved = resolved
+            self.inProgress = inProgress
+        }
+    }
+    
     @Published var userName: String = ""
     @Published var recentIssues: [IssueDTO] = []
-    @Published var stats = (total: 0, resolved: 0, inProgress: 0)
+    @Published var stats = Stats()
     @Published var isLoading = true
     
     func fetchData() async {
@@ -133,15 +214,25 @@ class HomeViewModel: ObservableObject {
     
     private func fetchStats() async {
         let result = await IssueService.getMyStats()
-        if case .success(let stats) = result {
-            self.stats = (stats.data.total, stats.data.resolved, stats.data.inProgress)
+        switch result {
+        case .success(let response):
+            self.stats = Stats(
+                total: response.data.total,
+                resolved: response.data.resolved,
+                inProgress: response.data.inProgress
+            )
+        case .failure(let error):
+            print("Failed to fetch stats: \(error.localizedDescription)")
         }
     }
     
     private func fetchRecentIssues() async {
         let result = await IssueService.getMyIssues(limit: 5)
-        if case .success(let response) = result {
+        switch result {
+        case .success(let response):
             recentIssues = response.data.issues
+        case .failure(let error):
+            print("Failed to fetch recent issues: \(error.localizedDescription)")
         }
     }
 }

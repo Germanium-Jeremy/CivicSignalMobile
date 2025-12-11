@@ -26,7 +26,7 @@ struct IssueLocationDTO: Codable {
     let sector: String?
 }
 
-struct IssueDTO: Codable {
+struct IssueDTO: Codable, Identifiable {
     let _id: String
     let trackingNumber: String
     let title: String
@@ -37,6 +37,9 @@ struct IssueDTO: Codable {
     let location: IssueLocationDTO?
     let photos: [IssuePhotoDTO]?
     let submittedAt: String
+    
+    // Conform to Identifiable
+    var id: String { _id }
 }
 
 struct IssueListResponse: Codable {
@@ -103,12 +106,6 @@ struct CreateIssueResponse: Codable {
         let trackingNumber: String
         let estimatedResponseTime: String?
     }
-}
-
-struct ServiceResult<Value> {
-    let success: Bool
-    let data: Value?
-    let error: String?
 }
 
 struct StatsResponse: Codable {
