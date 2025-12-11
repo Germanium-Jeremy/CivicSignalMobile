@@ -100,7 +100,9 @@ struct CreateIssueRequest: Encodable {
 
 struct CreateIssueResponse: Codable {
     let success: Bool
+    let message: String?
     let data: DataField
+    
     struct DataField: Codable {
         let issue: IssueDTO
         let trackingNumber: String
@@ -223,6 +225,12 @@ enum IssueService {
             if code == 429 {
                 return ServiceResult(success: false, data: nil, error: "Daily submission limit reached")
             }
+            
+            // Try to parse error message from response
+            if let errorData = try? JSONDecoder().decode([String: String].self, from: data) {
+                return ServiceResult(success: false, data: nil, error: errorData["error"] ?? errorData["message"] ?? "Failed to create issue")
+            }
+            
             return ServiceResult(success: false, data: nil, error: "Failed to create issue")
         } catch {
             return ServiceResult(success: false, data: nil, error: error.localizedDescription)
