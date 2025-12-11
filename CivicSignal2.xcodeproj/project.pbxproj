@@ -152,9 +152,9 @@
 		2C6947AA2EEAB2B6002B4C89 /* CivicSignal2 */ = {
 			isa = PBXGroup;
 			children = (
+				2C6948182EEAC256002B4C89 /* Utilities */,
+				2C6948172EEAC1E7002B4C89 /* Auth */,
 				2C6947F12EEAB607002B4C89 /* Tabs */,
-				2C6947D82EEAB347002B4C89 /* Utilities */,
-				2C6947D52EEAB2F8002B4C89 /* Auth */,
 				2C6947AB2EEAB2B6002B4C89 /* CivicSignal2App.swift */,
 				2C6947AD2EEAB2B6002B4C89 /* ContentView.swift */,
 				2C6947AF2EEAB2B6002B4C89 /* Assets.xcassets */,
@@ -188,36 +188,6 @@
 			path = CivicSignal2UITests;
 			sourceTree = "<group>";
 		};
-		2C6947D52EEAB2F8002B4C89 /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				2C6947D62EEAB31D002B4C89 /* SplashView.swift */,
-				2C6947DF2EEAB46C002B4C89 /* LoginView.swift */,
-				2C6947E12EEAB4AF002B4C89 /* RegisterView.swift */,
-				2C6947E32EEAB4E6002B4C89 /* ConfirmationView.swift */,
-				2C6947E52EEAB50E002B4C89 /* ForgotView.swift */,
-				2C6947E72EEAB526002B4C89 /* ResetView.swift */,
-				2C6947E92EEAB53E002B4C89 /* VerifyCodeView.swift */,
-				2C6947EB2EEAB555002B4C89 /* VerifyEmailView.swift */,
-				2C6947ED2EEAB576002B4C89 /* VerifyPhoneView.swift */,
-				2C6947EF2EEAB5A6002B4C89 /* WaitingView.swift */,
-			);
-			name = Auth;
-			sourceTree = "<group>";
-		};
-		2C6947D82EEAB347002B4C89 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				2C6948092EEAB794002B4C89 /* Services */,
-				2C6948062EEAB761002B4C89 /* Models */,
-				2C6948032EEAB71C002B4C89 /* Components */,
-				2C6947D92EEAB365002B4C89 /* Colors.swift */,
-				2C6947DB2EEAB388002B4C89 /* Fonts.swift */,
-				2C6947DD2EEAB442002B4C89 /* Styles.swift */,
-			);
-			name = Utilities;
-			sourceTree = "<group>";
-		};
 		2C6947F12EEAB607002B4C89 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,14 +211,6 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		2C6948062EEAB761002B4C89 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				2C6948072EEAB774002B4C89 /* ReportDraft.swift */,
-			);
-			name = Models;
-			sourceTree = "<group>";
-		};
 		2C6948092EEAB794002B4C89 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -260,6 +222,44 @@
 				2C6948142EEAB82E002B4C89 /* TokenManager.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		2C6948172EEAC1E7002B4C89 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				2C6947D62EEAB31D002B4C89 /* SplashView.swift */,
+				2C6947DF2EEAB46C002B4C89 /* LoginView.swift */,
+				2C6947E12EEAB4AF002B4C89 /* RegisterView.swift */,
+				2C6947E32EEAB4E6002B4C89 /* ConfirmationView.swift */,
+				2C6947E52EEAB50E002B4C89 /* ForgotView.swift */,
+				2C6947E72EEAB526002B4C89 /* ResetView.swift */,
+				2C6947E92EEAB53E002B4C89 /* VerifyCodeView.swift */,
+				2C6947EB2EEAB555002B4C89 /* VerifyEmailView.swift */,
+				2C6947ED2EEAB576002B4C89 /* VerifyPhoneView.swift */,
+				2C6947EF2EEAB5A6002B4C89 /* WaitingView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		2C6948182EEAC256002B4C89 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				2C6948192EEAC42D002B4C89 /* Models */,
+				2C6947D92EEAB365002B4C89 /* Colors.swift */,
+				2C6947DB2EEAB388002B4C89 /* Fonts.swift */,
+				2C6947DD2EEAB442002B4C89 /* Styles.swift */,
+				2C6948032EEAB71C002B4C89 /* Components */,
+				2C6948092EEAB794002B4C89 /* Services */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		2C6948192EEAC42D002B4C89 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2C6948072EEAB774002B4C89 /* ReportDraft.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
