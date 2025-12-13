@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var session: AppSession
     @StateObject private var viewModel = HomeViewModel()
     @State private var isRefreshing = false
     
@@ -95,6 +96,9 @@ struct HomeView: View {
             }
         }
         .onAppear { Task { await viewModel.fetchData() } }
+        .onChange(of: session.homeRefreshToken) { _ in
+            Task { await viewModel.fetchData() }
+        }
     }
     
     private var header: some View {
@@ -139,13 +143,23 @@ struct HomeView: View {
                         .foregroundColor(.mainBackground)
                 }
                 Spacer()
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Resolved Issues")
-                        .font(AppFont.footnote)
-                        .foregroundColor(.mainBackground)
-                    Text("\(viewModel.stats.resolved)")
-                        .font(AppFont.body)
-                        .foregroundColor(.mainBackground)
+                VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Resolved Issues")
+                            .font(AppFont.footnote)
+                            .foregroundColor(.mainBackground)
+                        Text("\(viewModel.stats.resolved)")
+                            .font(AppFont.body)
+                            .foregroundColor(.mainBackground)
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Pending Issues")
+                            .font(AppFont.footnote)
+                            .foregroundColor(.mainBackground)
+                        Text("\(viewModel.stats.inProgress)")
+                            .font(AppFont.body)
+                            .foregroundColor(.mainBackground)
+                    }
                 }
             }
         }
@@ -201,7 +215,14 @@ class HomeViewModel: ObservableObject {
         
         // Fetch user data
         if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
-            userName = user.fullName?.components(separatedBy: " ").last ?? ""
+            let parts = user.fullName?
+                .components(separatedBy: " ")
+                .filter { !$0.isEmpty } ?? []
+            if parts.count > 1 {
+                userName = parts[1]
+            } else {
+                userName = parts.first ?? ""
+            }
         }
         
         // Fetch stats and issues in parallel
@@ -231,61 +252,5 @@ class HomeViewModel: ObservableObject {
             return
         }
         recentIssues = response.data.issues
-    }
-}
-
-// MARK: - Issue Row
-struct IssueRow: View {
-    let issue: IssueDTO
-    
-    private var statusColor: Color {
-        switch issue.status {
-        case "submitted": return .red
-        case "acknowledged": return .blue
-        case "in_progress": return .yellow
-        case "resolved": return .green
-        case "closed": return .gray
-        default: return .black
-        }
-    }
-    
-    var body: some View {
-        NavigationLink(destination: IssueDetailView(issueId: issue._id)) {
-            HStack(spacing: 12) {
-                Circle()
-                    .fill(statusColor)
-                    .frame(width: 12, height: 12)
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(issue.title)
-                        .font(AppFont.body.bold())
-                        .foregroundColor(.almostBlack)
-                        .lineLimit(1)
-                    
-                    Text("Submitted: \(formattedDate(issue.submittedAt))")
-                        .font(AppFont.footnote)
-                        .foregroundColor(.gray)
-                }
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.gray)
-            }
-            .padding(12)
-            .background(Color.white)
-            .cornerRadius(12)
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-    
-    private func formattedDate(_ dateString: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        guard let date = formatter.date(from: dateString) else { return dateString }
-        
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
     }
 }

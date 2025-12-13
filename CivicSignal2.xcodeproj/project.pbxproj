@@ -44,6 +44,7 @@
 		2C6948152EEAB82E002B4C89 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948142EEAB82E002B4C89 /* TokenManager.swift */; };
 		2C69481B2EEAC923002B4C89 /* IssueDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */; };
 		2C8F6C532EEDE1EC00590A47 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480C2EEAB7BB002B4C89 /* APIConfig.swift */; };
+		2C8F6C552EEDE9E600590A47 /* IssueRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F6C542EEDE9E600590A47 /* IssueRow.swift */; };
 		2CB281A72EEAFB1E006EF825 /* ServiceResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +106,7 @@
 		2C6948122EEAB817002B4C89 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		2C6948142EEAB82E002B4C89 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailView.swift; sourceTree = "<group>"; };
+		2C8F6C542EEDE9E600590A47 /* IssueRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueRow.swift; sourceTree = "<group>"; };
 		2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -211,6 +213,7 @@
 		2C6948032EEAB71C002B4C89 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				2C8F6C542EEDE9E600590A47 /* IssueRow.swift */,
 				2C6948042EEAB74E002B4C89 /* ImagePicker.swift */,
 			);
 			path = Components;
@@ -400,6 +403,7 @@
 			files = (
 				2C6947AE2EEAB2B6002B4C89 /* ContentView.swift in Sources */,
 				2C6948022EEAB706002B4C89 /* SettingsView.swift in Sources */,
+				2C8F6C552EEDE9E600590A47 /* IssueRow.swift in Sources */,
 				2C8F6C532EEDE1EC00590A47 /* APIConfig.swift in Sources */,
 				2CB281A72EEAFB1E006EF825 /* ServiceResult.swift in Sources */,
 				2C6947E02EEAB46C002B4C89 /* LoginView.swift in Sources */,
