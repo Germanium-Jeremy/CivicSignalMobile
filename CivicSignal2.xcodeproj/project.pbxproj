@@ -38,12 +38,12 @@
 		2C6948052EEAB74E002B4C89 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948042EEAB74E002B4C89 /* ImagePicker.swift */; };
 		2C6948082EEAB774002B4C89 /* ReportDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948072EEAB774002B4C89 /* ReportDraft.swift */; };
 		2C69480B2EEAB7A6002B4C89 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480A2EEAB7A6002B4C89 /* APIClient.swift */; };
-		2C69480D2EEAB7BB002B4C89 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480C2EEAB7BB002B4C89 /* APIConfig.swift */; };
 		2C69480F2EEAB7E4002B4C89 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480E2EEAB7E4002B4C89 /* AuthService.swift */; };
 		2C6948112EEAB800002B4C89 /* IssueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948102EEAB800002B4C89 /* IssueService.swift */; };
 		2C6948132EEAB817002B4C89 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948122EEAB817002B4C89 /* LocationService.swift */; };
 		2C6948152EEAB82E002B4C89 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6948142EEAB82E002B4C89 /* TokenManager.swift */; };
 		2C69481B2EEAC923002B4C89 /* IssueDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */; };
+		2C8F6C532EEDE1EC00590A47 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480C2EEAB7BB002B4C89 /* APIConfig.swift */; };
 		2CB281A72EEAFB1E006EF825 /* ServiceResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */; };
 /* End PBXBuildFile section */
 
@@ -400,12 +400,12 @@
 			files = (
 				2C6947AE2EEAB2B6002B4C89 /* ContentView.swift in Sources */,
 				2C6948022EEAB706002B4C89 /* SettingsView.swift in Sources */,
+				2C8F6C532EEDE1EC00590A47 /* APIConfig.swift in Sources */,
 				2CB281A72EEAFB1E006EF825 /* ServiceResult.swift in Sources */,
 				2C6947E02EEAB46C002B4C89 /* LoginView.swift in Sources */,
 				2C6948112EEAB800002B4C89 /* IssueService.swift in Sources */,
 				2C6947DC2EEAB388002B4C89 /* Fonts.swift in Sources */,
 				2C6947E62EEAB50E002B4C89 /* ForgotView.swift in Sources */,
-				2C69480D2EEAB7BB002B4C89 /* APIConfig.swift in Sources */,
 				2C69481B2EEAC923002B4C89 /* IssueDetailView.swift in Sources */,
 				2C6947F62EEAB645002B4C89 /* IssuesView.swift in Sources */,
 				2C6947EC2EEAB555002B4C89 /* VerifyEmailView.swift in Sources */,
