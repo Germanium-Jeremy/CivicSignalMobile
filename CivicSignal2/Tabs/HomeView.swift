@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var session: AppSession
     @StateObject private var viewModel = HomeViewModel()
     @State private var isRefreshing = false
     
@@ -95,6 +96,9 @@ struct HomeView: View {
             }
         }
         .onAppear { Task { await viewModel.fetchData() } }
+        .onChange(of: session.homeRefreshToken) { _ in
+            Task { await viewModel.fetchData() }
+        }
     }
     
     private var header: some View {
@@ -139,13 +143,23 @@ struct HomeView: View {
                         .foregroundColor(.mainBackground)
                 }
                 Spacer()
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Resolved Issues")
-                        .font(AppFont.footnote)
-                        .foregroundColor(.mainBackground)
-                    Text("\(viewModel.stats.resolved)")
-                        .font(AppFont.body)
-                        .foregroundColor(.mainBackground)
+                VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Resolved Issues")
+                            .font(AppFont.footnote)
+                            .foregroundColor(.mainBackground)
+                        Text("\(viewModel.stats.resolved)")
+                            .font(AppFont.body)
+                            .foregroundColor(.mainBackground)
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Pending Issues")
+                            .font(AppFont.footnote)
+                            .foregroundColor(.mainBackground)
+                        Text("\(viewModel.stats.inProgress)")
+                            .font(AppFont.body)
+                            .foregroundColor(.mainBackground)
+                    }
                 }
             }
         }
@@ -242,7 +256,7 @@ struct IssueRow: View {
         switch issue.status {
         case "submitted": return .red
         case "acknowledged": return .blue
-        case "pending": return .yellow
+        case "in_progress": return .yellow
         case "resolved": return .green
         case "closed": return .gray
         default: return .black

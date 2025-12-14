@@ -3,6 +3,11 @@ import SwiftUI
 
 final class AppSession: ObservableObject {
     @Published var isLoggedIn: Bool = false
+    @Published var homeRefreshToken = UUID()
+
+    func triggerHomeRefresh() {
+        homeRefreshToken = UUID()
+    }
 }
 
 @main

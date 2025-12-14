@@ -13,6 +13,7 @@ struct CategoryItem: Identifiable {
 }
 
 struct ReportView: View {
+    @EnvironmentObject var session: AppSession
     @StateObject private var draft = ReportDraft()
     @StateObject private var locationService = LocationService.shared
     @State private var categories: [CategoryItem] = []
@@ -285,6 +286,7 @@ struct ReportView: View {
         )
         
         if res.success, let id = res.data?.data.issue._id {
+            session.triggerHomeRefresh()
             createdIssueId = id
             navigateToEvidence = true
         } else {
