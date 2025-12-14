@@ -242,7 +242,7 @@ struct IssueRow: View {
         switch issue.status {
         case "submitted": return .red
         case "acknowledged": return .blue
-        case "in_progress": return .yellow
+        case "pending": return .yellow
         case "resolved": return .green
         case "closed": return .gray
         default: return .black

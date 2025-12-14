@@ -139,7 +139,7 @@ struct IssueDetailView: View {
         switch status.lowercased() {
         case "submitted": return ("SUBMITTED", .blue)
         case "acknowledged": return ("ACKNOWLEDGED", .orange)
-        case "in_progress": return ("IN PROGRESS", .yellow)
+        case "pending": return ("IN PROGRESS", .yellow)
         case "resolved": return ("RESOLVED", .green)
         case "closed": return ("CLOSED", .gray)
         default: return (status.uppercased(), .black)

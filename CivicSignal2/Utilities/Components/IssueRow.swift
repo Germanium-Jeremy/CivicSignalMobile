@@ -7,7 +7,7 @@ struct IssueRow: View {
         switch issue.status.lowercased() {
         case "submitted": return .blue
         case "acknowledged": return .orange
-        case "in_progress": return .yellow
+        case "pending", "pending": return .yellow
         case "resolved": return .green
         case "closed": return .gray
         default: return .black
@@ -27,15 +27,27 @@ struct IssueRow: View {
         return issue.submittedAt
     }
     
+    private var categoryName: String {
+        issue.category.capitalized
+    }
+    
+    private var descriptionPreview: String {
+        if let desc = issue.description, !desc.isEmpty {
+            return String(desc.prefix(15)) + (desc.count > 15 ? "..." : "")
+        }
+        return "No description"
+    }
+    
     var body: some View {
-        NavigationLink(destination: IssueDetailView(issueId: issue._id)) {
+        Button(action: {}) {
             HStack(spacing: 12) {
-                Circle()
-                    .fill(statusColor)
-                    .frame(width: 12, height: 12)
+                Image("civic-signal-logo") // Make sure to add this image to your assets
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(issue.title)
+                    Text("\(categoryName), \(descriptionPreview)")
                         .font(AppFont.body.bold())
                         .foregroundColor(.almostBlack)
                         .lineLimit(1)
@@ -50,9 +62,10 @@ struct IssueRow: View {
                 Image(systemName: "chevron.right")
                     .foregroundColor(.gray)
             }
-            .padding(12)
+            .padding(16)
             .background(Color.white)
-            .cornerRadius(12)
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
         }
         .buttonStyle(PlainButtonStyle())
     }

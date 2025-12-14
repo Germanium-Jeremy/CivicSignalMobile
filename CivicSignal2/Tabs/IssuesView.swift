@@ -29,38 +29,70 @@ struct IssuesView: View {
     @StateObject private var viewModel = IssuesViewModel()
     @State private var selectedFilter: IssueFilter = .submitted
     
+    private var tabs: [IssueFilter] = [.submitted, .acknowledged, .pending, .resolved]
+    
     var body: some View {
         ZStack {
             Color.mainBackground.ignoresSafeArea()
             
             VStack(spacing: 0) {
-                header
+                // Header with title
+                HStack {
+                    Text("My Issues")
+                        .font(AppFont.largeTitle.bold())
+                        .foregroundColor(.almostBlack)
+                    
+                    Spacer()
+                    
+                    // Tab button component
+                    TabButton(
+                        title: "Notifications",
+                        count: 0,
+                        isSelected: false,
+                        action: {}
+                    )
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+                .padding(.bottom, 12)
                 
-                if viewModel.isLoading {
+                // Tab selection
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(tabs) { tab in
+                            TabButton(
+                                title: tab.rawValue,
+                                count: viewModel.count(for: tab),
+                                isSelected: selectedFilter == tab
+                            ) {
+                                withAnimation {
+                                    selectedFilter = tab
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                }
+                .padding(.bottom, 16)
+                
+                // Main content
+                if viewModel.isLoading && viewModel.currentIssues(for: selectedFilter).isEmpty {
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     ScrollView {
-                        VStack(alignment: .leading, spacing: 24) {
-                            filterRow
-                            
-                            Text("\(selectedFilter.rawValue) Issues")
-                                .font(AppFont.title3)
-                                .foregroundColor(.almostBlack)
-                                .padding(.top, 8)
-                            
+                        LazyVStack(spacing: 12) {
                             if currentIssues.isEmpty {
                                 emptyStateView
                             } else {
-                                LazyVStack(spacing: 12) {
-                                    ForEach(currentIssues) { issue in
-                                        IssueRow(issue: issue)
-                                    }
+                                ForEach(currentIssues) { issue in
+                                    IssueRow(issue: issue)
+                                        .padding(.horizontal, 20)
                                 }
                                 
                                 if viewModel.hasMore {
                                     Button(action: { Task { await viewModel.loadMore() } }) {
-                                        Text("Load more")
+                                        Text("Load More")
                                             .font(AppFont.body)
                                             .foregroundColor(.accentColor)
                                     }
@@ -69,8 +101,8 @@ struct IssuesView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 80)
+                        .padding(.top, 8)
+                        .padding(.bottom, 24)
                     }
                     .refreshable { await viewModel.refresh() }
                 }
@@ -91,67 +123,45 @@ struct IssuesView: View {
         }
     }
     
-    private var header: some View {
-        HStack {
-            Circle()
-                .fill(Color.lightGray)
-                .frame(width: 40, height: 40)
-            
-            Spacer()
-            
-            Text("Issues")
-                .font(AppFont.title3)
-                .foregroundColor(.almostBlack)
-            
-            Spacer()
-            
-            NavigationLink(destination: NotificationsView()) {
-                ZStack {
-                    Circle()
-                        .stroke(Color.secondaryGreen.opacity(0.3), lineWidth: 2)
-                        .background(Circle().fill(Color.mainBackground))
-                        .frame(width: 36, height: 36)
-
-                    Image(systemName: "bell")
-                        .foregroundColor(.primaryBlue)
+    private struct TabButton: View {
+        let title: String
+        let count: Int
+        let isSelected: Bool
+        let action: () -> Void
+        
+        var body: some View {
+            Button(action: action) {
+                VStack(spacing: 6) {
+                    Text(title)
+                        .font(AppFont.subheadline.bold())
+                        .foregroundColor(isSelected ? .mainBackground : .almostBlack)
+                    
+                    Text("\(count)")
+                        .font(AppFont.title3.bold())
+                        .foregroundColor(isSelected ? .mainBackground : .almostBlack)
                 }
-            }
-        }
-        .padding(.horizontal, 20)
-        .padding(.top, 12)
-    }
-    
-    private var filterRow: some View {
-        HStack(spacing: 12) {
-            ForEach(IssueFilter.allCases) { filter in
-                VStack(spacing: 8) {
-                    Text(filter.rawValue)
-                        .font(AppFont.footnote)
-                        .foregroundColor(selectedFilter == filter ? .white : .mainBackground)
-                    Text("\(viewModel.count(for: filter))")
-                        .font(AppFont.body)
-                        .foregroundColor(selectedFilter == filter ? .white : .mainBackground)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(selectedFilter == filter ? Color.accentColor : Color.almostBlack)
+                .frame(width: 100, height: 60)
+                .background(isSelected ? Color.accentGreen : Color.lightGray)
                 .cornerRadius(16)
-                .onTapGesture { selectedFilter = filter }
+                .shadow(color: isSelected ? Color.accentGreen.opacity(0.3) : .clear, radius: 5, x: 0, y: 2)
             }
         }
     }
     
     private var emptyStateView: some View {
         VStack(spacing: 16) {
-            Image(systemName: "exclamationmark.triangle")
+            Image(systemName: "doc.text.magnifyingglass")
                 .font(.system(size: 40))
                 .foregroundColor(.gray)
+            
             Text("No \(selectedFilter.rawValue.lowercased()) issues found")
                 .font(AppFont.body)
                 .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 40)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.vertical, 60)
     }
 }
 
