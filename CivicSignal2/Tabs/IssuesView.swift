@@ -76,7 +76,7 @@ struct IssuesView: View {
                 .padding(.bottom, 16)
                 
                 // Main content
-                if viewModel.isLoading && viewModel.currentIssues(for: selectedFilter).isEmpty {
+                if viewModel.isLoading && currentIssues.isEmpty {
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {

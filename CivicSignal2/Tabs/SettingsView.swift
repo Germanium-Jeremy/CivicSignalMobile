@@ -165,7 +165,8 @@ class SettingsViewModel: ObservableObject {
         // Fetch user data
         if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
             userFullName = user.fullName ?? "User"
-            userRole = user.role ?? "Citizen"
+            // UserDTO has no explicit role field; default to a generic role label
+            userRole = "Citizen"
         }
         
         // Fetch stats
@@ -178,7 +179,9 @@ class SettingsViewModel: ObservableObject {
         self.stats = UserStats(
             total: response.data.total,
             submitted: response.data.submitted,
-            acknowledged: response.data.acknowledged ?? 0,
+            // StatsResponse.DataField does not include an acknowledged field in Swift aggregation;
+            // use 0 for now, or adjust later if backend adds this metric.
+            acknowledged: 0,
             pending: response.data.inProgress,
             resolved: response.data.resolved
         )
