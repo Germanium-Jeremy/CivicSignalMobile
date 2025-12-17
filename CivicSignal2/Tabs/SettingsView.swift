@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel = SettingsViewModel()
     
     var body: some View {
         ZStack {
@@ -18,18 +19,24 @@ struct SettingsView: View {
             VStack(spacing: 0) {
                 header
                 
-                ScrollView {
-                    VStack(spacing: 24) {
-                        profileHeader
-                        statsRow
-                        settingsList
+                if viewModel.isLoading {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    ScrollView {
+                        VStack(spacing: 24) {
+                            profileHeader
+                            statsRow
+                            settingsList
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 24)
+                        .padding(.bottom, 80)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 24)
-                    .padding(.bottom, 80)
                 }
             }
         }
+        .onAppear { Task { await viewModel.fetchData() } }
     }
     
     private var header: some View {
@@ -62,10 +69,10 @@ struct SettingsView: View {
                     .foregroundColor(.neutralGray)
             }
             
-            Text("Mugisha David")
+            Text(viewModel.userFullName)
                 .font(AppFont.title3)
                 .foregroundColor(.almostBlack)
-            Text("Citizen")
+            Text(viewModel.userRole)
                 .font(AppFont.footnote)
                 .foregroundColor(.neutralGray)
         }
@@ -75,9 +82,10 @@ struct SettingsView: View {
     
     private var statsRow: some View {
         HStack(spacing: 12) {
-            statCard(value: "20", label: "Submitted")
-            statCard(value: "20", label: "Acknowledged")
-            statCard(value: "20", label: "Pending")
+            statCard(value: "\(viewModel.stats.submitted)", label: "Submitted")
+            statCard(value: "\(viewModel.stats.acknowledged)", label: "Acknowledged")
+            statCard(value: "\(viewModel.stats.pending)", label: "Pending")
+            statCard(value: "\(viewModel.stats.resolved)", label: "Resolved")
         }
     }
     
@@ -123,6 +131,57 @@ struct SettingsView: View {
                 .fill(Color.lightGray)
                 .frame(height: 1)
         }
+    }
+}
+
+// MARK: - ViewModel
+@MainActor
+class SettingsViewModel: ObservableObject {
+    struct UserStats {
+        var total: Int
+        var submitted: Int
+        var acknowledged: Int
+        var pending: Int
+        var resolved: Int
+        
+        init(total: Int = 0, submitted: Int = 0, acknowledged: Int = 0, pending: Int = 0, resolved: Int = 0) {
+            self.total = total
+            self.submitted = submitted
+            self.acknowledged = acknowledged
+            self.pending = pending
+            self.resolved = resolved
+        }
+    }
+    
+    @Published var userFullName: String = "User"
+    @Published var userRole: String = "Citizen"
+    @Published var stats = UserStats()
+    @Published var isLoading = true
+    
+    func fetchData() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        // Fetch user data
+        if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
+            userFullName = user.fullName ?? "User"
+            userRole = user.role ?? "Citizen"
+        }
+        
+        // Fetch stats
+        let result = await IssueService.getMyStats()
+        guard result.success, let response = result.data else {
+            print("Failed to fetch stats: \(result.error ?? "Unknown error")")
+            return
+        }
+        
+        self.stats = UserStats(
+            total: response.data.total,
+            submitted: response.data.submitted,
+            acknowledged: response.data.acknowledged ?? 0,
+            pending: response.data.inProgress,
+            resolved: response.data.resolved
+        )
     }
 }
 

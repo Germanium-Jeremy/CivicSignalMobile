@@ -319,6 +319,29 @@ enum IssueService {
         }
     }
 
+    // MARK: Get All Public Issues (for map)
+    static func getAllPublicIssues(page: Int = 1, limit: Int = 100) async -> ServiceResult<IssueListResponse> {
+        var params: [URLQueryItem] = [
+            URLQueryItem(name: "page", value: String(page)),
+            URLQueryItem(name: "limit", value: String(limit))
+        ]
+        let query = params.compactMap { "\($0.name)=\($0.value ?? "")" }.joined(separator: "&")
+        
+        do {
+            let res: IssueListResponse = try await APIClient.shared.request(
+                "issues?\(query)",
+                responseType: IssueListResponse.self
+            )
+            return ServiceResult(success: true, data: res, error: nil)
+        } catch let APIError.httpStatus(code, data) {
+            let msg = String(data: data, encoding: .utf8) ?? "Failed to fetch public issues"
+            print("Public issues error (\(code)): \(msg)")
+            return ServiceResult(success: false, data: nil, error: "Failed to fetch public issues")
+        } catch {
+            return ServiceResult(success: false, data: nil, error: error.localizedDescription)
+        }
+    }
+
     // MARK: Update Issue Photos (PATCH)
     static func updateIssuePhotos(issueId: String, photos: [IssuePhotoDTO]) async -> ServiceResult<UpdateIssueResponse> {
         let body: [String: AnyEncodableValue] = [
