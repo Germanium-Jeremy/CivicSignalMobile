@@ -189,7 +189,7 @@ struct HomeView: View {
     }
 }
 
-// MARK: - ViewModel
+// Duplicate IssueRow removed. Shared IssueRow component is used. ViewModel
 @MainActor
 class HomeViewModel: ObservableObject {
     struct Stats {
@@ -248,11 +248,8 @@ class HomeViewModel: ObservableObject {
     }
 }
 
-// MARK: - Issue Row
-struct IssueRow: View {
-    let issue: IssueDTO
     
-    private var statusColor: Color {
+ {
         switch issue.status {
         case "submitted": return .red
         case "acknowledged": return .blue
