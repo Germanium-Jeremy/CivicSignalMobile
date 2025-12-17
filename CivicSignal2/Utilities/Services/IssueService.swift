@@ -167,13 +167,10 @@ enum IssueService {
     }
 
     static func getMyStats() async -> ServiceResult<StatsResponse> {
-        guard let user: UserDTO = TokenManager.getUserData(UserDTO.self), let id = user.id else {
-            return ServiceResult(success: false, data: nil, error: "User not authenticated")
-        }
-        
         do {
             let res: StatsResponse = try await APIClient.shared.request(
-                "issues/stats?userId=\(id)",
+                "issues/stats",
+                authorized: true,
                 responseType: StatsResponse.self
             )
             return ServiceResult(success: true, data: res, error: nil)
@@ -277,10 +274,7 @@ enum IssueService {
 
     // MARK: My Issues
     static func getMyIssues(status: String? = nil, page: Int? = nil, limit: Int? = nil) async -> ServiceResult<IssueListResponse> {
-        guard let user: UserDTO = TokenManager.getUserData(UserDTO.self), let id = user.id else {
-            return ServiceResult(success: false, data: nil, error: "User not authenticated")
-        }
-        var params: [URLQueryItem] = [URLQueryItem(name: "userId", value: id)]
+        var params: [URLQueryItem] = []
         if let status = status { params.append(URLQueryItem(name: "status", value: status)) }
         if let page = page { params.append(URLQueryItem(name: "page", value: String(page))) }
         if let limit = limit { params.append(URLQueryItem(name: "limit", value: String(limit))) }
