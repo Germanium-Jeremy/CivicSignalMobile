@@ -87,6 +87,8 @@ struct SettingsView: View {
             statCard(value: "\(viewModel.stats.pending)", label: "Pending")
             statCard(value: "\(viewModel.stats.resolved)", label: "Resolved")
         }
+        // Counteract parent horizontal padding so the stats span more of the width
+        .padding(.horizontal, -20)
     }
     
     private func statCard(value: String, label: String) -> some View {
@@ -94,6 +96,7 @@ struct SettingsView: View {
             Text(value)
                 .font(AppFont.body)
                 .foregroundColor(.almostBlack)
+                .padding(.horizontal, 16)
             Text(label)
                 .font(AppFont.footnote)
                 .foregroundColor(.neutralGray)

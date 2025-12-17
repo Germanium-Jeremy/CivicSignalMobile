@@ -19,8 +19,12 @@ struct IssuePhotoDTO: Codable {
 }
 
 struct IssueLocationDTO: Codable {
-    let latitude: Double
-    let longitude: Double
+    // Backend currently sends GeoJSON-style location:
+    // { type: "Point", coordinates: [lon, lat], address, district, sector }
+    // We only care about address/district/sector in the UI for now, so
+    // latitude/longitude are optional to avoid decode failures when missing.
+    let latitude: Double?
+    let longitude: Double?
     let address: String?
     let district: String?
     let sector: String?
@@ -36,19 +40,55 @@ struct IssueDTO: Codable, Identifiable {
     let status: String
     let location: IssueLocationDTO?
     let photos: [IssuePhotoDTO]?
-    let submittedAt: String
+    let submittedAt: String  // ISO date string
+    let createdAt: String?   // Added
+    let updatedAt: String?   // Added
+    
+    // Optional fields that exist in real response
+    let isPublic: Bool?
+    let showOnMap: Bool?
+    let viewCount: Int?
+    let upvoteCount: Int?
+    let resolutionNotes: String?
+    let activities: [IssueActivityDTO]?
+    let reportedBy: ReportedByDTO?
     
     // Conform to Identifiable
     var id: String { _id }
 }
 
+struct IssueActivityDTO: Codable {
+    let action: String
+    let description: String
+    let performedBy: String // ObjectId as string
+    let performedByModel: String
+    let timestamp: String
+    // Metadata is omitted for now to avoid bringing in a custom AnyCodable type;
+    // add it later with a proper Codable wrapper if the app needs to display it.
+}
+
+// Minimal version of reportedBy (populated with name/email)
+struct ReportedByDTO: Codable {
+    let id: String?
+    let fullName: String?
+    let email: String?
+}
+
 struct IssueListResponse: Codable {
-    struct Pagination: Codable { let page: Int; let limit: Int; let total: Int; let totalPages: Int }
     let success: Bool
+    let message: String?
     let data: DataField
+    
     struct DataField: Codable {
         let issues: [IssueDTO]
         let pagination: Pagination
+    }
+    
+    struct Pagination: Codable {
+        let page: Int
+        let limit: Int
+        let total: Int
+        let totalPages: Int
     }
 }
 
@@ -167,20 +207,19 @@ enum IssueService {
     }
 
     static func getMyStats() async -> ServiceResult<StatsResponse> {
-        do {
-            let res: StatsResponse = try await APIClient.shared.request(
-                "issues/stats",
-                authorized: true,
-                responseType: StatsResponse.self
-            )
-            return ServiceResult(success: true, data: res, error: nil)
-        } catch let APIError.httpStatus(code, data) {
-            let msg = String(data: data, encoding: .utf8) ?? "Failed to fetch stats"
-            print("Stats error (\(code)): \(msg)")
-            return ServiceResult(success: false, data: nil, error: "Failed to fetch stats")
-        } catch {
-            return ServiceResult(success: false, data: nil, error: error.localizedDescription)
+        // Mirror React Native getMyStats: fetch all issues for the current user and aggregate client-side
+        let issuesResult = await getMyIssues(limit: 1000)
+        guard issuesResult.success, let list = issuesResult.data?.data.issues else {
+            return ServiceResult(success: false, data: nil, error: issuesResult.error ?? "Failed to fetch stats")
         }
+        let issues = list
+        let total = issues.count
+        let submitted = issues.filter { $0.status == "submitted" }.count
+        let inProgress = issues.filter { $0.status == "pending" }.count
+        let resolved = issues.filter { $0.status == "resolved" }.count
+        let data = StatsResponse.DataField(total: total, submitted: submitted, resolved: resolved, inProgress: inProgress)
+        let stats = StatsResponse(success: true, data: data)
+        return ServiceResult(success: true, data: stats, error: nil)
     }
 
     // MARK: Create Issue
@@ -217,6 +256,7 @@ enum IssueService {
                 body: body,
                 authorized: true
             )
+            
             
             // Debug print the raw response
             print("Raw response: \(response)")
@@ -274,16 +314,34 @@ enum IssueService {
 
     // MARK: My Issues
     static func getMyIssues(status: String? = nil, page: Int? = nil, limit: Int? = nil) async -> ServiceResult<IssueListResponse> {
-        var params: [URLQueryItem] = []
+        // Match React Native: include userId so backend filters by reportedBy
+        guard let user: UserDTO = TokenManager.getUserData(UserDTO.self), let id = user.id else {
+            return ServiceResult(success: false, data: nil, error: "User not authenticated")
+        }
+        
+        var params: [URLQueryItem] = [URLQueryItem(name: "userId", value: id)]
         if let status = status { params.append(URLQueryItem(name: "status", value: status)) }
         if let page = page { params.append(URLQueryItem(name: "page", value: String(page))) }
         if let limit = limit { params.append(URLQueryItem(name: "limit", value: String(limit))) }
-        let query = params.compactMap { "\($0.name)=\($0.value ?? "")" }.joined(separator: "&")
+        
         do {
+            let data = try await APIClient.shared.performRequest(  // temporarily bypass decoding
+                path: "issues",
+                method: "GET",
+                queryItems: params,
+                authorized: true
+            )
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("=== RAW JSON FROM /issues ===\n\(jsonString)\n===")
+            }
             let res: IssueListResponse = try await APIClient.shared.request(
-                "issues?\(query)",
+                "issues",
+                method: "GET",
+                queryItems: params,
+                authorized: true,
                 responseType: IssueListResponse.self
             )
+            print("IssueService Response: \(res)")
             return ServiceResult(success: true, data: res, error: nil)
         } catch let APIError.httpStatus(code, data) {
             let msg = String(data: data, encoding: .utf8) ?? "Failed to fetch issues"
@@ -315,15 +373,17 @@ enum IssueService {
 
     // MARK: Get All Public Issues (for map)
     static func getAllPublicIssues(page: Int = 1, limit: Int = 100) async -> ServiceResult<IssueListResponse> {
-        var params: [URLQueryItem] = [
+        let params: [URLQueryItem] = [
             URLQueryItem(name: "page", value: String(page)),
             URLQueryItem(name: "limit", value: String(limit))
         ]
-        let query = params.compactMap { "\($0.name)=\($0.value ?? "")" }.joined(separator: "&")
         
         do {
             let res: IssueListResponse = try await APIClient.shared.request(
-                "issues?\(query)",
+                "issues",
+                method: "GET",
+                queryItems: params,
+                authorized: false,
                 responseType: IssueListResponse.self
             )
             return ServiceResult(success: true, data: res, error: nil)

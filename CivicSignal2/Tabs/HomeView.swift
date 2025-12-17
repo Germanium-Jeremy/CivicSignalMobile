@@ -227,6 +227,7 @@ class HomeViewModel: ObservableObject {
     
     private func fetchStats() async {
         let result = await IssueService.getMyStats()
+        print("Recent Issues: \(result)")
         guard result.success, let response = result.data else {
             print("Failed to fetch stats: \(result.error ?? "Unknown error")")
             return
@@ -240,6 +241,7 @@ class HomeViewModel: ObservableObject {
     
     private func fetchRecentIssues() async {
         let result = await IssueService.getMyIssues(limit: 5)
+        print("Recent Issues: \(result)")
         guard result.success, let response = result.data else {
             print("Failed to fetch recent issues: \(result.error ?? "Unknown error")")
             return

@@ -71,7 +71,6 @@ struct IssuesView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 20)
                 }
                 .padding(.bottom, 16)
                 
@@ -104,6 +103,7 @@ struct IssuesView: View {
                         .padding(.top, 8)
                         .padding(.bottom, 24)
                     }
+                    .padding(.bottom, 40) // leave space above bottom tab bar
                     .refreshable { await viewModel.refresh() }
                 }
             }
@@ -131,19 +131,21 @@ struct IssuesView: View {
         
         var body: some View {
             Button(action: action) {
-                VStack(spacing: 6) {
+                VStack(spacing: 5) {
                     Text(title)
                         .font(AppFont.subheadline.bold())
                         .foregroundColor(isSelected ? .mainBackground : .almostBlack)
+                        .padding(.horizontal, 16)
                     
                     Text("\(count)")
                         .font(AppFont.title3.bold())
                         .foregroundColor(isSelected ? .mainBackground : .almostBlack)
                 }
-                .frame(width: 100, height: 60)
+                .frame(width: 130, height: 60)
                 .background(isSelected ? Color.accentGreen : Color.lightGray)
                 .cornerRadius(16)
-                .shadow(color: isSelected ? Color.accentGreen.opacity(0.3) : .clear, radius: 5, x: 0, y: 2)
+                .shadow(color: isSelected ? Color.accentGreen.opacity(0.3) : .clear, radius: 5, x: 1, y: 2)
+                .padding(.horizontal, 10)
             }
         }
     }

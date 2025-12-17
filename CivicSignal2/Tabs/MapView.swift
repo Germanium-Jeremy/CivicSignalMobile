@@ -189,13 +189,20 @@ class MapViewModel: ObservableObject {
     private func updateRegionToFitIssues() {
         guard !issues.isEmpty else { return }
         
-        let validLocations = issues.compactMap { $0.location }
-        guard !validLocations.isEmpty else { return }
+        let validCoords: [CLLocationCoordinate2D] = issues.compactMap { issue in
+            guard let loc = issue.location,
+                  let lat = loc.latitude,
+                  let lon = loc.longitude else {
+                return nil
+            }
+            return CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        }
+        guard !validCoords.isEmpty else { return }
         
-        let minLat = validLocations.map(\.latitude).min()!
-        let maxLat = validLocations.map(\.latitude).max()!
-        let minLon = validLocations.map(\.longitude).min()!
-        let maxLon = validLocations.map(\.longitude).max()!
+        let minLat = validCoords.map(\.latitude).min()!
+        let maxLat = validCoords.map(\.latitude).max()!
+        let minLon = validCoords.map(\.longitude).min()!
+        let maxLon = validCoords.map(\.longitude).max()!
         
         let center = CLLocationCoordinate2D(
             latitude: (minLat + maxLat) / 2,

@@ -89,12 +89,7 @@ enum AuthService {
     
     // MARK: Register
     
-    static func register(
-        fullName: String,
-        email: String,
-        phone: String,
-        password: String
-    ) async -> ServiceResult<AuthBaseResponse> {
+    static func register(fullName: String, email: String, phone: String, password: String) async -> ServiceResult<AuthBaseResponse> {
         let body = RegisterRequest(fullName: fullName, email: email, phone: phone, password: password)
         
         do {
@@ -105,6 +100,8 @@ enum AuthService {
                 authorized: false,
                 responseType: AuthBaseResponse.self
             )
+
+            print("Registered User: \(response)")
             
             return ServiceResult(success: true, data: response, error: nil, details: response.details)
         } catch let APIError.httpStatus(code, data) {

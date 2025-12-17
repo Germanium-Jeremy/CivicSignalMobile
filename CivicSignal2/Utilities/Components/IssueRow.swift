@@ -7,9 +7,8 @@ struct IssueRow: View {
         switch issue.status.lowercased() {
         case "submitted": return .blue
         case "acknowledged": return .orange
-        case "pending", "pending": return .yellow
+        case "pending": return .yellow
         case "resolved": return .green
-        case "closed": return .gray
         default: return .black
         }
     }
@@ -82,7 +81,16 @@ struct IssueRow: View {
         status: "submitted",
         location: nil,
         photos: nil,
-        submittedAt: "2025-12-11T12:00:00.000Z"
+        submittedAt: "2025-12-11T12:00:00.000Z",
+        createdAt: "2025-12-11T12:00:00.000Z",
+        updatedAt: "2025-12-11T12:00:00.000Z",
+        isPublic: true,
+        showOnMap: true,
+        viewCount: 0,
+        upvoteCount: 0,
+        resolutionNotes: "",
+        activities: [],
+        reportedBy: ReportedByDTO.init(id:"", fullName: "", email: "")
     ))
     .padding()
     .background(Color.mainBackground)

@@ -13,9 +13,11 @@ final class APIClient {
        configuration.timeoutIntervalForResource = APIConfig.timeout
        session = URLSession(configuration: configuration)
        baseURL = APIConfig.baseURL
+       jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+       jsonDecoder.dateDecodingStrategy = .iso8601
    }
 
-   // Generic request helper for decodable responses
+   // Generic request helper for decodable responses (no query items)
    func request<T: Decodable>(
        _ path: String,
        method: String = "GET",
@@ -23,20 +25,36 @@ final class APIClient {
        authorized: Bool = true,
        responseType: T.Type
    ) async throws -> T {
-       let data = try await performRequest(path: path, method: method, body: body, authorized: authorized)
+       let data = try await performRequest(path: path, method: method, queryItems: nil, body: body, authorized: authorized)
+       return try jsonDecoder.decode(T.self, from: data)
+   }
+
+   // Generic request helper with URL query items
+   func request<T: Decodable>(
+       _ path: String,
+       method: String = "GET",
+       queryItems: [URLQueryItem]?,
+       body: Encodable? = nil,
+       authorized: Bool = true,
+       responseType: T.Type
+   ) async throws -> T {
+       let data = try await performRequest(path: path, method: method, queryItems: queryItems, body: body, authorized: authorized)
        return try jsonDecoder.decode(T.self, from: data)
    }
    
    // Request helper that returns raw data
-   private func performRequest(
+    func performRequest(
        path: String,
        method: String = "GET",
+       queryItems: [URLQueryItem]? = nil,
        body: Encodable? = nil,
        authorized: Bool = true
    ) async throws -> Data {
        // Build initial request
        let makeURLRequest: () throws -> URLRequest = {
-           let url = self.baseURL.appendingPathComponent(path)
+           var components = URLComponents(url: self.baseURL.appendingPathComponent(path), resolvingAgainstBaseURL: false)
+           components?.queryItems = queryItems
+           guard let url = components?.url else { throw URLError(.badURL) }
            var req = URLRequest(url: url)
            req.httpMethod = method
            req.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -83,7 +101,7 @@ final class APIClient {
        body: Encodable? = nil,
        authorized: Bool = true
    ) async throws -> [String: Any] {
-       let data = try await performRequest(path: path, method: method, body: body, authorized: authorized)
+       let data = try await performRequest(path: path, method: method, queryItems: nil, body: body, authorized: authorized)
        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
            throw NSError(domain: "APIClient", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to parse response as dictionary"])
        }
