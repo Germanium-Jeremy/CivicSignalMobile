@@ -19,15 +19,62 @@ struct IssuePhotoDTO: Codable {
 }
 
 struct IssueLocationDTO: Codable {
-    // Backend currently sends GeoJSON-style location:
-    // { type: "Point", coordinates: [lon, lat], address, district, sector }
-    // We only care about address/district/sector in the UI for now, so
-    // latitude/longitude are optional to avoid decode failures when missing.
-    let latitude: Double?
-    let longitude: Double?
+    // Backend sends GeoJSON-style location:
+    // {
+    //   type: "Point",
+    //   coordinates: [longitude, latitude],
+    //   address, district, sector
+    // }
+    let type: String?
+    let coordinates: [Double]?
     let address: String?
     let district: String?
     let sector: String?
+    
+    // Convenience properties used by MapView and detail screens
+    let latitude: Double?
+    let longitude: Double?
+    
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case coordinates
+        case address
+        case district
+        case sector
+        case latitude
+        case longitude
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
+        coordinates = try container.decodeIfPresent([Double].self, forKey: .coordinates)
+        address = try container.decodeIfPresent(String.self, forKey: .address)
+        district = try container.decodeIfPresent(String.self, forKey: .district)
+        sector = try container.decodeIfPresent(String.self, forKey: .sector)
+        
+        // Prefer coordinates array when present; fall back to standalone lat/lon if ever provided
+        if let coords = coordinates, coords.count == 2 {
+            // GeoJSON order: [lon, lat]
+            longitude = coords[0]
+            latitude = coords[1]
+        } else {
+            longitude = try container.decodeIfPresent(Double.self, forKey: .longitude)
+            latitude = try container.decodeIfPresent(Double.self, forKey: .latitude)
+        }
+    }
+
+    // Convenience initializer used when creating a new issue from the app
+    init(latitude: Double, longitude: Double, address: String?, district: String?, sector: String?) {
+        self.type = "Point"
+        // GeoJSON coordinates order is [lon, lat]
+        self.coordinates = [longitude, latitude]
+        self.address = address
+        self.district = district
+        self.sector = sector
+        self.latitude = latitude
+        self.longitude = longitude
+    }
 }
 
 struct IssueDTO: Codable, Identifiable {
@@ -55,6 +102,103 @@ struct IssueDTO: Codable, Identifiable {
     
     // Conform to Identifiable
     var id: String { _id }
+
+    private enum CodingKeys: String, CodingKey {
+        case _id
+        case trackingNumber
+        case title
+        case description
+        case category
+        case priority
+        case status
+        case location
+        case photos
+        case submittedAt
+        case createdAt
+        case updatedAt
+        case isPublic
+        case showOnMap
+        case viewCount
+        case upvoteCount
+        case resolutionNotes
+        case activities
+        case reportedBy
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        _id = try container.decode(String.self, forKey: ._id)
+        trackingNumber = try container.decodeIfPresent(String.self, forKey: .trackingNumber) ?? ""
+        title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
+        description = try container.decodeIfPresent(String.self, forKey: .description)
+        category = try container.decodeIfPresent(String.self, forKey: .category) ?? ""
+        priority = try container.decodeIfPresent(String.self, forKey: .priority) ?? ""
+        status = try container.decodeIfPresent(String.self, forKey: .status) ?? ""
+        location = try container.decodeIfPresent(IssueLocationDTO.self, forKey: .location)
+        photos = try container.decodeIfPresent([IssuePhotoDTO].self, forKey: .photos)
+        submittedAt = try container.decodeIfPresent(String.self, forKey: .submittedAt) ?? ""
+        createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
+
+        isPublic = try container.decodeIfPresent(Bool.self, forKey: .isPublic)
+        showOnMap = try container.decodeIfPresent(Bool.self, forKey: .showOnMap)
+        viewCount = try container.decodeIfPresent(Int.self, forKey: .viewCount)
+        upvoteCount = try container.decodeIfPresent(Int.self, forKey: .upvoteCount)
+        resolutionNotes = try container.decodeIfPresent(String.self, forKey: .resolutionNotes)
+        activities = try container.decodeIfPresent([IssueActivityDTO].self, forKey: .activities)
+
+        // reportedBy might be either a full object or just an ID string; handle both
+        if let detailed = try? container.decode(ReportedByDTO.self, forKey: .reportedBy) {
+            reportedBy = detailed
+        } else {
+            _ = try? container.decode(String.self, forKey: .reportedBy)
+            reportedBy = nil
+        }
+    }
+
+    // Explicit memberwise initializer so previews / manual construction continue to work
+    init(
+        _id: String,
+        trackingNumber: String,
+        title: String,
+        description: String?,
+        category: String,
+        priority: String,
+        status: String,
+        location: IssueLocationDTO?,
+        photos: [IssuePhotoDTO]?,
+        submittedAt: String,
+        createdAt: String?,
+        updatedAt: String?,
+        isPublic: Bool?,
+        showOnMap: Bool?,
+        viewCount: Int?,
+        upvoteCount: Int?,
+        resolutionNotes: String?,
+        activities: [IssueActivityDTO]?,
+        reportedBy: ReportedByDTO?
+    ) {
+        self._id = _id
+        self.trackingNumber = trackingNumber
+        self.title = title
+        self.description = description
+        self.category = category
+        self.priority = priority
+        self.status = status
+        self.location = location
+        self.photos = photos
+        self.submittedAt = submittedAt
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.isPublic = isPublic
+        self.showOnMap = showOnMap
+        self.viewCount = viewCount
+        self.upvoteCount = upvoteCount
+        self.resolutionNotes = resolutionNotes
+        self.activities = activities
+        self.reportedBy = reportedBy
+    }
 }
 
 struct IssueActivityDTO: Codable {
@@ -355,13 +499,53 @@ enum IssueService {
     // (client-side aggregation version of getMyStats removed to avoid duplicate signature)
 
     // MARK: Get Issue
-    static func getIssue(id: String) async -> ServiceResult<IssueSingleResponse> {
+    static func getIssue(id: String) async -> ServiceResult<IssueDTO> {
         do {
-            let res: IssueSingleResponse = try await APIClient.shared.request(
-                "issues/\(id)",
-                responseType: IssueSingleResponse.self
+            // Fetch raw data so we can handle any wrapper shape
+            let data = try await APIClient.shared.performRequest(
+                path: "issues/\(id)",
+                method: "GET",
+                authorized: true
             )
-            return ServiceResult(success: true, data: res, error: nil)
+
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("=== RAW JSON FROM /issues/\(id) ===\n\(jsonString)\n===")
+            }
+
+            // Try to interpret the JSON in a few common shapes
+            let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+
+            if let dict = jsonObject as? [String: Any] {
+                // Shape A: { success, data: { issue: {...} } }
+                if let dataField = dict["data"] as? [String: Any],
+                   let issueDict = dataField["issue"] as? [String: Any] {
+                    let issueData = try JSONSerialization.data(withJSONObject: issueDict, options: [])
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    let issue = try decoder.decode(IssueDTO.self, from: issueData)
+                    return ServiceResult(success: true, data: issue, error: nil)
+                }
+
+                // Shape B: { success, issue: {...} }
+                if let issueDict = dict["issue"] as? [String: Any] {
+                    let issueData = try JSONSerialization.data(withJSONObject: issueDict, options: [])
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    let issue = try decoder.decode(IssueDTO.self, from: issueData)
+                    return ServiceResult(success: true, data: issue, error: nil)
+                }
+
+                // Shape C: bare issue object (has _id at top level)
+                if dict["_id"] != nil {
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    let issue = try decoder.decode(IssueDTO.self, from: data)
+                    return ServiceResult(success: true, data: issue, error: nil)
+                }
+            }
+
+            // If we reach here, we couldn't find an issue object
+            return ServiceResult(success: false, data: nil, error: "Issue data missing in server response")
         } catch let APIError.httpStatus(code, data) {
             let msg = String(data: data, encoding: .utf8) ?? "Failed to fetch issue"
             print("Issue error (\(code)): \(msg)")

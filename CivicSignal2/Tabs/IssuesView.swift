@@ -85,8 +85,11 @@ struct IssuesView: View {
                                 emptyStateView
                             } else {
                                 ForEach(currentIssues) { issue in
-                                    IssueRow(issue: issue)
-                                        .padding(.horizontal, 20)
+                                    NavigationLink(destination: IssueDetailView(issueId: issue._id)) {
+                                        IssueRow(issue: issue)
+                                            .padding(.horizontal, 20)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
                                 
                                 if viewModel.hasMore {

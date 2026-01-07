@@ -38,35 +38,32 @@ struct IssueRow: View {
     }
     
     var body: some View {
-        Button(action: {}) {
-            HStack(spacing: 12) {
-                Image("civic-signal-logo") // Make sure to add this image to your assets
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
+        HStack(spacing: 12) {
+            Image("civic-signal-logo") // Make sure to add this image to your assets
+                .resizable()
+                .scaledToFit()
+                .frame(width: 40, height: 40)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text("\(categoryName), \(descriptionPreview)")
+                    .font(AppFont.body.bold())
+                    .foregroundColor(.almostBlack)
+                    .lineLimit(1)
                 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("\(categoryName), \(descriptionPreview)")
-                        .font(AppFont.body.bold())
-                        .foregroundColor(.almostBlack)
-                        .lineLimit(1)
-                    
-                    Text("Submitted: \(formattedDate)")
-                        .font(AppFont.footnote)
-                        .foregroundColor(.gray)
-                }
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
+                Text("Submitted: \(formattedDate)")
+                    .font(AppFont.footnote)
                     .foregroundColor(.gray)
             }
-            .padding(16)
-            .background(Color.white)
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+            
+            Spacer()
+            
+            Image(systemName: "chevron.right")
+                .foregroundColor(.gray)
         }
-        .buttonStyle(PlainButtonStyle())
+        .padding(16)
+        .background(Color.white)
+        .cornerRadius(20)
+        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
 }
 

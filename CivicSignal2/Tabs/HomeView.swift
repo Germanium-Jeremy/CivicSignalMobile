@@ -83,7 +83,10 @@ struct HomeView: View {
                                     .cornerRadius(16)
                                 } else {
                                     ForEach(viewModel.recentIssues.prefix(3)) { issue in
-                                        IssueRow(issue: issue)
+                                        NavigationLink(destination: IssueDetailView(issueId: issue._id)) {
+                                            IssueRow(issue: issue)
+                                        }
+                                        .buttonStyle(.plain)
                                     }
                                 }
                             }

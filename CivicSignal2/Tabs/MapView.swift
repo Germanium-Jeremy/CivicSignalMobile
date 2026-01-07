@@ -37,10 +37,10 @@ struct MapView: View {
                                 latitude: issue.location?.latitude ?? -1.9499,
                                 longitude: issue.location?.longitude ?? 30.0588
                             )) {
-                                IssueMarker(issue: issue) {
-                                    // Navigate to issue details
-                                    // This would need navigation setup
+                                NavigationLink(destination: IssueDetailView(issueId: issue._id)) {
+                                    IssueMarker(issue: issue)
                                 }
+                                .buttonStyle(.plain)
                             }
                         }
                         .edgesIgnoringSafeArea(.bottom)
@@ -92,19 +92,16 @@ struct MapView: View {
 // MARK: - Issue Marker
 struct IssueMarker: View {
     let issue: IssueDTO
-    let onTap: () -> Void
     
     var body: some View {
-        Button(action: onTap) {
-            ZStack {
-                Circle()
-                    .fill(statusColor)
-                    .frame(width: 20, height: 20)
-                    .overlay(
-                        Circle()
-                            .stroke(Color.white, lineWidth: 2)
-                    )
-            }
+        ZStack {
+            Circle()
+                .fill(statusColor)
+                .frame(width: 20, height: 20)
+                .overlay(
+                    Circle()
+                        .stroke(Color.white, lineWidth: 2)
+                )
         }
     }
     
