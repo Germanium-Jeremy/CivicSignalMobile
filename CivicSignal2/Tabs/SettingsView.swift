@@ -41,6 +41,11 @@ struct SettingsView: View {
     
     private var header: some View {
         HStack {
+            Button(action: { dismiss() }) {
+                Image(systemName: "chevron.left")
+                    .foregroundColor(.primaryBlue)
+            }
+            
             Spacer()
             
             Text("Profile")
@@ -62,11 +67,17 @@ struct SettingsView: View {
                 Circle()
                     .fill(Color.neutralGray.opacity(0.2))
                     .frame(width: 90, height: 90)
-                Image(systemName: "person.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(.neutralGray)
+                
+                if let initials = initials(from: viewModel.userFullName), !initials.isEmpty {
+                    Text(initials)
+                        .font(AppFont.title.weight(.bold))
+                        .foregroundColor(.almostBlack)
+                } else {
+                    Image("civicsignal")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 48, height: 48)
+                }
             }
             
             Text(viewModel.userFullName)
@@ -79,16 +90,28 @@ struct SettingsView: View {
         .frame(maxWidth: .infinity)
         .padding(.bottom, 16)
     }
+
+    private func initials(from name: String) -> String? {
+        let parts = name
+            .split(separator: " ")
+            .filter { !$0.isEmpty }
+        guard !parts.isEmpty else { return nil }
+        let first = parts.first?.first.map(String.init) ?? ""
+        let last = parts.dropFirst().first?.first.map(String.init) ?? ""
+        return (first + last).uppercased()
+    }
     
     private var statsRow: some View {
-        HStack(spacing: 12) {
-            statCard(value: "\(viewModel.stats.submitted)", label: "Submitted")
-            statCard(value: "\(viewModel.stats.acknowledged)", label: "Acknowledged")
-            statCard(value: "\(viewModel.stats.pending)", label: "Pending")
-            statCard(value: "\(viewModel.stats.resolved)", label: "Resolved")
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 12) {
+                statCard(value: "\(viewModel.stats.submitted)", label: "Submitted")
+                statCard(value: "\(viewModel.stats.acknowledged)", label: "Acknowledged")
+                statCard(value: "\(viewModel.stats.pending)", label: "Pending")
+                statCard(value: "\(viewModel.stats.resolved)", label: "Resolved")
+            }
+            // Counteract parent horizontal padding so the stats span more of the width
+            .padding(.horizontal, -0)
         }
-        // Counteract parent horizontal padding so the stats span more of the width
-        .padding(.horizontal, -20)
     }
     
     private func statCard(value: String, label: String) -> some View {
@@ -103,6 +126,7 @@ struct SettingsView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
+        .padding(.horizontal, 10)
         .background(Color.lightGray)
         .cornerRadius(12)
     }

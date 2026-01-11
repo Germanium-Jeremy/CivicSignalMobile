@@ -35,7 +35,7 @@ struct RegisterView: View {
                     VStack(spacing: 16) {
                         HStack {
                             Spacer()
-                            Image("favicon")
+                            Image("civicsignal")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 56, height: 56)

@@ -161,9 +161,15 @@ struct ReportView: View {
     
     private var header: some View {
         HStack {
-            Circle()
-                .fill(Color.lightGray)
-                .frame(width: 40, height: 40)
+            ZStack {
+                Circle()
+                    .fill(Color.lightGray)
+                    .frame(width: 40, height: 40)
+                Image("civicsignal")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 28, height: 28)
+            }
             
             Spacer()
             
@@ -173,14 +179,12 @@ struct ReportView: View {
             
             Spacer()
             
+            // Placeholder to keep header layout without notifications feature
             ZStack {
                 Circle()
-                    .stroke(Color.secondaryGreen.opacity(0.3), lineWidth: 2)
+                    .stroke(Color.secondaryGreen.opacity(0.0), lineWidth: 2)
                     .background(Circle().fill(Color.mainBackground))
                     .frame(width: 36, height: 36)
-                
-                Image(systemName: "bell")
-                    .foregroundColor(.primaryBlue)
             }
         }
         .padding(.horizontal, 20)

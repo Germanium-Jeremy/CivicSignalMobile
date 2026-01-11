@@ -45,12 +45,12 @@ struct IssuesView: View {
                     Spacer()
                     
                     // Tab button component
-                    TabButton(
-                        title: "Notifications",
-                        count: 0,
-                        isSelected: false,
-                        action: {}
-                    )
+//                    TabButton(
+//                        title: "Notifications",
+//                        count: 0,
+//                        isSelected: false,
+//                        action: {}
+//                    )
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
@@ -58,7 +58,7 @@ struct IssuesView: View {
                 
                 // Tab selection
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: 10) {
                         ForEach(tabs) { tab in
                             TabButton(
                                 title: tab.rawValue,

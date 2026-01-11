@@ -18,7 +18,7 @@ struct ConfirmationView: View {
                 
                 // Logo + title
                 VStack(spacing: 16) {
-                    Image("civic-signal")
+                    Image("civicsignal")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 140, height: 140)
