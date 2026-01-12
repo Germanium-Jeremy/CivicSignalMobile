@@ -39,7 +39,7 @@ struct IssueRow: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            Image("civic-signal-logo") // Make sure to add this image to your assets
+            Image("civicsignal") // Make sure to add this image to your assets
                 .resizable()
                 .scaledToFit()
                 .frame(width: 40, height: 40)

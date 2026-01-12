@@ -55,10 +55,10 @@ struct LoginView: View {
                     // Forgot password
                     HStack {
                         Spacer()
-                        Button(action: {}) {
+                        NavigationLink(destination: ForgotView()) {
                             Text("Forgot password?")
-                                .font(AppFont.subheadline)
-                                .foregroundColor(.neutralGray)
+                                .font(AppFont.body.weight(.semibold))
+                                .foregroundColor(.primaryBlue)
                         }
                     }
                     .padding(.top, 8)

@@ -31,62 +31,19 @@ struct HomeView: View {
                                 .padding(.top, 24)
                             
                             // Stats Card
-                            VStack(alignment: .leading, spacing: 12) {
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text("Submitted Issues")
-                                            .font(AppFont.footnote)
-                                            .foregroundColor(.mainBackground)
-                                        Text("\(viewModel.stats.total)")
-                                            .font(AppFont.title)
-                                            .foregroundColor(.mainBackground)
-                                    }
-                                    Spacer()
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text("Resolved Issues")
-                                            .font(AppFont.footnote)
-                                            .foregroundColor(.mainBackground)
-                                        Text("\(viewModel.stats.resolved)")
-                                            .font(AppFont.body)
-                                            .foregroundColor(.mainBackground)
-                                    }
-                                }
-                            }
-                            .padding(16)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.almostBlack)
-                            .cornerRadius(16)
+                            statsCard
                             
                             // Recent Issues
                             VStack(alignment: .leading, spacing: 16) {
                                 Text("Previous Issues")
-                                    .font(AppFont.title3)
+                                    .font(AppFont.body.weight(.semibold))
                                     .foregroundColor(.almostBlack)
                                 
                                 if viewModel.recentIssues.isEmpty {
-                                    // Empty State
-                                    VStack(spacing: 16) {
-                                        Text("You haven't submitted any issue yet.")
-                                            .font(AppFont.body)
-                                            .multilineTextAlignment(.center)
-                                            .padding(.top, 24)
-                                        
-                                        NavigationLink(destination: ReportView()) {
-                                            Image(systemName: "plus.circle.fill")
-                                                .font(.system(size: 60))
-                                                .foregroundColor(.accentColor)
-                                        }
-                                        .padding(.bottom, 24)
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.lightGray)
-                                    .cornerRadius(16)
+                                    emptyIssuesCard
                                 } else {
-                                    ForEach(viewModel.recentIssues.prefix(3)) { issue in
-                                        NavigationLink(destination: IssueDetailView(issueId: issue._id)) {
-                                            IssueRow(issue: issue)
-                                        }
-                                        .buttonStyle(.plain)
+                                    ForEach(viewModel.recentIssues, id: \..id) { issue in
+                                        IssueRow(issue: issue)
                                     }
                                 }
                             }
@@ -105,35 +62,40 @@ struct HomeView: View {
     }
     
     private var header: some View {
-        HStack {
-            ZStack {
-                Circle()
-                    .fill(Color.lightGray)
-                    .frame(width: 40, height: 40)
-                Image("civic-signal-logo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 28, height: 28)
+        VStack(spacing: 0) {
+            HStack {
+                ZStack {
+                    Circle()
+                        .fill(Color.lightGray)
+                        .frame(width: 40, height: 40)
+                    Image("civic-signal-logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 28, height: 28)
+                }
+                
+                Spacer()
+                
+                Text("Home")
+                    .font(AppFont.title3)
+                    .foregroundColor(.almostBlack)
+                
+                Spacer()
+                
+                // Placeholder to keep header layout without notifications feature
+                ZStack {
+                    Circle()
+                        .stroke(Color.secondaryGreen.opacity(0.0), lineWidth: 2)
+                        .background(Circle().fill(Color.mainBackground))
+                        .frame(width: 36, height: 36)
+                }
             }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
             
-            Spacer()
-            
-            Text("Home")
-                .font(AppFont.title3)
-                .foregroundColor(.almostBlack)
-            
-            Spacer()
-            
-            // Placeholder to keep header layout without notifications feature
-            ZStack {
-                Circle()
-                    .stroke(Color.secondaryGreen.opacity(0.0), lineWidth: 2)
-                    .background(Circle().fill(Color.mainBackground))
-                    .frame(width: 36, height: 36)
-            }
+            Divider()
+                .background(Color.lightGray)
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 12)
     }
     
     private var statsCard: some View {

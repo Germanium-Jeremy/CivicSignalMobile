@@ -28,37 +28,19 @@ enum IssueFilter: String, CaseIterable, Identifiable {
 struct IssuesView: View {
     @StateObject private var viewModel = IssuesViewModel()
     @State private var selectedFilter: IssueFilter = .submitted
-    
+
     private var tabs: [IssueFilter] = [.submitted, .acknowledged, .pending, .resolved]
-    
+
     var body: some View {
         ZStack {
             Color.mainBackground.ignoresSafeArea()
-            
+
             VStack(spacing: 0) {
-                // Header with title
-                HStack {
-                    Text("My Issues")
-                        .font(AppFont.largeTitle.bold())
-                        .foregroundColor(.almostBlack)
-                    
-                    Spacer()
-                    
-                    // Tab button component
-//                    TabButton(
-//                        title: "Notifications",
-//                        count: 0,
-//                        isSelected: false,
-//                        action: {}
-//                    )
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 12)
-                
+                header
+
                 // Tab selection
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 10) {
+                    HStack(spacing: 8) { // Reduced spacing between tabs
                         ForEach(tabs) { tab in
                             TabButton(
                                 title: tab.rawValue,
@@ -73,7 +55,7 @@ struct IssuesView: View {
                     }
                 }
                 .padding(.bottom, 16)
-                
+
                 // Main content
                 if viewModel.isLoading && currentIssues.isEmpty {
                     ProgressView()
@@ -91,7 +73,7 @@ struct IssuesView: View {
                                     }
                                     .buttonStyle(.plain)
                                 }
-                                
+
                                 if viewModel.hasMore {
                                     Button(action: { Task { await viewModel.loadMore() } }) {
                                         Text("Load More")
@@ -116,7 +98,43 @@ struct IssuesView: View {
             Task { await viewModel.loadIssues(for: selectedFilter) }
         }
     }
-    
+
+    private var header: some View {
+        VStack(spacing: 0) {
+            HStack {
+                ZStack {
+                    Circle()
+                        .fill(Color.lightGray)
+                        .frame(width: 40, height: 40)
+                    Image("profile-icon") // Added profile icon
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 28, height: 28)
+                }
+
+                Spacer()
+
+                Text("Issues") // Updated screen title
+                    .font(AppFont.title3)
+                    .foregroundColor(.almostBlack)
+
+                Spacer()
+
+                ZStack {
+                    Circle()
+                        .stroke(Color.secondaryGreen.opacity(0.0), lineWidth: 2)
+                        .background(Circle().fill(Color.mainBackground))
+                        .frame(width: 36, height: 36)
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+
+            Divider()
+                .background(Color.lightGray)
+        }
+    }
+
     private var currentIssues: [IssueDTO] {
         switch selectedFilter {
         case .submitted: return viewModel.submitted
@@ -125,13 +143,13 @@ struct IssuesView: View {
         case .resolved: return viewModel.resolved
         }
     }
-    
+
     private struct TabButton: View {
         let title: String
         let count: Int
         let isSelected: Bool
         let action: () -> Void
-        
+
         var body: some View {
             Button(action: action) {
                 VStack(spacing: 5) {
@@ -139,26 +157,26 @@ struct IssuesView: View {
                         .font(AppFont.subheadline.bold())
                         .foregroundColor(isSelected ? .mainBackground : .almostBlack)
                         .padding(.horizontal, 16)
-                    
+
                     Text("\(count)")
                         .font(AppFont.title3.bold())
                         .foregroundColor(isSelected ? .mainBackground : .almostBlack)
                 }
-                .frame(width: 130, height: 60)
+                .frame(width: 120, height: 60) // Adjusted width for closer tabs
                 .background(isSelected ? Color.accentGreen : Color.lightGray)
                 .cornerRadius(16)
                 .shadow(color: isSelected ? Color.accentGreen.opacity(0.3) : .clear, radius: 5, x: 1, y: 2)
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 8) // Reduced horizontal padding
             }
         }
     }
-    
+
     private var emptyStateView: some View {
         VStack(spacing: 16) {
             Image(systemName: "doc.text.magnifyingglass")
                 .font(.system(size: 40))
                 .foregroundColor(.gray)
-            
+
             Text("No \(selectedFilter.rawValue.lowercased()) issues found")
                 .font(AppFont.body)
                 .foregroundColor(.gray)
