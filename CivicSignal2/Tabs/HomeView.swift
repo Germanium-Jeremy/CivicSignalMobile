@@ -68,7 +68,7 @@ struct HomeView: View {
                     Circle()
                         .fill(Color.lightGray)
                         .frame(width: 40, height: 40)
-                    Image("civic-signal-logo")
+                    Image("civicsignal")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 28, height: 28)
@@ -82,7 +82,6 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                // Placeholder to keep header layout without notifications feature
                 ZStack {
                     Circle()
                         .stroke(Color.secondaryGreen.opacity(0.0), lineWidth: 2)
@@ -95,6 +94,8 @@ struct HomeView: View {
             
             Divider()
                 .background(Color.lightGray)
+                .padding(.bottom, 10)
+                .padding(.top, 5)
         }
     }
     

@@ -9,92 +9,99 @@ import SwiftUI
 import Foundation
 
 struct ForgotView: View {
-    @State private var contact: String = ""
+    @EnvironmentObject var session: AppSession
+    @State private var email: String = ""
     @State private var isLoading: Bool = false
-    @State private var navigateToReset: Bool = false
+    @State private var alertTitle: String = ""
+    @State private var alertMessage: String = ""
+    @State private var showAlert: Bool = false
+    @State private var navigateToResetView = false
+    @State private var identifier: String = ""
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.mainBackground
-                    .ignoresSafeArea()
+        ZStack {
+            Color.mainBackground.ignoresSafeArea()
 
-                VStack(spacing: 24) {
-                    Spacer()
+            VStack(spacing: 24) {
+                Spacer()
 
-                    VStack(alignment: .leading, spacing: 24) {
-                        // Title
-                        Text("Enter your email or phone")
-                            .font(AppFont.title)
-                            .foregroundColor(.almostBlack)
+                VStack(alignment: .leading, spacing: 24) {
+                    Text("Forgot Password")
+                        .font(AppFont.title)
+                        .foregroundColor(.almostBlack)
 
-                        // Description
-                        Text("You will receive a code that allows you to recover your account and reset the password.")
-                            .font(AppFont.body)
-                            .foregroundColor(.neutralGray)
-                            .fixedSize(horizontal: false, vertical: true)
+                    authTextField(placeholder: "Email", text: $email)
+                        .textInputAutocapitalization(.never)
 
-                        // Field
-                        TextField("Email or Phone", text: $contact)
-                            .font(AppFont.body)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 10)
-                            .background(
-                                RoundedRectangle(cornerRadius: 18)
-                                    .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
-                            )
-
-                        // Button
-                        Button(action: handleForgotPassword) {
-                            if isLoading {
-                                ProgressView()
-                            } else {
-                                Text("Get code")
-                                    .font(AppFont.body.weight(.semibold))
-                                    .foregroundColor(.mainBackground)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 15)
-                                    .background(Color.primaryBlue)
-                                    .cornerRadius(20)
-                            }
+                    Button(action: {
+                        Task {
+                            await handleForgotPassword()
                         }
-                        .padding(.top, 8)
+                    }) {
+                        Text(isLoading ? "Sending..." : "Send Reset Link")
+                            .font(AppFont.body.weight(.semibold))
+                            .foregroundColor(.mainBackground)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 15)
+                            .background(isLoading ? Color.primaryBlue.opacity(0.6) : Color.primaryBlue)
+                            .cornerRadius(20)
                     }
-                    .padding(.horizontal, 24)
-
-                    Spacer()
+                    .disabled(isLoading)
                 }
+                .padding(.horizontal, 24)
+
+                Spacer()
             }
-            .navigationDestination(isPresented: $navigateToReset) {
-                ResetView(identifier: contact)
-            }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar(.hidden, for: .navigationBar)
+
+            NavigationLink(
+                destination: ResetView(identifier: identifier)
+                    .environmentObject(session),
+                isActive: $navigateToResetView
+            ) { EmptyView() }
+            .hidden()
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .navigationBar)
+        .alert(alertTitle, isPresented: $showAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(alertMessage)
         }
     }
 
-    private func handleForgotPassword() {
-        guard !contact.isEmpty else { return }
+    private func authTextField(placeholder: String, text: Binding<String>) -> some View {
+        TextField(placeholder, text: text)
+            .font(AppFont.body)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 18)
+                    .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
+            )
+    }
+
+    private func handleForgotPassword() async {
+        let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmedEmail.isEmpty else {
+            alertTitle = "Error"
+            alertMessage = "Please enter your email."
+            showAlert = true
+            return
+        }
+
         isLoading = true
-        Task {
-            do {
-                let url = URL(string: "https://civic-signal.vercel.app/api/auth/forgot-password")!
-                var request = URLRequest(url: url)
-                request.httpMethod = "POST"
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let result = await AuthService.forgotPassword(email: trimmedEmail.lowercased())
+        isLoading = false
 
-                let body: [String: Any] = ["identifier": contact, "method": contact.contains("@") ? "email" : "phone"]
-                request.httpBody = try JSONSerialization.data(withJSONObject: body)
-
-                let (data, _) = try await URLSession.shared.data(for: request)
-                let response = try JSONDecoder().decode([String: String].self, from: data)
-                print("Success: \(response)")
-                navigateToReset = true
-            } catch {
-                print("Error: \(error)")
-            }
-            isLoading = false
+        if result.success, let id = result.data?.identifier {
+            identifier = id
+            navigateToResetView = true
+        } else {
+            alertTitle = "Request Failed"
+            alertMessage = result.error ?? "An unknown error occurred."
+            showAlert = true
         }
     }
 }

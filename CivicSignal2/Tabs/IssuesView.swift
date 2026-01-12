@@ -106,7 +106,7 @@ struct IssuesView: View {
                     Circle()
                         .fill(Color.lightGray)
                         .frame(width: 40, height: 40)
-                    Image("profile-icon") // Added profile icon
+                    Image("civicsignal")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 28, height: 28)
@@ -114,7 +114,7 @@ struct IssuesView: View {
 
                 Spacer()
 
-                Text("Issues") // Updated screen title
+                Text("Issues")
                     .font(AppFont.title3)
                     .foregroundColor(.almostBlack)
 
@@ -132,6 +132,8 @@ struct IssuesView: View {
 
             Divider()
                 .background(Color.lightGray)
+                .padding(.bottom, 10)
+                .padding(.top, 5)
         }
     }
 
