@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ResetView: View {
+    @State private var code: String = ""
     @State private var newPassword: String = ""
     @State private var confirmPassword: String = ""
     
@@ -27,6 +28,7 @@ struct ResetView: View {
                     
                     // Fields
                     VStack(spacing: 16) {
+                        secureField(placeholder: "Code", text: $code)
                         secureField(placeholder: "New Password", text: $newPassword)
                         secureField(placeholder: "Confirm Password", text: $confirmPassword)
                     }
