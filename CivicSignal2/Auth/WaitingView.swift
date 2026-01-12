@@ -23,7 +23,7 @@ struct WaitingView: View {
                             Image("civicsignal")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 56, height: 56)
+                                .frame(width: 72, height: 72)
                             Spacer()
                         }
                         
