@@ -331,4 +331,29 @@ enum AuthService {
             codesSent: nil
         )
     }
+    
+    // MARK: Forgot Password
+
+    static func forgotPassword(email: String) async -> ServiceResult<AuthBaseResponse> {
+        let body = ["email": email]
+
+        do {
+            let response = try await APIClient.shared.request(
+                "auth/forgot-password",
+                method: "POST",
+                body: body,
+                authorized: false,
+                responseType: AuthBaseResponse.self
+            )
+
+            return ServiceResult(success: true, data: response, error: nil, details: response.details)
+        } catch let APIError.httpStatus(code, data) {
+            let parsed = parseAuthError(from: data)
+            print("Failed to send forgot password request (")
+            return ServiceResult(success: false, data: nil, error: parsed.error ?? "Request failed", details: parsed.details)
+        } catch {
+            print("Failed to send forgot password request: \(error)")
+            return ServiceResult(success: false, data: nil, error: "Request failed", details: nil)
+        }
+    }
 }
