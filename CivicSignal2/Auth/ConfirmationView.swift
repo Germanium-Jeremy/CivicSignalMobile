@@ -1,10 +1,3 @@
-//
-//  ConfirmationView.swift
-//  CivicSignal
-//
-//  Created by Jeremy Nk on 26/11/2025.
-//
-
 import SwiftUI
 
 struct ConfirmationView: View {
