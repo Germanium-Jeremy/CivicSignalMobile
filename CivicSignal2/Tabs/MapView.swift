@@ -11,21 +11,23 @@ import MapKit
 struct MapView: View {
     @StateObject private var viewModel = MapViewModel()
     @State private var showLegend = false
-    
+
     // Default coordinates for Kigali, Rwanda
     private let defaultRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: -1.9499, longitude: 30.0588),
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     )
-    
+
     var body: some View {
         ZStack {
             Color.mainBackground.ignoresSafeArea()
-            
+
             VStack(spacing: 0) {
+                header // Added header
+
                 // Search Bar
                 searchBar
-                
+
                 // Map Container
                 ZStack {
                     if viewModel.isLoading {
@@ -45,7 +47,7 @@ struct MapView: View {
                         }
                         .edgesIgnoringSafeArea(.bottom)
                     }
-                    
+
                     // Legend Toggle Button
                     VStack {
                         Spacer()
@@ -71,7 +73,43 @@ struct MapView: View {
             MapLegendView()
         }
     }
-    
+
+    private var header: some View {
+        VStack(spacing: 0) {
+            HStack {
+                ZStack {
+                    Circle()
+                        .fill(Color.lightGray)
+                        .frame(width: 40, height: 40)
+                    Image("profile-icon") // Added profile icon
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 28, height: 28)
+                }
+
+                Spacer()
+
+                Text("Maps") // Updated screen title
+                    .font(AppFont.title3)
+                    .foregroundColor(.almostBlack)
+
+                Spacer()
+
+                ZStack {
+                    Circle()
+                        .stroke(Color.secondaryGreen.opacity(0.0), lineWidth: 2)
+                        .background(Circle().fill(Color.mainBackground))
+                        .frame(width: 36, height: 36)
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+
+            Divider()
+                .background(Color.lightGray)
+        }
+    }
+
     private var searchBar: some View {
         HStack {
             TextField("Search Location", text: .constant(""))
@@ -79,7 +117,7 @@ struct MapView: View {
                 .padding(.vertical, 8)
                 .background(Color.lightGray)
                 .cornerRadius(20)
-            
+
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.neutralGray)
         }
@@ -92,7 +130,7 @@ struct MapView: View {
 // MARK: - Issue Marker
 struct IssueMarker: View {
     let issue: IssueDTO
-    
+
     var body: some View {
         ZStack {
             Circle()
@@ -104,7 +142,7 @@ struct IssueMarker: View {
                 )
         }
     }
-    
+
     private var statusColor: Color {
         switch issue.status {
         case "submitted": return .red
@@ -119,14 +157,14 @@ struct IssueMarker: View {
 // MARK: - Map Legend
 struct MapLegendView: View {
     @Environment(\.dismiss) private var dismiss
-    
+
     let statusColors = [
         ("Submitted", Color.red),
         ("Acknowledged", Color.orange),
         ("Pending", Color.yellow),
         ("Resolved", Color.green)
     ]
-    
+
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 16) {
@@ -134,22 +172,22 @@ struct MapLegendView: View {
                     .font(AppFont.title2)
                     .foregroundColor(.almostBlack)
                     .padding(.top)
-                
+
                 ForEach(statusColors, id: \.0) { status, color in
                     HStack(spacing: 12) {
                         Circle()
                             .fill(color)
                             .frame(width: 16, height: 16)
-                        
+
                         Text(status)
                             .font(AppFont.body)
                             .foregroundColor(.almostBlack)
-                        
+
                         Spacer()
                     }
                     .padding(.vertical, 4)
                 }
-                
+
                 Spacer()
             }
             .padding(.horizontal, 20)
@@ -168,13 +206,13 @@ class MapViewModel: ObservableObject {
         center: CLLocationCoordinate2D(latitude: -1.9499, longitude: 30.0588),
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     )
-    
+
     func fetchIssues() async {
         isLoading = true
         defer { isLoading = false }
-        
+
         let result = await IssueService.getAllPublicIssues(limit: 100)
-        
+
         if result.success, let response = result.data {
             self.issues = response.data.issues
             updateRegionToFitIssues()
@@ -182,10 +220,10 @@ class MapViewModel: ObservableObject {
             print("Failed to fetch public issues: \(result.error ?? "Unknown error")")
         }
     }
-    
+
     private func updateRegionToFitIssues() {
         guard !issues.isEmpty else { return }
-        
+
         let validCoords: [CLLocationCoordinate2D] = issues.compactMap { issue in
             guard let loc = issue.location,
                   let lat = loc.latitude,
@@ -195,22 +233,22 @@ class MapViewModel: ObservableObject {
             return CLLocationCoordinate2D(latitude: lat, longitude: lon)
         }
         guard !validCoords.isEmpty else { return }
-        
+
         let minLat = validCoords.map(\.latitude).min()!
         let maxLat = validCoords.map(\.latitude).max()!
         let minLon = validCoords.map(\.longitude).min()!
         let maxLon = validCoords.map(\.longitude).max()!
-        
+
         let center = CLLocationCoordinate2D(
             latitude: (minLat + maxLat) / 2,
             longitude: (minLon + maxLon) / 2
         )
-        
+
         let span = MKCoordinateSpan(
             latitudeDelta: (maxLat - minLat) * 1.5,
             longitudeDelta: (maxLon - minLon) * 1.5
         )
-        
+
         region = MKCoordinateRegion(center: center, span: span)
     }
 }

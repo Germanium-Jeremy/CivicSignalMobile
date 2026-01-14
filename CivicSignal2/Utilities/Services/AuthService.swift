@@ -12,6 +12,7 @@ struct UserDTO: Codable {
     let fullName: String?
     let email: String?
     let phone: String?
+    let profileImage: String?
     // add more fields if you know them
 }
 
@@ -300,11 +301,60 @@ enum AuthService {
     }
     
     // MARK: Logout / token helpers
-    
-    static func logout() {
-        TokenManager.clearTokens()
+
+    struct LogoutRequest: Encodable {
+        let refreshToken: String?
+        let logoutAll: Bool
     }
-    
+
+    struct LogoutResponse: Codable {
+        let success: Bool?
+        let message: String?
+        let error: String?
+    }
+
+    /// Call backend logout endpoint and clear local tokens.
+    static func logout(logoutAll: Bool = false) async -> ServiceResult<LogoutResponse> {
+        let body = LogoutRequest(refreshToken: TokenManager.refreshToken, logoutAll: logoutAll)
+
+        do {
+            let response = try await APIClient.shared.request(
+                "auth/logout",
+                method: "POST",
+                body: body,
+                authorized: true,
+                responseType: LogoutResponse.self
+            )
+
+            TokenManager.clearTokens()
+            return ServiceResult(
+                success: response.success ?? true,
+                data: response,
+                error: nil,
+                details: response.message
+            )
+        } catch let APIError.httpStatus(_, data) {
+            // Try to parse error but still clear tokens locally
+            let decoder = JSONDecoder()
+            let parsed = (try? decoder.decode(LogoutResponse.self, from: data)) ?? LogoutResponse(success: false, message: nil, error: nil)
+            TokenManager.clearTokens()
+            return ServiceResult(
+                success: false,
+                data: parsed,
+                error: parsed.error ?? "Logout failed",
+                details: parsed.message
+            )
+        } catch {
+            TokenManager.clearTokens()
+            return ServiceResult(
+                success: false,
+                data: nil,
+                error: "Logout failed",
+                details: nil
+            )
+        }
+    }
+
     static func isLoggedIn() -> Bool {
         return TokenManager.accessToken != nil
     }
