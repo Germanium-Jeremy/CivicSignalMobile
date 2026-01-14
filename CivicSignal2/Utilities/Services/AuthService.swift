@@ -22,6 +22,7 @@ struct AuthBaseResponse: Codable {
     let details: String?
     let message: String?
     let fullyVerified: Bool?
+    let identifier: String?
     
     // For the 403 verification-required case
     let requiresVerification: Bool?
@@ -323,6 +324,7 @@ enum AuthService {
             details: nil,
             message: nil,
             fullyVerified: nil,
+            identifier: nil,
             requiresVerification: nil,
             emailVerified: nil,
             phoneVerified: nil,
