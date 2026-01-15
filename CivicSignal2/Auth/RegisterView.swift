@@ -87,14 +87,9 @@ struct RegisterView: View {
                 
                 Spacer()
                 
-                // Bottom prompt
-                HStack(spacing: 4) {
-                    Text("Already have an account?")
-                        .font(AppFont.footnote)
-                        .foregroundColor(.neutralGray)
-                    
+                HStack(spacing: 4) {  
                     NavigationLink(destination: LoginView()) {
-                        Text("Login")
+                        Text("Already have an account? Login")
                             .font(AppFont.footnote.weight(.semibold))
                             .foregroundColor(.primaryBlue)
                     }
@@ -102,6 +97,7 @@ struct RegisterView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom, 24)
                 .padding(.horizontal, 24)
+
                 if isLoading {
                     ProgressView()
                         .tint(.primaryBlue)
@@ -109,7 +105,7 @@ struct RegisterView: View {
                 }
             }
         }
-        .navigationBarBackButtonHidden(true)
+        // .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
         .alert(alertTitle, isPresented: $showAlert) {

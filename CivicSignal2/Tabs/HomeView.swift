@@ -48,7 +48,7 @@ struct HomeView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 40 : 20) // Adjust padding for iPads
                         .padding(.bottom, 100) // Added padding to avoid overlap with bottom tab
                     }
                     .refreshable { await viewModel.fetchData() }

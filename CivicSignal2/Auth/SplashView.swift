@@ -48,7 +48,7 @@ struct SplashView: View {
                     .padding(.horizontal, 24)
                     .padding(.bottom, 40)
                 }
-                .frame(maxWidth: 600) // Limit the width for larger screens
+                .frame(maxWidth: .infinity) // Limit the width for larger screens
                 .padding(.horizontal, 16) // Add padding for smaller screens
             }
         }
@@ -58,6 +58,6 @@ struct SplashView: View {
 struct SplashView_Previews: PreviewProvider {
     static var previews: some View {
         SplashView()
-            .previewDevice("iPad Pro (12.9-inch) (6th generation)") // Preview for iPad
+            // .previewDevice("iPad Pro (12.9-inch) (6th generation)") // Preview for iPad
     }
 }

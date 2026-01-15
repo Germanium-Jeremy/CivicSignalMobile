@@ -24,13 +24,14 @@ struct SettingsView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     ScrollView {
-                        VStack(spacing: 24) {
+                        VStack(spacing: 0) {
                             profileHeader
+
                             statsRow
+
                             settingsList
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.top, 24)
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 40 : 20) // Adjust padding for iPads
                         .padding(.bottom, 80)
                     }
                 }

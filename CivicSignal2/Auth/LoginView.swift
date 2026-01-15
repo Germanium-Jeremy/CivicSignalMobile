@@ -92,14 +92,9 @@ struct LoginView: View {
                 
                 Spacer()
                 
-                // Bottom prompt
-                HStack(spacing: 4) {
-                    Text("Don’t have an account?")
-                        .font(AppFont.footnote)
-                        .foregroundColor(.neutralGray)
-                    
+                HStack(spacing: 4) {                    
                     NavigationLink(destination: RegisterView()) {
-                        Text("Signup")
+                        Text("Don’t have an account? Signup")
                             .font(AppFont.footnote.weight(.semibold))
                             .foregroundColor(.primaryBlue)
                     }
@@ -107,6 +102,7 @@ struct LoginView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom, 24)
                 .padding(.horizontal, 24)
+
                 if isLoading {
                     ProgressView()
                         .tint(.primaryBlue)
@@ -128,7 +124,7 @@ struct LoginView: View {
             ) { EmptyView() }
             .hidden()
         }
-        .navigationBarBackButtonHidden(true)
+        // .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
         .alert(alertTitle, isPresented: $showAlert) {

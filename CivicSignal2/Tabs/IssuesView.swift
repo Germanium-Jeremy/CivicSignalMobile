@@ -53,8 +53,10 @@ struct IssuesView: View {
                             }
                         }
                     }
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 40 : 20) // Adjust padding for iPads
+                    .padding(.bottom, 16)
+
                 }
-                .padding(.bottom, 16)
 
                 // Main content
                 if viewModel.isLoading && currentIssues.isEmpty {
@@ -90,7 +92,7 @@ struct IssuesView: View {
                     }
                     .padding(.bottom, 40) // leave space above bottom tab bar
                     .refreshable { await viewModel.refresh() }
-                    .padding(.bottom, 100) // Added padding to avoid overlap with bottom tab on iPads
+                    .padding(.bottom, 140) // Added padding to avoid overlap with bottom tab on iPads
                 }
             }
         }
