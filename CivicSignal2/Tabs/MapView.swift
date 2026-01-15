@@ -81,7 +81,7 @@ struct MapView: View {
                     Circle()
                         .fill(Color.lightGray)
                         .frame(width: 40, height: 40)
-                    Image("profile-icon") // Added profile icon
+                    Image("civicsignal") // Added profile icon
                         .resizable()
                         .scaledToFit()
                         .frame(width: 28, height: 28)
@@ -107,6 +107,8 @@ struct MapView: View {
 
             Divider()
                 .background(Color.lightGray)
+                .padding(.bottom, 10)
+                .padding(.top, 5)
         }
     }
 
