@@ -48,8 +48,14 @@ struct LoginView: View {
                     
                     // Fields
                     VStack(spacing: 16) {
-                        authTextField(placeholder: "Email", text: $email).textInputAutocapitalization(.never)
+                        authTextField(placeholder: "Email", text: $email)
+                            .frame(maxWidth: 600) // Limit width for larger screens
+                            .padding(.horizontal, 16) // Add padding for smaller screens
+                            .textInputAutocapitalization(.never)
+                        
                         secureAuthField(placeholder: "Password", text: $password)
+                            .frame(maxWidth: 600) // Limit width for larger screens
+                            .padding(.horizontal, 16) // Add padding for smaller screens
                     }
                     
                     // Forgot password
@@ -78,6 +84,8 @@ struct LoginView: View {
                             .cornerRadius(20)
                     }
                     .disabled(isLoading)
+                    .frame(maxWidth: 600) // Limit width for larger screens
+                    .padding(.horizontal, 16) // Add padding for smaller screens
                     .padding(.top, 8)
                 }
                 .padding(.horizontal, 24)
@@ -90,10 +98,10 @@ struct LoginView: View {
                         .font(AppFont.footnote)
                         .foregroundColor(.neutralGray)
                     
-                    Button(action: {}) {
+                    NavigationLink(destination: RegisterView()) {
                         Text("Signup")
                             .font(AppFont.footnote.weight(.semibold))
-                            .foregroundColor(.almostBlack)
+                            .foregroundColor(.primaryBlue)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)

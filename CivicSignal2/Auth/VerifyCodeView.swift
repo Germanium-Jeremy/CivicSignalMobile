@@ -32,13 +32,15 @@ struct VerifyCodeView: View {
                             RoundedRectangle(cornerRadius: 18)
                                 .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
                         )
+                        .frame(maxWidth: 600)
                     
                     // Continue button
                     Button(action: {}) {
                         Text("Continue")
                             .font(AppFont.body.weight(.semibold))
                             .foregroundColor(.mainBackground)
-                            .frame(maxWidth: .infinity)
+                            .frame(maxWidth: 600) // Limit width for larger screens
+                            .padding(.horizontal, 16) // Add padding for smaller screens
                             .padding(.vertical, 15)
                             .background(Color.primaryBlue)
                             .cornerRadius(20)

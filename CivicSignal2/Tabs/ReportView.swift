@@ -54,11 +54,13 @@ struct ReportView: View {
                             
                             TextEditor(text: $draft.description)
                                 .font(AppFont.body)
-                                .frame(minHeight: 120, alignment: .topLeading)
-                                .padding(8)
+                                .foregroundColor(.almostBlack) // Set text color to black
+                                .padding(.horizontal, 16) // Add padding for smaller screens
+                                .padding(.vertical, 10)
                                 .background(
                                     RoundedRectangle(cornerRadius: 18)
-                                        .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
+                                        .fill(Color.mainBackground) // Set background color to white
+                                        .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
                                 )
                         }
 

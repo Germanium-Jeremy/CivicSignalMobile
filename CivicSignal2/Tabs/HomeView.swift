@@ -49,7 +49,7 @@ struct HomeView: View {
                             }
                         }
                         .padding(.horizontal, 20)
-                        .padding(.bottom, 80)
+                        .padding(.bottom, 100) // Added padding to avoid overlap with bottom tab
                     }
                     .refreshable { await viewModel.fetchData() }
                 }

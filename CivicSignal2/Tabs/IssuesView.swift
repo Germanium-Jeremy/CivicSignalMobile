@@ -90,6 +90,7 @@ struct IssuesView: View {
                     }
                     .padding(.bottom, 40) // leave space above bottom tab bar
                     .refreshable { await viewModel.refresh() }
+                    .padding(.bottom, 100) // Added padding to avoid overlap with bottom tab on iPads
                 }
             }
         }

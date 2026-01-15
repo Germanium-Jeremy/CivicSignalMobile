@@ -90,6 +90,7 @@ struct MainTabView: View {
         }
         .padding(.vertical, 10)
         .padding(.horizontal, 24)
+        .frame(maxWidth: UIDevice.current.userInterfaceIdiom == .pad ? 800 : .infinity) // Adjust width for iPads
         .background(
             RoundedRectangle(cornerRadius: 30)
                 .fill(Color.almostBlack)

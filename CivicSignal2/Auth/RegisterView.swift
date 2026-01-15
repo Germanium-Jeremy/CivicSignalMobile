@@ -50,9 +50,18 @@ struct RegisterView: View {
                     // Fields
                     VStack(spacing: 16) {
                         authTextField(placeholder: "Full Names", text: $fullName)
-                        authTextField(placeholder: "Email", text: $email).textInputAutocapitalization(.never)
+                            .frame(maxWidth: 600) // Limit width for larger screens
+                            .padding(.horizontal, 16) // Add padding for smaller screens
+                        authTextField(placeholder: "Email", text: $email)
+                            .textInputAutocapitalization(.never)
+                            .frame(maxWidth: 600) // Limit width for larger screens
+                            .padding(.horizontal, 16) // Add padding for smaller screens
                         authTextField(placeholder: "Phone Number", text: $phone)
+                            .frame(maxWidth: 600) // Limit width for larger screens
+                            .padding(.horizontal, 16) // Add padding for smaller screens
                         secureAuthField(placeholder: "Password", text: $password)
+                            .frame(maxWidth: 600) // Limit width for larger screens
+                            .padding(.horizontal, 16) // Add padding for smaller screens
                     }
                     
                     // Main button
@@ -70,6 +79,8 @@ struct RegisterView: View {
                             .cornerRadius(20)
                     }
                     .disabled(isLoading)
+                    .frame(maxWidth: 600) // Limit width for larger screens
+                    .padding(.horizontal, 16) // Add padding for smaller screens
                     .padding(.top, 8)
                 }
                 .padding(.horizontal, 24)
@@ -82,10 +93,10 @@ struct RegisterView: View {
                         .font(AppFont.footnote)
                         .foregroundColor(.neutralGray)
                     
-                    Button(action: {}) {
+                    NavigationLink(destination: LoginView()) {
                         Text("Login")
                             .font(AppFont.footnote.weight(.semibold))
-                            .foregroundColor(.almostBlack)
+                            .foregroundColor(.primaryBlue)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
