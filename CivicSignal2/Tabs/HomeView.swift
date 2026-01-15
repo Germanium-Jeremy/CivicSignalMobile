@@ -28,7 +28,7 @@ struct HomeView: View {
                             Text("Welcome \(viewModel.userName)")
                                 .font(AppFont.title)
                                 .foregroundColor(.almostBlack)
-                                .padding(.top, 24)
+                                .padding(.top, 18)
                             
                             // Stats Card
                             statsCard
@@ -48,8 +48,8 @@ struct HomeView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 40 : 20) // Adjust padding for iPads
-                        .padding(.bottom, 100) // Added padding to avoid overlap with bottom tab
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20) // Adjust padding for iPads
+                        .padding(.bottom, 100)
                     }
                     .refreshable { await viewModel.fetchData() }
                 }
@@ -89,7 +89,7 @@ struct HomeView: View {
                         .frame(width: 36, height: 36)
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
             .padding(.top, 12)
             
             Divider()
@@ -154,6 +154,7 @@ struct HomeView: View {
         .frame(maxWidth: .infinity)
         .background(Color.lightGray)
         .cornerRadius(16)
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0)
     }
 }
 

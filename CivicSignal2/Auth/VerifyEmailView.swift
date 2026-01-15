@@ -53,7 +53,6 @@ struct VerifyEmailView: View {
                             RoundedRectangle(cornerRadius: 18)
                                 .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
                         )
-                        .frame(maxWidth: 600) // Limit width for larger screens
                     
                     Button(action: {
                         Task { await handleVerifyEmail() }
@@ -61,8 +60,6 @@ struct VerifyEmailView: View {
                         Text(isLoading ? "Verifying..." : "Continue")
                             .font(AppFont.body.weight(.semibold))
                             .foregroundColor(.mainBackground)
-                            .frame(maxWidth: 600) // Limit width for larger screens
-                            .padding(.horizontal, 16) // Add padding for smaller screens
                             .padding(.vertical, 15)
                             .background(isLoading ? Color.primaryBlue.opacity(0.6) : Color.primaryBlue)
                             .cornerRadius(20)
@@ -71,6 +68,7 @@ struct VerifyEmailView: View {
                     .padding(.top, 8)
                 }
                 .padding(.horizontal, 24)
+                .frame(maxWidth: 600, alignment: .center)
                 
                 Spacer()
                 

@@ -38,7 +38,6 @@ struct VerifyPhoneView: View {
                             RoundedRectangle(cornerRadius: 18)
                                 .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
                         )
-                        .frame(maxWidth: 600)
                     
                     Button(action: {
                         Task { await handleVerifyPhone() }
@@ -46,8 +45,6 @@ struct VerifyPhoneView: View {
                         Text(isLoading ? "Verifying..." : "Continue")
                             .font(AppFont.body.weight(.semibold))
                             .foregroundColor(.mainBackground)
-                            .frame(maxWidth: 600) // Limit width for larger screens
-                            .padding(.horizontal, 16)
                             .padding(.vertical, 15)
                             .background(isLoading ? Color.primaryBlue.opacity(0.6) : Color.primaryBlue)
                             .cornerRadius(20)
@@ -56,6 +53,7 @@ struct VerifyPhoneView: View {
                     .padding(.top, 8)
                 }
                 .padding(.horizontal, 24)
+                .frame(maxWidth: 600, alignment: .center)
                 
                 Spacer()
                 

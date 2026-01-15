@@ -32,7 +32,6 @@ struct ForgotView: View {
 
                     authTextField(placeholder: "Email", text: $email)
                         .textInputAutocapitalization(.never)
-                        .frame(maxWidth: 600) // Limit width for larger screens
                         .padding(.horizontal, 16)
 
                     Button(action: {
@@ -43,7 +42,7 @@ struct ForgotView: View {
                         Text(isLoading ? "Sending..." : "Send Reset Link")
                             .font(AppFont.body.weight(.semibold))
                             .foregroundColor(.mainBackground)
-                            .frame(maxWidth: 600) // Limit width for larger screens
+                            .frame(maxWidth: 600)
                             .padding(.vertical, 15)
                             .background(isLoading ? Color.primaryBlue.opacity(0.6) : Color.primaryBlue)
                             .cornerRadius(20)

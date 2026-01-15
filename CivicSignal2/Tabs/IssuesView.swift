@@ -53,9 +53,9 @@ struct IssuesView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 40 : 20) // Adjust padding for iPads
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 50 : 20)
                     .padding(.bottom, 16)
-
+                    .frame(maxWidth: 600, alignment: .center)
                 }
 
                 // Main content
@@ -89,6 +89,7 @@ struct IssuesView: View {
                         }
                         .padding(.top, 8)
                         .padding(.bottom, 24)
+                        .frame(maxWidth: 600, alignment: .center)
                     }
                     .padding(.bottom, 40) // leave space above bottom tab bar
                     .refreshable { await viewModel.refresh() }
@@ -190,6 +191,7 @@ struct IssuesView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.vertical, 60)
+        .frame(maxWidth: 600, alignment: .center)
     }
 }
 

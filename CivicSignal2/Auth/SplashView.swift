@@ -47,9 +47,10 @@ struct SplashView: View {
                     }
                     .padding(.horizontal, 24)
                     .padding(.bottom, 40)
+                    .frame(maxWidth: 600, alignment: .center)
                 }
-                .frame(maxWidth: .infinity) // Limit the width for larger screens
-                .padding(.horizontal, 16) // Add padding for smaller screens
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 16)
             }
         }
     }
