@@ -32,15 +32,12 @@ struct ResetView: View {
                     // Fields
                     VStack(spacing: 16) {
                         secureField(placeholder: "Code", text: $code)
-                            .frame(maxWidth: 600) // Limit width for larger screens
                             .padding(.horizontal, 16) // Add padding for smaller screens
                         
                         secureField(placeholder: "New Password", text: $newPassword)
-                            .frame(maxWidth: 600) // Limit width for larger screens
                             .padding(.horizontal, 16) // Add padding for smaller screens
                         
                         secureField(placeholder: "Confirm Password", text: $confirmPassword)
-                            .frame(maxWidth: 600) // Limit width for larger screens
                             .padding(.horizontal, 16) // Add padding for smaller screens
                     }
                     
@@ -58,11 +55,11 @@ struct ResetView: View {
                                 .cornerRadius(20)
                         }
                     }
-                    .frame(maxWidth: 600) // Limit width for larger screens
                     .padding(.horizontal, 16) // Add padding for smaller screens
                     .padding(.top, 8)
                 }
                 .padding(.horizontal, 24)
+                .frame(maxWidth: 600, alignment: .center)
                 
                 Spacer()
             }

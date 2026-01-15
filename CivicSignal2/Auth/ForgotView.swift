@@ -44,7 +44,6 @@ struct ForgotView: View {
                             .font(AppFont.body.weight(.semibold))
                             .foregroundColor(.mainBackground)
                             .frame(maxWidth: 600) // Limit width for larger screens
-                            .padding(.horizontal, 16)
                             .padding(.vertical, 15)
                             .background(isLoading ? Color.primaryBlue.opacity(0.6) : Color.primaryBlue)
                             .cornerRadius(20)
@@ -52,6 +51,7 @@ struct ForgotView: View {
                     .disabled(isLoading)
                 }
                 .padding(.horizontal, 24)
+                .frame(maxWidth: 600, alignment: .center)
 
                 Spacer()
             }

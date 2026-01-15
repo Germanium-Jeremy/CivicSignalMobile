@@ -49,12 +49,10 @@ struct LoginView: View {
                     // Fields
                     VStack(spacing: 16) {
                         authTextField(placeholder: "Email", text: $email)
-                            // .frame(maxWidth: 600) // Limit width for larger screens
                             .padding(.horizontal, 16) // Add padding for smaller screens
                             .textInputAutocapitalization(.never)
                         
                         secureAuthField(placeholder: "Password", text: $password)
-                            // .frame(maxWidth: 600) // Limit width for larger screens
                             .padding(.horizontal, 16) // Add padding for smaller screens
                     }
                     .frame(maxWidth: 600, alignment: .center)

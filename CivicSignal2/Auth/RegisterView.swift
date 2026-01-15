@@ -50,19 +50,16 @@ struct RegisterView: View {
                     // Fields
                     VStack(spacing: 16) {
                         authTextField(placeholder: "Full Names", text: $fullName)
-                            .frame(maxWidth: 600) // Limit width for larger screens
                             .padding(.horizontal, 16) // Add padding for smaller screens
                         authTextField(placeholder: "Email", text: $email)
                             .textInputAutocapitalization(.never)
-                            .frame(maxWidth: 600) // Limit width for larger screens
                             .padding(.horizontal, 16) // Add padding for smaller screens
                         authTextField(placeholder: "Phone Number", text: $phone)
-                            .frame(maxWidth: 600) // Limit width for larger screens
                             .padding(.horizontal, 16) // Add padding for smaller screens
                         secureAuthField(placeholder: "Password", text: $password)
-                            .frame(maxWidth: 600) // Limit width for larger screens
                             .padding(.horizontal, 16) // Add padding for smaller screens
                     }
+                    .frame(maxWidth: 600, alignment: .center)
                     
                     // Main button
                     Button(action: {
@@ -79,11 +76,11 @@ struct RegisterView: View {
                             .cornerRadius(20)
                     }
                     .disabled(isLoading)
-                    .frame(maxWidth: 600) // Limit width for larger screens
                     .padding(.horizontal, 16) // Add padding for smaller screens
                     .padding(.top, 8)
                 }
                 .padding(.horizontal, 24)
+                .frame(maxWidth: 600, alignment: .center)
                 
                 Spacer()
                 
