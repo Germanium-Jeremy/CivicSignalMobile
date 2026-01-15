@@ -102,7 +102,7 @@ struct MapView: View {
                         .frame(width: 36, height: 36)
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
             .padding(.top, 12)
 
             Divider()

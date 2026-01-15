@@ -42,7 +42,7 @@ struct NotificationsView: View {
                                 }
                         }
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
                     .padding(.vertical, 16)
                     .navigationBarBackButtonHidden(true)
                 }
@@ -79,7 +79,7 @@ struct NotificationsView: View {
                     .foregroundColor(.primaryBlue)
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
         .padding(.top, 12)
     }
 

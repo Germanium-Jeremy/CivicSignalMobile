@@ -31,7 +31,7 @@ struct SettingsView: View {
 
                             settingsList
                         }
-                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 40 : 20) // Adjust padding for iPads
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20) // Adjust padding for iPads
                         .padding(.bottom, 80)
                     }
                 }
@@ -58,7 +58,7 @@ struct SettingsView: View {
             Image(systemName: "square.and.pencil")
                 .foregroundColor(.primaryBlue)
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
         .padding(.top, 12)
     }
     

@@ -146,7 +146,7 @@ struct ReportView: View {
                         
                         Spacer(minLength: 40)
                     }
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 40 : 20) // Adjust padding for iPads
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20) // Adjust padding for iPads
                     .padding(.bottom, 80)
                 }
             }
@@ -189,7 +189,7 @@ struct ReportView: View {
                     .frame(width: 36, height: 36)
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
         .padding(.top, 12)
     }
     

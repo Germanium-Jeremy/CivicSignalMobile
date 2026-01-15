@@ -48,6 +48,7 @@ struct ForgotView: View {
                             .cornerRadius(20)
                     }
                     .disabled(isLoading)
+                    .padding(.horizontal, 10)
                 }
                 .padding(.horizontal, 24)
                 .frame(maxWidth: 600, alignment: .center)

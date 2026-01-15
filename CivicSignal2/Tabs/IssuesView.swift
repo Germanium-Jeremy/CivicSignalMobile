@@ -53,9 +53,8 @@ struct IssuesView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 50 : 20)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
                     .padding(.bottom, 16)
-                    .frame(maxWidth: 600, alignment: .center)
                 }
 
                 // Main content
@@ -89,9 +88,9 @@ struct IssuesView: View {
                         }
                         .padding(.top, 8)
                         .padding(.bottom, 24)
-                        .frame(maxWidth: 600, alignment: .center)
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
                     }
-                    .padding(.bottom, 40) // leave space above bottom tab bar
+                    .padding(.bottom, 40)
                     .refreshable { await viewModel.refresh() }
                     .padding(.bottom, 140) // Added padding to avoid overlap with bottom tab on iPads
                 }
@@ -131,7 +130,7 @@ struct IssuesView: View {
                         .frame(width: 36, height: 36)
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
             .padding(.top, 12)
 
             Divider()
