@@ -42,7 +42,7 @@ struct MainTabView: View {
 
             // Custom bottom bar
             bottomBar
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 24)
                 .padding(.bottom, 12)
         }
         .background(Color.mainBackground)

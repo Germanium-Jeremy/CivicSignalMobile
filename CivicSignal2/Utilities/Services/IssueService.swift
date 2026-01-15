@@ -315,6 +315,7 @@ enum IssueService {
     // MARK: Categories
     static func getCategories() async -> ServiceResult<[IssueCategoryDTO]> {
         do {
+            print("Fetching categories from: \(APIClient.shared.baseURL.appendingPathComponent(\"issues/categories\"))")
             let res: CategoriesResponse = try await APIClient.shared.request(
                 "issues/categories",
                 responseType: CategoriesResponse.self
@@ -325,6 +326,7 @@ enum IssueService {
             print("Categories error (\(code)): \(msg)")
             return ServiceResult(success: false, data: nil, error: "Failed to fetch categories")
         } catch {
+            print("Unexpected error: \(error.localizedDescription)")
             return ServiceResult(success: false, data: nil, error: error.localizedDescription)
         }
     }
