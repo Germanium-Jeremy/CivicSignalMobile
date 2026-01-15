@@ -115,6 +115,7 @@ struct RegisterView: View {
     private func authTextField(placeholder: String, text: Binding<String>) -> some View {
         TextField(placeholder, text: text)
             .font(AppFont.body)
+            .foregroundColor(.almostBlack) // Explicitly set text color to black
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .background(
@@ -126,6 +127,7 @@ struct RegisterView: View {
     private func secureAuthField(placeholder: String, text: Binding<String>) -> some View {
         SecureField(placeholder, text: text)
             .font(AppFont.body)
+            .foregroundColor(.almostBlack) // Explicitly set text color to black
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .background(

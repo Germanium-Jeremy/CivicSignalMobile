@@ -93,6 +93,7 @@ struct ResetView: View {
     private func secureField(placeholder: String, text: Binding<String>) -> some View {
         SecureField(placeholder, text: text)
             .font(AppFont.body)
+            .foregroundColor(.almostBlack) // Explicitly set text color to black
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .background(
