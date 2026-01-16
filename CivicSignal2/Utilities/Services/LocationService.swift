@@ -42,7 +42,30 @@ final class LocationService: NSObject, ObservableObject {
         if #available(iOS 14.0, *) {
             authorizationStatus = manager.authorizationStatus
         }
-        manager.requestWhenInUseAuthorization()
+        
+        if authorizationStatus == .notDetermined {
+            manager.requestWhenInUseAuthorization()
+        } else if authorizationStatus == .denied {
+            // Show an alert to the user to enable location services in settings
+            DispatchQueue.main.async {
+                let alert = UIAlertController(
+                    title: "Location Permission Required",
+                    message: "Please enable location permissions in Settings to use this feature.",
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                })
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let rootViewController = windowScene.windows.first?.rootViewController {
+                    rootViewController.present(alert, animated: true)
+                }
+            }
+        }
     }
     
     func getCurrentLocation() async throws -> CLLocationCoordinate2D {
