@@ -207,11 +207,17 @@ struct ReportView: View {
     }
 
     // MARK: - Data loading
-    private func loadCategories() async {
-        let res = await IssueService.getCategories()
-        if res.success, let list = res.data {
-            categories = list.map { CategoryItem(id: $0.id, name: $0.name) }
-        }
+    private func loadCategories() {
+        categories = [
+            CategoryItem(id: "1", name: "Infrastructure"),
+            CategoryItem(id: "2", name: "Permits & Licensing"),
+            CategoryItem(id: "3", name: "Utilities"),
+            CategoryItem(id: "4", name: "Waste Management"),
+            CategoryItem(id: "5", name: "Transportation"),
+            CategoryItem(id: "6", name: "Emergency Services"),
+            CategoryItem(id: "7", name: "Parks & Recreation"),
+            CategoryItem(id: "8", name: "Other Services")
+        ]
     }
 
     private func fetchLocation() async {
