@@ -48,7 +48,10 @@ struct ReportView: View {
                         }
                         
                         VStack(alignment: .leading, spacing: 8) {
-                            TextEditor(placeholder: "Enter the description of the issue you are reporting.", text: $draft.description)
+                            Text("Enter the description of the issue you are reporting.")
+                                .font(AppFont.body)
+                                .foregroundColor(.almostBlack)
+                            TextEditor(text: $draft.description)
                                 .font(AppFont.body)
                                 .foregroundColor(.almostBlack) // Set text color to black
                                 .padding(.horizontal, 16) // Add padding for smaller screens

@@ -88,11 +88,11 @@ struct IssuesView: View {
                         }
                         .padding(.top, 8)
                         .padding(.bottom, 24)
-                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 10)
                     }
                     .padding(.bottom, 40)
                     .refreshable { await viewModel.refresh() }
-                    .padding(.bottom, 140) // Added padding to avoid overlap with bottom tab on iPads
+                    .padding(.bottom, 100) // Added padding to avoid overlap with bottom tab on iPads
                 }
             }
         }
