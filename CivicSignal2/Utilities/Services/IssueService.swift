@@ -315,7 +315,6 @@ enum IssueService {
     // MARK: Categories
     static func getCategories() async -> ServiceResult<[IssueCategoryDTO]> {
         do {
-            print("Fetching categories from: \(APIClient.shared.baseURL.appendingPathComponent(\"issues/categories\"))")
             let res: CategoriesResponse = try await APIClient.shared.request(
                 "issues/categories",
                 responseType: CategoriesResponse.self
