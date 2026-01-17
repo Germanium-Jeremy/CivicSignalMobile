@@ -24,106 +24,62 @@ struct ReportView: View {
     @State private var alertTitle: String = ""
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
-    @ObservedObject var locationManager = LocationManager.shared		
-    
+    @ObservedObject var locationManager = LocationManager.shared
+
     var body: some View {
         ZStack {
             Color.mainBackground
                 .ignoresSafeArea()
-            
+
             VStack(spacing: 0) {
                 header
-                
+
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         Text("Fill the form to report the issue")
                             .font(AppFont.title)
                             .foregroundColor(.almostBlack)
                             .padding(.top, 24)
-                        
+
                         Button(action: { showCategorySheet = true }) {
                             dropdownRow(title: "Select Issue Category", value: draft.category)
                         }
                         Button(action: { showPrioritySheet = true }) {
                             dropdownRow(title: "Select Issue Priority", value: draft.priority.capitalized)
                         }
-                        
+
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Enter the description of the issue you are reporting.")
                                 .font(AppFont.body)
                                 .foregroundColor(.almostBlack)
                             TextEditor(text: $draft.description)
                                 .font(AppFont.body)
-                                .foregroundColor(.almostBlack) // Set text color to black
-                                .padding(.horizontal, 16) // Add padding for smaller screens
+                                .foregroundColor(.almostBlack)
+                                .padding(.horizontal, 16)
                                 .padding(.vertical, 10)
                                 .background(
                                     RoundedRectangle(cornerRadius: 18)
-                                        .fill(Color.mainBackground) // Set background color to white
+                                        .fill(Color.mainBackground)
                                         .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
                                 )
                         }
 
-                        // Location section (optional)
+                        // Location section
                         VStack(alignment: .leading, spacing: 12) {
                             HStack {
-                                Text("📍 Location (Optional)")
+                                Text("F4CD Location")
                                     .font(AppFont.body.weight(.medium))
                                 Spacer()
-                                
-                                if draft.latitude != nil && draft.longitude != nil {
-                                    Button("Remove") {
-                                        draft.latitude = nil
-                                        draft.longitude = nil
-                                        draft.address = nil
-                                        draft.district = nil
-                                        draft.sector = nil
-                                    }
-                                    .font(AppFont.footnote)
-                                    .foregroundColor(.red)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(Color.red.opacity(0.1))
-                                    .cornerRadius(8)
-                                } else {
-                                    Button("Add Location") { Task { await fetchLocation() } }
-                                        .font(AppFont.footnote)
-                                        .foregroundColor(.primaryBlue)
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 6)
-                                        .background(Color.primaryBlue.opacity(0.1))
-                                        .cornerRadius(8)
-                                }
-                            }
-                            
-                            if let lat = draft.latitude, let lon = draft.longitude {
-                                VStack(alignment: .leading, spacing: 6) {
-                                    if let addr = draft.address {
-                                        Text(addr)
-                                            .font(AppFont.footnote)
-                                            .foregroundColor(.almostBlack)
-                                    }
-                                    
-                                    if draft.district != nil || draft.sector != nil {
-                                        Text("\(draft.district ?? "") \(draft.sector ?? "")")
-                                            .font(AppFont.footnote)
-                                            .foregroundColor(.neutralGray)
-                                    }
-                                    
-                                    Text("Lat: \(String(format: "%.6f", lat)), Lon: \(String(format: "%.6f", lon))")
+
+                                if let location = locationManager.userLocation {
+                                    Text("\(location.coordinate.latitude), \(location.coordinate.longitude)")
                                         .font(AppFont.footnote)
                                         .foregroundColor(.neutralGray)
-                                        .padding(.top, 4)
+                                } else {
+                                    Text("Fetching location...")
+                                        .font(AppFont.footnote)
+                                        .foregroundColor(.gray)
                                 }
-                                .padding(12)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color.lightGray.opacity(0.3))
-                                .cornerRadius(12)
-                            } else {
-                                Text("No location added. Your report will be processed without location data.")
-                                    .font(AppFont.footnote)
-                                    .foregroundColor(.gray)
-                                    .padding(.top, 4)
                             }
                         }
                         .padding(.horizontal, 16)
@@ -132,7 +88,7 @@ struct ReportView: View {
                             RoundedRectangle(cornerRadius: 18)
                                 .stroke(Color.accentGreen.opacity(0.3), lineWidth: 1)
                         )
-                        
+
                         Button(action: { Task { await handleContinue() } }) {
                             Text("Continue")
                                 .font(AppFont.body.weight(.semibold))
@@ -143,24 +99,23 @@ struct ReportView: View {
                                 .cornerRadius(20)
                         }
                         .padding(.top, 8)
-                        
+
                         Spacer(minLength: 40)
                     }
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20) // Adjust padding for iPads
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
                     .padding(.bottom, 80)
                 }
             }
-            // Hidden navigation link
-            NavigationLink(destination: ReportEvidenceView(draft: draft, issueId: createdIssueId ?? ""), isActive: $navigateToEvidence) { EmptyView() }
-                .hidden()
         }
-        .onAppear { Task { await loadCategories(); await fetchLocation() } }
+        .onAppear {
+            locationManager.requestLocation()
+        }
         .alert(alertTitle, isPresented: $showAlert) { Button("OK", role: .cancel) {} } message: { Text(alertMessage) }
         .sheet(isPresented: $showCategorySheet) { categorySheet }
         .sheet(isPresented: $showPrioritySheet) { prioritySheet }
         .navigationBarBackButtonHidden(true)
     }
-    
+
     private var header: some View {
         HStack {
             ZStack {
@@ -172,15 +127,15 @@ struct ReportView: View {
                     .scaledToFit()
                     .frame(width: 28, height: 28)
             }
-            
+
             Spacer()
-            
+
             Text("Report")
                 .font(AppFont.title3)
                 .foregroundColor(.almostBlack)
-            
+
             Spacer()
-            
+
             // Placeholder to keep header layout without notifications feature
             ZStack {
                 Circle()
@@ -192,7 +147,7 @@ struct ReportView: View {
         .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
         .padding(.top, 12)
     }
-    
+
     private func dropdownRow(title: String, value: String) -> some View {
         HStack {
             Text(value.isEmpty ? title : value)
@@ -224,30 +179,13 @@ struct ReportView: View {
         ]
     }
 
-    private func fetchLocation() async {
-        do {
-            let c = try await locationService.getCurrentLocation()
-            draft.latitude = c.latitude
-            draft.longitude = c.longitude
-            if let rev = try? await locationService.reverseGeocode(lat: c.latitude, lon: c.longitude) {
-                draft.address = rev.address
-                draft.district = rev.district
-                draft.sector = rev.sector
-            }
-        } catch {
-            alertTitle = "Location Error"
-            alertMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
-            showAlert = true
-        }
-    }
-
     // MARK: - Continue
     private func handleContinue() async {
-        guard !draft.category.isEmpty else { 
+        guard !draft.category.isEmpty else {
             show("Please select a category")
-            return 
+            return
         }
-        
+
         // Show confirmation dialog if no location is provided
         if draft.latitude == nil || draft.longitude == nil {
             let shouldContinue = await withCheckedContinuation { continuation in
@@ -257,15 +195,15 @@ struct ReportView: View {
                         message: "You're about to submit this report without location data. Would you like to continue?",
                         preferredStyle: .alert
                     )
-                    
+
                     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
                         continuation.resume(returning: false)
                     })
-                    
+
                     alert.addAction(UIAlertAction(title: "Submit Anyway", style: .default) { _ in
                         continuation.resume(returning: true)
                     })
-                    
+
                     // Present the alert
                     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                        let rootViewController = windowScene.windows.first?.rootViewController {
@@ -276,7 +214,7 @@ struct ReportView: View {
                     }
                 }
             }
-            
+
             if !shouldContinue {
                 return
             }
@@ -296,7 +234,7 @@ struct ReportView: View {
             location: loc,
             photos: nil
         )
-        
+
         if res.success, let id = res.data?.data.issue._id {
             session.triggerHomeRefresh()
             createdIssueId = id
