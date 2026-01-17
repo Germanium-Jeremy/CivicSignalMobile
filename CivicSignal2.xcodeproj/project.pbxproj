@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -46,6 +46,7 @@
 		2C8F6C532EEDE1EC00590A47 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480C2EEAB7BB002B4C89 /* APIConfig.swift */; };
 		2C8F6C552EEDE9E600590A47 /* IssueRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F6C542EEDE9E600590A47 /* IssueRow.swift */; };
 		2CB281A72EEAFB1E006EF825 /* ServiceResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */; };
+		2CDFA23B2F1C129B00F08482 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFA23A2F1C129B00F08482 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C0F2DBC2F1A843A009038D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2C6947A82EEAB2B6002B4C89 /* CivicSignal2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CivicSignal2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C6947AB2EEAB2B6002B4C89 /* CivicSignal2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CivicSignal2App.swift; sourceTree = "<group>"; };
 		2C6947AD2EEAB2B6002B4C89 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailView.swift; sourceTree = "<group>"; };
 		2C8F6C542EEDE9E600590A47 /* IssueRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueRow.swift; sourceTree = "<group>"; };
 		2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceResult.swift; sourceTree = "<group>"; };
+		2CDFA23A2F1C129B00F08482 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +145,7 @@
 				2C6947BB2EEAB2B6002B4C89 /* CivicSignal2Tests */,
 				2C6947C52EEAB2B6002B4C89 /* CivicSignal2UITests */,
 				2C6947A92EEAB2B6002B4C89 /* Products */,
+				FA71516FBAF184041E581F7C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -158,6 +162,7 @@
 		2C6947AA2EEAB2B6002B4C89 /* CivicSignal2 */ = {
 			isa = PBXGroup;
 			children = (
+				2C0F2DBC2F1A843A009038D3 /* Info.plist */,
 				2C6948182EEAC256002B4C89 /* Utilities */,
 				2C6948172EEAC1E7002B4C89 /* Auth */,
 				2C6947F12EEAB607002B4C89 /* Tabs */,
@@ -228,6 +233,7 @@
 				2C6948102EEAB800002B4C89 /* IssueService.swift */,
 				2C6948122EEAB817002B4C89 /* LocationService.swift */,
 				2C6948142EEAB82E002B4C89 /* TokenManager.swift */,
+				2CDFA23A2F1C129B00F08482 /* LocationManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -269,6 +275,13 @@
 				2C6948072EEAB774002B4C89 /* ReportDraft.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		FA71516FBAF184041E581F7C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -351,7 +364,7 @@
 				};
 			};
 			buildConfigurationList = 2C6947A32EEAB2B6002B4C89 /* Build configuration list for PBXProject "CivicSignal2" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -418,6 +431,7 @@
 				2C69480B2EEAB7A6002B4C89 /* APIClient.swift in Sources */,
 				2C6948152EEAB82E002B4C89 /* TokenManager.swift in Sources */,
 				2C6947FE2EEAB6A9002B4C89 /* ReportEvidenceView.swift in Sources */,
+				2CDFA23B2F1C129B00F08482 /* LocationManager.swift in Sources */,
 				2C6947EA2EEAB53E002B4C89 /* VerifyCodeView.swift in Sources */,
 				2C6947DE2EEAB442002B4C89 /* Styles.swift in Sources */,
 				2C6947E22EEAB4AF002B4C89 /* RegisterView.swift in Sources */,
@@ -601,16 +615,23 @@
 				DEVELOPMENT_TEAM = BWH39PWTV8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CivicSignal2/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Civic Signal";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We require your location for issue submission";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = civicsignal.vercel.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -630,16 +651,23 @@
 				DEVELOPMENT_TEAM = BWH39PWTV8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CivicSignal2/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Civic Signal";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We require your location for issue submission";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = civicsignal.vercel.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

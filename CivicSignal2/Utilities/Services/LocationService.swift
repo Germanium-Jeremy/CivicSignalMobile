@@ -1,5 +1,6 @@
 import Foundation
 import CoreLocation
+import UIKit
 
 final class LocationService: NSObject, ObservableObject {
     enum LocationError: Error, LocalizedError {

@@ -24,6 +24,7 @@ struct ReportView: View {
     @State private var alertTitle: String = ""
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
+    @ObservedObject var locationManager = LocationManager.shared		
     
     var body: some View {
         ZStack {
@@ -333,3 +334,61 @@ struct ReportView: View {
 #Preview {
     ReportView()
 }
+
+//
+//import SwiftUI
+//
+//struct LocationUIView: View {
+//    var body: some View {
+//       Text("Request Location From User")
+//        
+//        ZStack {
+//            Color(.systemBlue).ignoresSafeArea()
+//            
+//            VStack {
+//                VStack {
+//                    Button {
+//                        LocationManager.shared.requestLocation()
+//                    } label: {
+//                        Text("Allow Location")
+//                            .foregroundColor(Color(.systemRed))
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//struct LocationUIView_Preview: PreviewProvider {
+//    static var previews: some View {
+//        LocationUIView()
+//    }
+//}
+
+
+
+//import SwiftUI
+//
+//struct ContentView: View {
+//    @ObservedObject var locationManager = LocationManager.shared
+//    
+//    var body: some View {
+//        Group {
+//            if locationManager.userLocation == nil {
+//                LocationUIView()
+//            } else if let location = locationManager.userLocation {
+//                Text("\(location)").padding()
+//            }
+//        }
+//    }
+//}
+//
+////#Preview {
+////    ContentView()
+////}
+//
+//struct ContentView_Preview: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
