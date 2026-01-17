@@ -67,7 +67,7 @@ struct ReportView: View {
                         // Location section
                         VStack(alignment: .leading, spacing: 12) {
                             HStack {
-                                Text("F4CD Location")
+                                Text("Your Location")
                                     .font(AppFont.body.weight(.medium))
                                 Spacer()
 
@@ -109,6 +109,7 @@ struct ReportView: View {
         }
         .onAppear {
             locationManager.requestLocation()
+            loadCategories() // Ensure categories are loaded on appear
         }
         .alert(alertTitle, isPresented: $showAlert) { Button("OK", role: .cancel) {} } message: { Text(alertMessage) }
         .sheet(isPresented: $showCategorySheet) { categorySheet }
@@ -272,61 +273,3 @@ struct ReportView: View {
 #Preview {
     ReportView()
 }
-
-//
-//import SwiftUI
-//
-//struct LocationUIView: View {
-//    var body: some View {
-//       Text("Request Location From User")
-//        
-//        ZStack {
-//            Color(.systemBlue).ignoresSafeArea()
-//            
-//            VStack {
-//                VStack {
-//                    Button {
-//                        LocationManager.shared.requestLocation()
-//                    } label: {
-//                        Text("Allow Location")
-//                            .foregroundColor(Color(.systemRed))
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-//
-//struct LocationUIView_Preview: PreviewProvider {
-//    static var previews: some View {
-//        LocationUIView()
-//    }
-//}
-
-
-
-//import SwiftUI
-//
-//struct ContentView: View {
-//    @ObservedObject var locationManager = LocationManager.shared
-//    
-//    var body: some View {
-//        Group {
-//            if locationManager.userLocation == nil {
-//                LocationUIView()
-//            } else if let location = locationManager.userLocation {
-//                Text("\(location)").padding()
-//            }
-//        }
-//    }
-//}
-//
-////#Preview {
-////    ContentView()
-////}
-//
-//struct ContentView_Preview: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}
