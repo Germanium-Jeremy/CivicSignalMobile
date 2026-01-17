@@ -250,7 +250,7 @@ struct ReportView: View {
     private var categorySheet: some View {
         NavigationView {
             List(categories) { cat in
-                Button(cat.name) { draft.category = cat.id; showCategorySheet = false }
+                Button(cat.name) { draft.category = cat.name; showCategorySheet = false }
             }
             .navigationTitle("Categories")
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { showCategorySheet = false } } }
