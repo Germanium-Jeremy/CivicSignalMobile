@@ -51,7 +51,7 @@ struct ResetView: View {
                                 .foregroundColor(.mainBackground)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 15)
-                                .background(Color.primaryBlue)
+                                .background(Color.almostBlack)
                                 .cornerRadius(20)
                         }
                     }
@@ -107,6 +107,7 @@ struct ResetView: View {
                 RoundedRectangle(cornerRadius: 18)
                     .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
             )
+            .tint(.primaryBlue)
     }
 }
 

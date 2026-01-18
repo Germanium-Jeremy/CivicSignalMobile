@@ -33,6 +33,7 @@ struct VerifyCodeView: View {
                                 .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
                         )
                         .frame(maxWidth: 600)
+                        .tint(.primaryBlue)
                     
                     // Continue button
                     Button(action: {}) {

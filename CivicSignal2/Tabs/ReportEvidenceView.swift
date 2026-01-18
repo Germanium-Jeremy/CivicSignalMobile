@@ -69,7 +69,7 @@ struct ReportEvidenceView: View {
                                 .foregroundColor(.mainBackground)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 15)
-                                .background(isSubmitting ? Color.primaryBlue.opacity(0.6) : Color.primaryBlue)
+                                .background(isSubmitting ? Color.primaryBlue.opacity(0.5) : Color.almostBlack)
                                 .cornerRadius(20)
                         }
                         .disabled(isSubmitting)

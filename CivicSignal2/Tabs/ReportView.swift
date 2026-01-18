@@ -59,7 +59,7 @@ struct ReportView: View {
                                 .padding(.vertical, 10)
                                 .background(
                                     RoundedRectangle(cornerRadius: 18)
-                                        .fill(Color.mainBackground)
+                                        .fill(Color.white)
                                         .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
                                 )
                         }
@@ -95,7 +95,7 @@ struct ReportView: View {
                                 .foregroundColor(.mainBackground)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 15)
-                                .background(Color.primaryBlue)
+                                .background(Color.almostBlack)
                                 .cornerRadius(20)
                         }
                         .padding(.top, 8)

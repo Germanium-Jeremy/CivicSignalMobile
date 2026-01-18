@@ -31,7 +31,7 @@ struct SplashView: View {
                                 .foregroundColor(.mainBackground)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 15)
-                                .background(Color.primaryBlue)
+                                .background(Color.almostBlack)
                                 .cornerRadius(20)
                         }
 

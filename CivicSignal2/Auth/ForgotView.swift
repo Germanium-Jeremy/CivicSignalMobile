@@ -44,7 +44,7 @@ struct ForgotView: View {
                             .foregroundColor(.mainBackground)
                             .frame(maxWidth: 600)
                             .padding(.vertical, 15)
-                            .background(isLoading ? Color.primaryBlue.opacity(0.6) : Color.primaryBlue)
+                            .background(isLoading ? Color.primaryBlue.opacity(0.5) : Color.almostBlack)
                             .cornerRadius(20)
                     }
                     .disabled(isLoading)
@@ -83,6 +83,7 @@ struct ForgotView: View {
                 RoundedRectangle(cornerRadius: 18)
                     .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
             )
+            .tint(.primaryBlue)
     }
 
     private func handleForgotPassword() async {

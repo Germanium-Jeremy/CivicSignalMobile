@@ -79,7 +79,7 @@ struct LoginView: View {
                             .foregroundColor(.mainBackground)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 15)
-                            .background(isLoading ? Color.primaryBlue.opacity(0.6) : Color.primaryBlue)
+                            .background(isLoading ? Color.primaryBlue.opacity(0.5) : Color.almostBlack)
                             .cornerRadius(20)
                     }
                     .disabled(isLoading)
@@ -95,7 +95,7 @@ struct LoginView: View {
                     NavigationLink(destination: RegisterView()) {
                         Text("Don’t have an account? Signup")
                             .font(AppFont.footnote.weight(.semibold))
-                            .foregroundColor(.primaryBlue)
+                            .foregroundColor(.almostBlack)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -143,6 +143,7 @@ struct LoginView: View {
                 RoundedRectangle(cornerRadius: 18)
                     .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
             )
+            .tint(.primaryBlue)
     }
 
     private func secureAuthField(placeholder: String, text: Binding<String>) -> some View {
