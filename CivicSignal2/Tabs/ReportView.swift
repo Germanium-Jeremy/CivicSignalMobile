@@ -192,6 +192,12 @@ struct ReportView: View {
             return
         }
 
+        // Add location to the draft if available
+        if let location = locationManager.userLocation {
+            draft.latitude = location.coordinate.latitude
+            draft.longitude = location.coordinate.longitude
+        }
+
         // Show confirmation dialog if no location is provided
         if draft.latitude == nil || draft.longitude == nil {
             let shouldContinue = await withCheckedContinuation { continuation in
