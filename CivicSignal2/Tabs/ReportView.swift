@@ -24,6 +24,7 @@ struct ReportView: View {
     @State private var alertTitle: String = ""
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
+    @State private var isSubmitting: Bool = false
     @ObservedObject var locationManager = LocationManager.shared
     
     init() {
@@ -95,14 +96,15 @@ struct ReportView: View {
                         )
 
                         Button(action: { Task { await handleContinue() } }) {
-                            Text("Continue")
+                            Text(isSubmitting ? "Submitting..." : "Continue")
                                 .font(AppFont.body.weight(.semibold))
                                 .foregroundColor(.mainBackground)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 15)
-                                .background(Color.almostBlack)
+                                .background(isSubmitting ? Color.primaryBlue.opacity(0.5) : Color.almostBlack)
                                 .cornerRadius(20)
                         }
+                        .disabled(isSubmitting)
                         .padding(.top, 8)
 
                         Spacer(minLength: 40)
@@ -191,6 +193,9 @@ struct ReportView: View {
             show("Please select a category")
             return
         }
+
+        isSubmitting = true
+        defer { isSubmitting = false }
 
         // Add location to the draft if available
         if let location = locationManager.userLocation {
