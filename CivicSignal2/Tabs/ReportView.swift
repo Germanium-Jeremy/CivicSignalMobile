@@ -25,6 +25,10 @@ struct ReportView: View {
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
     @ObservedObject var locationManager = LocationManager.shared
+    
+    init() {
+        UITextView.appearance().backgroundColor = .clear
+    }
 
     var body: some View {
         ZStack {
@@ -57,6 +61,7 @@ struct ReportView: View {
                                 .foregroundColor(.almostBlack)
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 10)
+                                .scrollContentBackground(.hidden)
                                 .background(
                                     RoundedRectangle(cornerRadius: 18)
                                         .fill(Color.white)

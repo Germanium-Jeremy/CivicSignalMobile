@@ -104,7 +104,7 @@ struct MainTabView: View {
             Image(systemName: icon)
                 .font(.system(size: 24, weight: .semibold))
                 .foregroundColor(
-                    selectedTab == tab ? .primaryBlue : .lightGray // Updated color for selected tab
+                    selectedTab == tab ? .accentGreen : .lightGray // Updated color for selected tab
                 )
                 .frame(width: 28, height: 28)
         }
