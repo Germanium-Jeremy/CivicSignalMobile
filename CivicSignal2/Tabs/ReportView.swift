@@ -24,7 +24,6 @@ struct ReportView: View {
     @State private var alertTitle: String = ""
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
-    @State private var isSubmitting: Bool = false
     @ObservedObject var locationManager = LocationManager.shared
     
     init() {
@@ -96,15 +95,14 @@ struct ReportView: View {
                         )
 
                         Button(action: { Task { await handleContinue() } }) {
-                            Text(isSubmitting ? "Submitting..." : "Continue")
+                            Text("Continue")
                                 .font(AppFont.body.weight(.semibold))
                                 .foregroundColor(.mainBackground)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 15)
-                                .background(isSubmitting ? Color.primaryBlue.opacity(0.5) : Color.almostBlack)
+                                .background(Color.almostBlack)
                                 .cornerRadius(20)
                         }
-                        .disabled(isSubmitting)
                         .padding(.top, 8)
 
                         Spacer(minLength: 40)
@@ -119,14 +117,19 @@ struct ReportView: View {
             loadCategories() // Ensure categories are loaded on appear
         }
         .alert(alertTitle, isPresented: $showAlert) { Button("OK", role: .cancel) {} } message: { Text(alertMessage) }
-        .sheet(isPresented: $showCategorySheet) { categorySheet }
-        .sheet(isPresented: $showPrioritySheet) { prioritySheet }
-        .navigationBarBackButtonHidden(true) {
-            NavigationLink(destination: ReportEvidenceView(draft: draft, issueId: createdIssueId ?? ""), isActive: $navigateToEvidence) {
-                EmptyView()
+        .sheet(isPresented: Binding(get: { showCategorySheet || showPrioritySheet }, set: { newValue in
+            if !newValue {
+                showCategorySheet = false
+                showPrioritySheet = false
             }
-            .hidden()
+        })) {
+            if showCategorySheet {
+                categorySheet
+            } else if showPrioritySheet {
+                prioritySheet
+            }
         }
+        .navigationBarBackButtonHidden(true)
     }
 
     private var header: some View {
@@ -198,9 +201,6 @@ struct ReportView: View {
             show("Please select a category")
             return
         }
-
-        isSubmitting = true
-        defer { isSubmitting = false }
 
         // Add location to the draft if available
         if let location = locationManager.userLocation {
