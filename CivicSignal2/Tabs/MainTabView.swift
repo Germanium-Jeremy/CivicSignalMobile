@@ -28,6 +28,9 @@ struct MainTabView: View {
                     NavigationStack {
                         ReportView()
                     }
+                    .navigationDestination(for: String.self) { issueId in
+                        ReportEvidenceView(draft: ReportDraft(), issueId: issueId)
+                    }
                 case .map:
                     NavigationStack {
                         MapView()

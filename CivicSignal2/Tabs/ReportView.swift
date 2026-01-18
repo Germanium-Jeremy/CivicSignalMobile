@@ -121,7 +121,12 @@ struct ReportView: View {
         .alert(alertTitle, isPresented: $showAlert) { Button("OK", role: .cancel) {} } message: { Text(alertMessage) }
         .sheet(isPresented: $showCategorySheet) { categorySheet }
         .sheet(isPresented: $showPrioritySheet) { prioritySheet }
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(true) {
+            NavigationLink(destination: ReportEvidenceView(draft: draft, issueId: createdIssueId ?? ""), isActive: $navigateToEvidence) {
+                EmptyView()
+            }
+            .hidden()
+        }
     }
 
     private var header: some View {
