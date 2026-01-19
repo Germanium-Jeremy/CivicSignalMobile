@@ -113,6 +113,8 @@ struct SettingsView: View {
             // Counteract parent horizontal padding so the stats span more of the width
             .padding(.horizontal, -0)
         }
+        .frame(maxWidth: 700, alignment: .center)
+        .padding(.vertical, 32)
     }
     
     private func statCard(value: String, label: String) -> some View {
@@ -159,6 +161,7 @@ struct SettingsView: View {
                 .fill(Color.lightGray)
                 .frame(height: 1)
         }
+        .frame(maxWidth: 800, alignment: .center)
     }
 }
 

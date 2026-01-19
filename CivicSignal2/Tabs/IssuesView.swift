@@ -56,6 +56,7 @@ struct IssuesView: View {
                     .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
                     .padding(.bottom, 16)
                 }
+                .frame(maxWidth: 700, alignment: .center)
 
                 // Main content
                 if viewModel.isLoading && currentIssues.isEmpty {
