@@ -46,13 +46,13 @@ struct MainTabView: View {
             // Custom bottom bar
             bottomBar
                 .padding(.horizontal, 24)
-                .padding(.bottom, 12)
+                .padding(.bottom, 8)
         }
         .background(Color.mainBackground)
     }
 
     private var bottomBar: some View {
-        HStack(spacing: 36) {
+        HStack(spacing: UIDevice.current.userInterfaceIdiom == .pad ? 72 : 36) {
             tabButton(
                 icon: "house.fill",
                 tab: .home
