@@ -34,7 +34,7 @@ struct MapView: View {
                         ProgressView()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
-                        Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: viewModel.issues) { issue in
+                        Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: viewModel.filteredIssues) { issue in
                             MapAnnotation(coordinate: CLLocationCoordinate2D(
                                 latitude: issue.location?.latitude ?? -1.9499,
                                 longitude: issue.location?.longitude ?? 30.0588
@@ -114,7 +114,7 @@ struct MapView: View {
 
     private var searchBar: some View {
         HStack {
-            TextField("Search Location", text: .constant(""))
+            TextField("Search Location", text: $viewModel.searchText) // Bind search bar to searchText
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
                 .background(Color.lightGray)
@@ -208,6 +208,14 @@ class MapViewModel: ObservableObject {
         center: CLLocationCoordinate2D(latitude: -1.9499, longitude: 30.0588),
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     )
+    @Published var searchText: String = "" // Add search text property
+
+    var filteredIssues: [IssueDTO] {
+        if searchText.isEmpty {
+            return issues
+        }
+        return issues.filter { $0.title?.localizedCaseInsensitiveContains(searchText) == true }
+    }
 
     func fetchIssues() async {
         isLoading = true
