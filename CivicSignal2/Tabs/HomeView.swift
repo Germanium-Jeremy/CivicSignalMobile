@@ -104,28 +104,28 @@ struct HomeView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Submitted Issues")
-                        .font(AppFont.footnote)
+                        .font(UIDevice.current.userInterfaceIdiom == .pad ? AppFont.title2 : AppFont.footnote)
                         .foregroundColor(.mainBackground)
                     Text("\(viewModel.stats.total)")
-                        .font(AppFont.title)
+                        .font(UIDevice.current.userInterfaceIdiom == .pad ? AppFont.title : AppFont.largeTitle)
                         .foregroundColor(.mainBackground)
                 }
                 Spacer()
                 VStack(alignment: .leading, spacing: 8) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Resolved Issues")
-                            .font(AppFont.footnote)
+                            .font(UIDevice.current.userInterfaceIdiom == .pad ? AppFont.title3 : AppFont.footnote)
                             .foregroundColor(.mainBackground)
                         Text("\(viewModel.stats.resolved)")
-                            .font(AppFont.body)
+                            .font(UIDevice.current.userInterfaceIdiom == .pad ? AppFont.title3 : AppFont.body)
                             .foregroundColor(.mainBackground)
                     }
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Pending Issues")
-                            .font(AppFont.footnote)
+                            .font(UIDevice.current.userInterfaceIdiom == .pad ? AppFont.title3 : AppFont.footnote)
                             .foregroundColor(.mainBackground)
                         Text("\(viewModel.stats.inProgress)")
-                            .font(AppFont.body)
+                            .font(UIDevice.current.userInterfaceIdiom == .pad ? AppFont.title3 : AppFont.body)
                             .foregroundColor(.mainBackground)
                     }
                 }
