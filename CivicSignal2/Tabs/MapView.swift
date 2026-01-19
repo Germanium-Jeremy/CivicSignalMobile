@@ -214,7 +214,7 @@ class MapViewModel: ObservableObject {
         if searchText.isEmpty {
             return issues
         }
-        return issues.filter { $0.title?.localizedCaseInsensitiveContains(searchText) == true }
+        return issues.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
     }
 
     func fetchIssues() async {
