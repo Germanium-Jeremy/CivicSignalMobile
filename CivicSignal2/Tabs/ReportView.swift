@@ -130,6 +130,10 @@ struct ReportView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $navigateToEvidence) {
+            ReportEvidenceView(issueId: createdIssueId ?? "")
+                .environmentObject(session)
+        }
     }
 
     private var header: some View {

@@ -2,8 +2,10 @@ import SwiftUI
 import UIKit
 
 struct ReportEvidenceView: View {
+    @EnvironmentObject var session: AppSession
     @ObservedObject var draft: ReportDraft
     let issueId: String
+    
     @State private var images: [UIImage] = []
     @State private var showingPicker = false
     @State private var isSubmitting = false
@@ -150,14 +152,21 @@ struct ReportEvidenceView: View {
                 guard let data = img.jpegData(compressionQuality: 0.8) else { return nil }
                 return UploadPhotosRequest.Image(data: data.base64EncodedString(), mimeType: "image/jpeg")
             }
-            let up = await IssueService.uploadPhotos(compressed)
-            if up.success, let photos = up.data {
-                let patch = await IssueService.updateIssuePhotos(issueId: issueId, photos: photos)
-                if !patch.success {
-                    alertTitle = "Update Failed"; alertMessage = patch.error ?? "Failed to attach photos"; showAlert = true; return
+
+            let uploadResult = await IssueService.uploadPhotos(compressed)
+            if uploadResult.success, let photos = uploadResult.data {
+                let patchResult = await IssueService.updateIssuePhotos(issueId: issueId, photos: photos)
+                if !patchResult.success {
+                    alertTitle = "Update Failed"
+                    alertMessage = patchResult.error ?? "Failed to attach photos. Please try again."
+                    showAlert = true
+                    return
                 }
             } else {
-                alertTitle = "Upload Failed"; alertMessage = up.error ?? "Failed to upload photos"; showAlert = true; return
+                alertTitle = "Upload Failed"
+                alertMessage = uploadResult.error ?? "Failed to upload photos. Please check your connection and try again."
+                showAlert = true
+                return
             }
         }
 
