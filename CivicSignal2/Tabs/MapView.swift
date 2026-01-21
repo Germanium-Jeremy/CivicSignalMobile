@@ -195,6 +195,7 @@ struct MapLegendView: View {
             .padding(.horizontal, 20)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing: Button("Done") { dismiss() })
+            .background(.white)
         }
     }
 }
