@@ -131,7 +131,7 @@ struct ReportView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationDestination(isPresented: $navigateToEvidence) {
-            ReportEvidenceView(issueId: createdIssueId ?? "")
+            ReportEvidenceView(draft: draft, issueId: createdIssueId ?? "")
                 .environmentObject(session)
         }
     }
