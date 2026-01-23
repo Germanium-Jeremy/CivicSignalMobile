@@ -34,6 +34,9 @@ struct SettingsView: View {
                         .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20) // Adjust padding for iPads
                         .padding(.bottom, 80)
                     }
+                    .refreshable {
+                        await viewModel.fetchData(forceRefresh: true)
+                    }
                 }
             }
         }
@@ -189,7 +192,7 @@ class SettingsViewModel: ObservableObject {
     @Published var stats = UserStats()
     @Published var isLoading = true
     
-    func fetchData() async {
+    func fetchData(forceRefresh: Bool = false) async {
         isLoading = true
         defer { isLoading = false }
         
@@ -200,8 +203,8 @@ class SettingsViewModel: ObservableObject {
             userRole = "Citizen"
         }
         
-        // Fetch stats
-        let result = await IssueService.getMyStats()
+        // Fetch stats with cache-busting
+        let result = await IssueService.getMyStats(forceRefresh: forceRefresh)
         guard result.success, let response = result.data else {
             print("Failed to fetch stats: \(result.error ?? "Unknown error")")
             return

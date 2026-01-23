@@ -42,7 +42,7 @@ struct HomeView: View {
                                 if viewModel.recentIssues.isEmpty {
                                     emptyIssuesCard
                                 } else {
-                                    ForEach(viewModel.recentIssues, id: \..id) { issue in
+                                    ForEach(viewModel.recentIssues, id: \.id) { issue in
                                         IssueRow(issue: issue)
                                     }
                                 }
@@ -51,13 +51,15 @@ struct HomeView: View {
                         .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20) // Adjust padding for iPads
                         .padding(.bottom, 100)
                     }
-                    .refreshable { await viewModel.fetchData() }
+                    .refreshable { 
+                        await viewModel.fetchData(forceRefresh: true)
+                    }
                 }
             }
         }
         .onAppear { Task { await viewModel.fetchData() } }
         .onChange(of: session.homeRefreshToken) { _ in
-            Task { await viewModel.fetchData() }
+            Task { await viewModel.fetchData(forceRefresh: true) }
         }
     }
     
@@ -178,7 +180,7 @@ class HomeViewModel: ObservableObject {
     @Published var stats = Stats()
     @Published var isLoading = true
     
-    func fetchData() async {
+    func fetchData(forceRefresh: Bool = false) async {
         isLoading = true
         defer { isLoading = false }
         
@@ -188,15 +190,15 @@ class HomeViewModel: ObservableObject {
         }
         
         // Fetch stats and issues in parallel
-        async let statsTask: () = fetchStats()
-        async let issuesTask: () = fetchRecentIssues()
+        async let statsTask: () = fetchStats(forceRefresh: forceRefresh)
+        async let issuesTask: () = fetchRecentIssues(forceRefresh: forceRefresh)
         
         _ = await (statsTask, issuesTask)
     }
     
-    private func fetchStats() async {
-        let result = await IssueService.getMyStats()
-        print("Recent Issues: \(result)")
+    private func fetchStats(forceRefresh: Bool = false) async {
+        let result = await IssueService.getMyStats(forceRefresh: forceRefresh)
+        print("Stats result: \(result)")
         guard result.success, let response = result.data else {
             print("Failed to fetch stats: \(result.error ?? "Unknown error")")
             return
@@ -208,8 +210,8 @@ class HomeViewModel: ObservableObject {
         )
     }
     
-    private func fetchRecentIssues() async {
-        let result = await IssueService.getMyIssues(limit: 5)
+    private func fetchRecentIssues(forceRefresh: Bool = false) async {
+        let result = await IssueService.getMyIssues(limit: 5, forceRefresh: forceRefresh)
         print("Recent Issues: \(result)")
         guard result.success, let response = result.data else {
             print("Failed to fetch recent issues: \(result.error ?? "Unknown error")")
