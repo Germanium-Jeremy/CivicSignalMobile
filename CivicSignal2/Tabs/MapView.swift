@@ -34,16 +34,27 @@ struct MapView: View {
                         ProgressView()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
-                        Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: viewModel.filteredIssues) { issue in
-                            MapAnnotation(coordinate: CLLocationCoordinate2D(
-                                latitude: issue.location?.latitude ?? -1.9499,
-                                longitude: issue.location?.longitude ?? 30.0588
-                            )) {
-                                NavigationLink(destination: IssueDetailView(issueId: issue._id)) {
-                                    IssueMarker(issue: issue)
+                        Map(position: $viewModel.cameraPosition) {
+                            ForEach(viewModel.filteredIssues) { issue in
+                                if let lat = issue.location?.latitude,
+                                   let lon = issue.location?.longitude {
+                                    Annotation("", coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon)) {
+                                        NavigationLink(destination: IssueDetailView(issueId: issue._id)) {
+                                            IssueMarker(issue: issue)
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
                                 }
-                                .buttonStyle(.plain)
                             }
+                            UserAnnotation()
+                        }
+                        .mapStyle(.standard)
+                        .mapControls {
+                            MapUserLocationButton()
+                        }
+                        .onMapCameraChange { context in
+                            viewModel.region = context.region
+                            viewModel.cameraPosition = .region(context.region)
                         }
                         .edgesIgnoringSafeArea(.bottom)
                     }
@@ -210,6 +221,10 @@ class MapViewModel: ObservableObject {
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     )
     @Published var searchText: String = "" // Add search text property
+    @Published var cameraPosition: MapCameraPosition = .region(MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: -1.9499, longitude: 30.0588),
+        span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+    ))
 
     var filteredIssues: [IssueDTO] {
         if searchText.isEmpty {
@@ -260,7 +275,9 @@ class MapViewModel: ObservableObject {
             longitudeDelta: (maxLon - minLon) * 1.5
         )
 
-        region = MKCoordinateRegion(center: center, span: span)
+        let newRegion = MKCoordinateRegion(center: center, span: span)
+        region = newRegion
+        cameraPosition = .region(newRegion)
     }
 }
 

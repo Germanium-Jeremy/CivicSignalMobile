@@ -352,9 +352,9 @@ enum IssueService {
         }
     }
 
-    static func getMyStats() async -> ServiceResult<StatsResponse> {
+    static func getMyStats(forceRefresh: Bool = false) async -> ServiceResult<StatsResponse> {
         // Mirror React Native getMyStats: fetch all issues for the current user and aggregate client-side
-        let issuesResult = await getMyIssues(limit: 1000)
+        let issuesResult = await getMyIssues(limit: 1000, forceRefresh: forceRefresh)
         guard issuesResult.success, let list = issuesResult.data?.data.issues else {
             return ServiceResult(success: false, data: nil, error: issuesResult.error ?? "Failed to fetch stats")
         }
@@ -461,7 +461,7 @@ enum IssueService {
     }
 
     // MARK: My Issues
-    static func getMyIssues(status: String? = nil, page: Int? = nil, limit: Int? = nil) async -> ServiceResult<IssueListResponse> {
+    static func getMyIssues(status: String? = nil, page: Int? = nil, limit: Int? = nil, forceRefresh: Bool = false) async -> ServiceResult<IssueListResponse> {
         // Match React Native: include userId so backend filters by reportedBy
         guard let user: UserDTO = TokenManager.getUserData(UserDTO.self), let id = user.id else {
             return ServiceResult(success: false, data: nil, error: "User not authenticated")
@@ -471,6 +471,7 @@ enum IssueService {
         if let status = status { params.append(URLQueryItem(name: "status", value: status)) }
         if let page = page { params.append(URLQueryItem(name: "page", value: String(page))) }
         if let limit = limit { params.append(URLQueryItem(name: "limit", value: String(limit))) }
+        if forceRefresh { params.append(URLQueryItem(name: "_t", value: String(Date().timeIntervalSince1970))) }
         
         do {
             let data = try await APIClient.shared.performRequest(  // temporarily bypass decoding

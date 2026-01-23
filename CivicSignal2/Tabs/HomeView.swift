@@ -58,7 +58,7 @@ struct HomeView: View {
             }
         }
         .onAppear { Task { await viewModel.fetchData() } }
-        .onChange(of: session.homeRefreshToken) { _ in
+        .onChange(of: session.homeRefreshToken) { _, _ in
             Task { await viewModel.fetchData(forceRefresh: true) }
         }
     }

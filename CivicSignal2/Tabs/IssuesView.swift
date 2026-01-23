@@ -98,7 +98,7 @@ struct IssuesView: View {
             }
         }
         .onAppear { Task { await viewModel.refresh() } }
-        .onChange(of: selectedFilter) { _ in
+        .onChange(of: selectedFilter) { _, _ in
             Task { await viewModel.loadIssues(for: selectedFilter) }
         }
     }

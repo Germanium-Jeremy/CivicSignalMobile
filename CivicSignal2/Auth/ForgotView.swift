@@ -55,13 +55,10 @@ struct ForgotView: View {
 
                 Spacer()
             }
-
-            NavigationLink(
-                destination: ResetView(identifier: identifier)
-                    .environmentObject(session),
-                isActive: $navigateToResetView
-            ) { EmptyView() }
-            .hidden()
+            .navigationDestination(isPresented: $navigateToResetView) {
+                ResetView(identifier: identifier)
+                    .environmentObject(session)
+            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)

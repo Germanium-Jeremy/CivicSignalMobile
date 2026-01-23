@@ -60,7 +60,7 @@ struct LoginView: View {
                     // Forgot password
                     HStack {
                         Spacer()
-                        NavigationLink(destination: ForgotView()) {
+                        NavigationLink(value: "forgot") {
                             Text("Forgot password?")
                                 .font(AppFont.body.weight(.semibold))
                                 .foregroundColor(.primaryBlue)
@@ -92,8 +92,8 @@ struct LoginView: View {
                 Spacer()
                 
                 HStack(spacing: 4) {                    
-                    NavigationLink(destination: RegisterView()) {
-                        Text("Don’t have an account? Signup")
+                    NavigationLink(value: "register") {
+                        Text("Don't have an account? Signup")
                             .font(AppFont.footnote.weight(.semibold))
                             .foregroundColor(.almostBlack)
                     }
@@ -108,20 +108,24 @@ struct LoginView: View {
                         .padding(.bottom, 16)
                 }
             }
-
-            NavigationLink(
-                destination: VerifyEmailView(email: pendingEmail, phone: pendingPhone)
-                    .environmentObject(session),
-                isActive: $navigateToVerifyEmail
-            ) { EmptyView() }
-            .hidden()
-
-            NavigationLink(
-                destination: VerifyPhoneView(phone: pendingPhone)
-                    .environmentObject(session),
-                isActive: $navigateToVerifyPhone
-            ) { EmptyView() }
-            .hidden()
+            .navigationDestination(for: String.self) { destination in
+                switch destination {
+                case "forgot":
+                    ForgotView()
+                case "register":
+                    RegisterView()
+                default:
+                    EmptyView()
+                }
+            }
+            .navigationDestination(isPresented: $navigateToVerifyEmail) {
+                VerifyEmailView(email: pendingEmail, phone: pendingPhone)
+                    .environmentObject(session)
+            }
+            .navigationDestination(isPresented: $navigateToVerifyPhone) {
+                VerifyPhoneView(phone: pendingPhone)
+                    .environmentObject(session)
+            }
         }
         // .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
