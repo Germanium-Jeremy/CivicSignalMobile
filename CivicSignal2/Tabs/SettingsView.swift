@@ -9,7 +9,10 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var session: AppSession
     @StateObject private var viewModel = SettingsViewModel()
+    @State private var showLogoutAlert = false
+    @State private var isLoggingOut = false
     
     var body: some View {
         ZStack {
@@ -41,6 +44,21 @@ struct SettingsView: View {
             }
         }
         .onAppear { Task { await viewModel.fetchData() } }
+        .confirmationDialog("Logout", isPresented: $showLogoutAlert, titleVisibility: .visible) {
+            Button("Logout All Devices", role: .destructive) {
+                Task {
+                    await handleLogout(logoutAll: true)
+                }
+            }
+            Button("Logout Current Device", role: .destructive) {
+                Task {
+                    await handleLogout(logoutAll: false)
+                }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Choose logout option:")
+        }
     }
     
     private var header: some View {
@@ -143,28 +161,56 @@ struct SettingsView: View {
             settingsRow(title: "Contact Us")
             settingsRow(title: "Terms and Conditions")
             settingsRow(title: "Privacy Policies")
-            settingsRow(title: "Logout")
+            settingsRow(title: "Logout", isLogout: true, isLoading: isLoggingOut)
         }
         .background(Color.mainBackground)
     }
     
-    private func settingsRow(title: String) -> some View {
+    private func settingsRow(title: String, isLogout: Bool = false, isLoading: Bool = false) -> some View {
         VStack(spacing: 0) {
-            HStack {
-                Text(title)
-                    .font(AppFont.body)
-                    .foregroundColor(.almostBlack)
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.primaryBlue)
+            Button(action: {
+                if isLogout {
+                    showLogoutAlert = true
+                }
+            }) {
+                HStack {
+                    if isLoading {
+                        ProgressView()
+                            .scaleEffect(0.8)
+                            .tint(isLogout ? .red : .primaryBlue)
+                    } else {
+                        Text(title)
+                            .font(AppFont.body)
+                            .foregroundColor(isLogout ? .red : .almostBlack)
+                    }
+                    Spacer()
+                    if !isLoading {
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(isLogout ? .red : .primaryBlue)
+                    }
+                }
+                .padding(.vertical, 14)
             }
-            .padding(.vertical, 14)
+            .disabled(isLoading)
             
             Rectangle()
                 .fill(Color.lightGray)
                 .frame(height: 1)
         }
         .frame(maxWidth: 800, alignment: .center)
+    }
+    
+    private func handleLogout(logoutAll: Bool) async {
+        isLoggingOut = true
+        defer { isLoggingOut = false }
+        
+        let result = await AuthService.logout(logoutAll: logoutAll)
+        
+        // Always navigate to login screen, even if API call fails
+        // (tokens are cleared locally regardless)
+        await MainActor.run {
+            session.isLoggedIn = false
+        }
     }
 }
 
@@ -222,4 +268,5 @@ class SettingsViewModel: ObservableObject {
 
 #Preview {
     SettingsView()
+        .environmentObject(AppSession())
 }
