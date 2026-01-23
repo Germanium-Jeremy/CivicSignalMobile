@@ -24,6 +24,7 @@ struct ReportView: View {
     @State private var alertTitle: String = ""
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
+    @State private var isLoading: Bool = false
     @ObservedObject var locationManager = LocationManager.shared
     
     init() {
@@ -95,12 +96,12 @@ struct ReportView: View {
                         )
 
                         Button(action: { Task { await handleContinue() } }) {
-                            Text("Continue")
+                            Text(isLoading ? "Submitting..." :"Continue")
                                 .font(AppFont.body.weight(.semibold))
                                 .foregroundColor(.mainBackground)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 15)
-                                .background(Color.almostBlack)
+                                .background(isLoading ? Color.primaryBlue.opacity(0.5) : Color.almostBlack)
                                 .cornerRadius(20)
                         }
                         .padding(.top, 8)
@@ -252,6 +253,7 @@ struct ReportView: View {
             loc = IssueLocationDTO(latitude: lat, longitude: lon, address: draft.address, district: draft.district, sector: draft.sector)
         }
 
+        isLoading = true
         let res = await IssueService.createIssue(
             title: nil,
             description: draft.description.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -260,6 +262,7 @@ struct ReportView: View {
             location: loc,
             photos: nil
         )
+        isLoading = false
 
         if res.success, let id = res.data?.data.issue._id {
             session.triggerHomeRefresh()
