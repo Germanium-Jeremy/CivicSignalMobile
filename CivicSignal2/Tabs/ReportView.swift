@@ -68,6 +68,7 @@ struct ReportView: View {
                                         .fill(Color.white)
                                         .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
                                 )
+                                .frame(minHeight: 20)
                         }
 
                         // Location section

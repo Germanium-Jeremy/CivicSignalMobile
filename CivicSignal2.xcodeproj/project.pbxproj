@@ -145,7 +145,6 @@
 				2C6947BB2EEAB2B6002B4C89 /* CivicSignal2Tests */,
 				2C6947C52EEAB2B6002B4C89 /* CivicSignal2UITests */,
 				2C6947A92EEAB2B6002B4C89 /* Products */,
-				FA71516FBAF184041E581F7C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -275,13 +274,6 @@
 				2C6948072EEAB774002B4C89 /* ReportDraft.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		FA71516FBAF184041E581F7C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

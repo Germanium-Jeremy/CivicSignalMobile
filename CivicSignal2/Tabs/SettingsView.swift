@@ -213,9 +213,7 @@ class SettingsViewModel: ObservableObject {
         self.stats = UserStats(
             total: response.data.total,
             submitted: response.data.submitted,
-            // StatsResponse.DataField does not include an acknowledged field in Swift aggregation;
-            // use 0 for now, or adjust later if backend adds this metric.
-            acknowledged: 0,
+            acknowledged: response.data.acknowledged,
             pending: response.data.inProgress,
             resolved: response.data.resolved
         )

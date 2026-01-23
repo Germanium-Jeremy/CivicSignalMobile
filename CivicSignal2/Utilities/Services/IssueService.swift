@@ -304,6 +304,7 @@ struct StatsResponse: Codable {
     struct DataField: Codable {
         let total: Int
         let submitted: Int
+        let acknowledged: Int
         let resolved: Int
         let inProgress: Int
     }
@@ -359,10 +360,12 @@ enum IssueService {
         }
         let issues = list
         let total = issues.count
-        let submitted = issues.filter { $0.status == "submitted" }.count
-        let inProgress = issues.filter { $0.status == "pending" }.count
-        let resolved = issues.filter { $0.status == "resolved" }.count
-        let data = StatsResponse.DataField(total: total, submitted: submitted, resolved: resolved, inProgress: inProgress)
+        // Use case-insensitive comparison to handle any status format variations
+        let submitted = issues.filter { $0.status.lowercased() == "submitted" }.count
+        let acknowledged = issues.filter { $0.status.lowercased() == "acknowledged" }.count
+        let inProgress = issues.filter { $0.status.lowercased() == "pending" }.count
+        let resolved = issues.filter { $0.status.lowercased() == "resolved" }.count
+        let data = StatsResponse.DataField(total: total, submitted: submitted, acknowledged: acknowledged, resolved: resolved, inProgress: inProgress)
         let stats = StatsResponse(success: true, data: data)
         return ServiceResult(success: true, data: stats, error: nil)
     }
