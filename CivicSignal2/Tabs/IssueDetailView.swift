@@ -147,6 +147,8 @@ struct IssueDetailView: View {
                 await viewModel.fetchIssue(id: issueId)
             }
         }
+        .background(.white)
+        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 80 : 20)
     }
     
     private func statusBadge(_ status: String) -> some View {
