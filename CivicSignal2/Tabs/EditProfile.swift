@@ -1,12 +1,16 @@
 import SwiftUI
+import PhotosUI
 
 struct EditProfileView: View {
     @Environment(\.dismiss) private var dismiss
+    @State private var selectedImage: UIImage? = nil
+    @State private var pickerImages: [UIImage] = []
     @State private var profileImageURL: String = ""
     @State private var isSaving: Bool = false
     @State private var showAlert: Bool = false
     @State private var alertTitle: String = ""
     @State private var alertMessage: String = ""
+    @State private var showingImagePicker: Bool = false
 
     var body: some View {
         ZStack {
@@ -28,21 +32,67 @@ struct EditProfileView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Profile Image URL")
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Profile Image")
                         .font(AppFont.body.weight(.semibold))
                         .foregroundColor(.almostBlack)
+                        .padding(.horizontal, 20)
 
-                    TextField("https://example.com/image.jpg", text: $profileImageURL)
-                        .font(AppFont.body)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 18)
-                                .stroke(Color.accentGreen.opacity(0.5), lineWidth: 1)
-                        )
-                        .textInputAutocapitalization(.never)
-                        .keyboardType(.URL)
+                    // Profile image preview
+                    VStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.neutralGray.opacity(0.2))
+                                .frame(width: 120, height: 120)
+                            
+                            if let image = selectedImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 120, height: 120)
+                                    .clipShape(Circle())
+                            } else if !profileImageURL.isEmpty {
+                                AsyncImage(url: URL(string: profileImageURL)) { phase in
+                                    switch phase {
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                    case .failure, .empty:
+                                        Image("civicsignal")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 60, height: 60)
+                                    @unknown default:
+                                        Image("civicsignal")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 60, height: 60)
+                                    }
+                                }
+                                .frame(width: 120, height: 120)
+                                .clipShape(Circle())
+                            } else {
+                                Image("civicsignal")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 60, height: 60)
+                            }
+                        }
+                        
+                        Button(action: { showingImagePicker = true }) {
+                            Text(selectedImage != nil ? "Change Image" : "Select Image")
+                                .font(AppFont.body.weight(.semibold))
+                                .foregroundColor(.primaryBlue)
+                                .padding(.horizontal, 24)
+                                .padding(.vertical, 10)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 18)
+                                        .stroke(Color.primaryBlue, lineWidth: 1)
+                                )
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 24)
@@ -71,6 +121,12 @@ struct EditProfileView: View {
                 profileImageURL = current
             }
         }
+        .sheet(isPresented: $showingImagePicker) {
+            ImagePicker(images: $pickerImages, selectionLimit: 1)
+        }
+        .onChange(of: pickerImages) { newImages in
+            selectedImage = newImages.first
+        }
         .alert(alertTitle, isPresented: $showAlert) {
             Button("OK", role: .cancel) {
                 if alertTitle == "Success" {
@@ -83,37 +139,28 @@ struct EditProfileView: View {
     }
 
     private func saveProfile() async {
+        guard let image = selectedImage else {
+            alertTitle = "Error"
+            alertMessage = "Please select an image first"
+            showAlert = true
+            return
+        }
+        
         isSaving = true
         defer { isSaving = false }
 
-        struct UpdateProfileBody: Encodable {
-            let profileImage: String
-        }
-
-        do {
-            let response = try await APIClient.shared.request(
-                "user/profile",
-                method: "PATCH",
-                body: UpdateProfileBody(profileImage: profileImageURL),
-                authorized: true,
-                responseType: AuthBaseResponse.self
-            )
-
-            if let updatedUser = response.user {
-                TokenManager.saveUserData(updatedUser)
-            }
-
+        let result = await AuthService.uploadProfileImage(image)
+        
+        if result.success, let data = result.data {
             alertTitle = "Success"
             alertMessage = "Profile image updated successfully."
             showAlert = true
-        } catch let APIError.httpStatus(_, data) {
-            let parsed = AuthService.parseError(from: data)
+            // Update local state
+            profileImageURL = data.url
+            selectedImage = nil // Clear selection after successful upload
+        } else {
             alertTitle = "Error"
-            alertMessage = parsed.error ?? "Failed to update profile."
-            showAlert = true
-        } catch {
-            alertTitle = "Error"
-            alertMessage = error.localizedDescription
+            alertMessage = result.error ?? "Failed to update profile image."
             showAlert = true
         }
     }

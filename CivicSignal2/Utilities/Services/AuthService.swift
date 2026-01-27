@@ -408,4 +408,75 @@ enum AuthService {
             return ServiceResult(success: false, data: nil, error: "Request failed", details: nil)
         }
     }
+    
+    // MARK: Upload Profile Image
+    
+    struct UploadProfileImageRequest: Encodable {
+        struct Image: Encodable {
+            let data: String
+            let mimeType: String
+        }
+        let image: Image
+    }
+    
+    struct UploadProfileImageResponse: Codable {
+        let success: Bool
+        let message: String?
+        let data: DataField?
+        struct DataField: Codable {
+            let url: String
+            let size: Int?
+            let mimeType: String?
+        }
+    }
+    
+    static func uploadProfileImage(_ image: UIImage) async -> ServiceResult<UploadProfileImageResponse.DataField> {
+        // Convert UIImage to base64
+        guard let imageData = image.jpegData(compressionQuality: 0.8) ?? image.pngData() else {
+            return ServiceResult(success: false, data: nil, error: "Failed to convert image to data", details: nil)
+        }
+        
+        let mimeType = imageData == image.jpegData(compressionQuality: 0.8) ? "image/jpeg" : "image/png"
+        let base64String = imageData.base64EncodedString()
+        
+        let body = UploadProfileImageRequest(image: UploadProfileImageRequest.Image(data: base64String, mimeType: mimeType))
+        
+        do {
+            let response = try await APIClient.shared.request(
+                "user/profile/upload",
+                method: "POST",
+                body: body,
+                authorized: true,
+                responseType: UploadProfileImageResponse.self
+            )
+            
+            // Update local user data if response includes URL
+            if let data = response.data {
+                if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
+                    // Create updated user with new profile image
+                    let updatedUser = UserDTO(
+                        id: user.id,
+                        fullName: user.fullName,
+                        email: user.email,
+                        phone: user.phone,
+                        profileImage: data.url
+                    )
+                    TokenManager.saveUserData(updatedUser)
+                }
+            }
+            
+            if let data = response.data {
+                return ServiceResult(success: true, data: data, error: nil, details: response.message)
+            } else {
+                return ServiceResult(success: false, data: nil, error: "No data in response", details: nil)
+            }
+        } catch let APIError.httpStatus(code, data) {
+            let parsed = parseAuthError(from: data)
+            print("Failed to upload profile image (\(code)): \(parsed.error ?? "unknown")")
+            return ServiceResult(success: false, data: nil, error: parsed.error ?? "Failed to upload profile image", details: parsed.details)
+        } catch {
+            print("Failed to upload profile image: \(error)")
+            return ServiceResult(success: false, data: nil, error: "Failed to upload profile image", details: nil)
+        }
+    }
 }
