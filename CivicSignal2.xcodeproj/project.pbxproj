@@ -45,6 +45,7 @@
 		2C69481B2EEAC923002B4C89 /* IssueDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */; };
 		2C8F6C532EEDE1EC00590A47 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C69480C2EEAB7BB002B4C89 /* APIConfig.swift */; };
 		2C8F6C552EEDE9E600590A47 /* IssueRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F6C542EEDE9E600590A47 /* IssueRow.swift */; };
+		2C9F5A912F293CE500299415 /* EditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F5A902F293CE500299415 /* EditProfile.swift */; };
 		2CB281A72EEAFB1E006EF825 /* ServiceResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */; };
 		2CDFA23B2F1C129B00F08482 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDFA23A2F1C129B00F08482 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
@@ -109,6 +110,7 @@
 		2C6948142EEAB82E002B4C89 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		2C69481A2EEAC923002B4C89 /* IssueDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailView.swift; sourceTree = "<group>"; };
 		2C8F6C542EEDE9E600590A47 /* IssueRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueRow.swift; sourceTree = "<group>"; };
+		2C9F5A902F293CE500299415 /* EditProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfile.swift; sourceTree = "<group>"; };
 		2CB281A62EEAFB1E006EF825 /* ServiceResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceResult.swift; sourceTree = "<group>"; };
 		2CDFA23A2F1C129B00F08482 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -201,6 +203,7 @@
 		2C6947F12EEAB607002B4C89 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				2C9F5A902F293CE500299415 /* EditProfile.swift */,
 				2C6947F22EEAB61A002B4C89 /* HomeView.swift */,
 				2C6947F52EEAB645002B4C89 /* IssuesView.swift */,
 				2C6947F72EEAB65B002B4C89 /* MainTabView.swift */,
@@ -441,6 +444,7 @@
 				2C6947D72EEAB31D002B4C89 /* SplashView.swift in Sources */,
 				2C6947FC2EEAB68A002B4C89 /* NotificationView.swift in Sources */,
 				2C69480F2EEAB7E4002B4C89 /* AuthService.swift in Sources */,
+				2C9F5A912F293CE500299415 /* EditProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
