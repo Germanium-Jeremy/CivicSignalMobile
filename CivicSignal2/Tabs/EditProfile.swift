@@ -2,6 +2,18 @@ import SwiftUI
 import PhotosUI
 
 struct EditProfileView: View {
+    // Helper to convert relative media paths to absolute URLs
+    private func absoluteMediaURL(_ pathOrURL: String) -> URL? {
+        // If backend already returns absolute URL, use it
+        if let url = URL(string: pathOrURL), url.scheme != nil {
+            return url
+        }
+        // Otherwise, build from API baseURL by removing "/api" then appending path
+        let apiBase = APIConfig.baseURL
+        let hostBase = apiBase.lastPathComponent == "api" ? apiBase.deletingLastPathComponent() : apiBase
+        let trimmed = pathOrURL.hasPrefix("/") ? String(pathOrURL.dropFirst()) : pathOrURL
+        return hostBase.appendingPathComponent(trimmed)
+    }
     @Environment(\.dismiss) private var dismiss
     @State private var selectedImage: UIImage? = nil
     @State private var pickerImages: [UIImage] = []
@@ -52,7 +64,7 @@ struct EditProfileView: View {
                                     .frame(width: 120, height: 120)
                                     .clipShape(Circle())
                             } else if !profileImageURL.isEmpty {
-                                AsyncImage(url: URL(string: profileImageURL)) { phase in
+                                AsyncImage(url: absoluteMediaURL(profileImageURL)) { phase in
                                     switch phase {
                                     case .success(let image):
                                         image
@@ -80,7 +92,11 @@ struct EditProfileView: View {
                             }
                         }
                         
-                        Button(action: { showingImagePicker = true }) {
+                        Button(action: {
+                            // Clear previous selection to start fresh
+                            pickerImages = []
+                            showingImagePicker = true
+                        }) {
                             Text(selectedImage != nil ? "Change Image" : "Select Image")
                                 .font(AppFont.body.weight(.semibold))
                                 .foregroundColor(.primaryBlue)
@@ -125,10 +141,19 @@ struct EditProfileView: View {
             ImagePicker(images: $pickerImages, selectionLimit: 1)
         }
         .onChange(of: pickerImages) { newImages in
-            selectedImage = newImages.first
-            // Prevent stale selections and re-triggering
-            if !newImages.isEmpty {
-                pickerImages = []
+            // When images are selected, update selectedImage
+            if let firstImage = newImages.first {
+                selectedImage = firstImage
+            }
+        }
+        .onChange(of: showingImagePicker) { isShowing in
+            // Clear pickerImages when sheet is dismissed to allow fresh selection
+            if !isShowing {
+                // Small delay to ensure onChange(of: pickerImages) completes first
+                Task { @MainActor in
+                    try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+                    pickerImages = []
+                }
             }
         }
         .alert(alertTitle, isPresented: $showAlert) {
