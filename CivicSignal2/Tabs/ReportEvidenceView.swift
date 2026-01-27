@@ -12,6 +12,7 @@ struct ReportEvidenceView: View {
     @State private var alertTitle: String = ""
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
+    @State private var profileImageURL: String? = nil
 
     var body: some View {
         ZStack {
@@ -84,6 +85,12 @@ struct ReportEvidenceView: View {
                 }
             }
         }
+        .onAppear {
+            // Fetch user profile image
+            if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
+                profileImageURL = user.profileImage
+            }
+        }
         .sheet(isPresented: $showingPicker) {
             ImagePicker(images: $images, selectionLimit: 5)
         }
@@ -93,15 +100,7 @@ struct ReportEvidenceView: View {
 
     private var header: some View {
         HStack {
-            ZStack {
-                Circle()
-                    .fill(Color.lightGray)
-                    .frame(width: 40, height: 40)
-                Image("civicsignal")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 28, height: 28)
-            }
+            ProfileAvatar(size: 40, profileImageURL: profileImageURL)
 
             Spacer()
 

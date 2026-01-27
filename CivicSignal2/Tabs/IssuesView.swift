@@ -97,7 +97,13 @@ struct IssuesView: View {
                 }
             }
         }
-        .onAppear { Task { await viewModel.refresh() } }
+        .onAppear {
+            // Fetch user profile image
+            if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
+                profileImageURL = user.profileImage
+            }
+            Task { await viewModel.refresh() }
+        }
         .onChange(of: selectedFilter) { _, _ in
             Task { await viewModel.loadIssues(for: selectedFilter) }
         }
@@ -106,15 +112,7 @@ struct IssuesView: View {
     private var header: some View {
         VStack(spacing: 0) {
             HStack {
-                ZStack {
-                    Circle()
-                        .fill(Color.lightGray)
-                        .frame(width: 40, height: 40)
-                    Image("civicsignal")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 28, height: 28)
-                }
+                ProfileAvatar(size: 40, profileImageURL: profileImageURL)
 
                 Spacer()
 

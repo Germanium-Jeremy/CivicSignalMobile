@@ -11,6 +11,7 @@ import MapKit
 struct MapView: View {
     @StateObject private var viewModel = MapViewModel()
     @State private var showLegend = false
+    @State private var profileImageURL: String? = nil
 
     // Default coordinates for Kigali, Rwanda
     private let defaultRegion = MKCoordinateRegion(
@@ -79,7 +80,13 @@ struct MapView: View {
                 }
             }
         }
-        .onAppear { Task { await viewModel.fetchIssues() } }
+        .onAppear {
+            // Fetch user profile image
+            if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
+                profileImageURL = user.profileImage
+            }
+            Task { await viewModel.fetchIssues() }
+        }
         .sheet(isPresented: $showLegend) {
             MapLegendView()
         }
@@ -88,15 +95,7 @@ struct MapView: View {
     private var header: some View {
         VStack(spacing: 0) {
             HStack {
-                ZStack {
-                    Circle()
-                        .fill(Color.lightGray)
-                        .frame(width: 40, height: 40)
-                    Image("civicsignal") // Added profile icon
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 28, height: 28)
-                }
+                ProfileAvatar(size: 40, profileImageURL: profileImageURL)
 
                 Spacer()
 

@@ -66,15 +66,11 @@ struct HomeView: View {
     private var header: some View {
         VStack(spacing: 0) {
             HStack {
-                ZStack {
-                    Circle()
-                        .fill(Color.lightGray)
-                        .frame(width: 40, height: 40)
-                    Image("civicsignal")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 28, height: 28)
-                }
+                ProfileAvatar(
+                    size: 40,
+                    profileImageURL: viewModel.profileImageURL,
+                    userName: viewModel.userName
+                )
                 
                 Spacer()
                 
@@ -176,6 +172,7 @@ class HomeViewModel: ObservableObject {
     }
     
     @Published var userName: String = ""
+    @Published var profileImageURL: String? = nil
     @Published var recentIssues: [IssueDTO] = []
     @Published var stats = Stats()
     @Published var isLoading = true
@@ -187,6 +184,7 @@ class HomeViewModel: ObservableObject {
         // Fetch user data
         if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
             userName = user.fullName?.components(separatedBy: " ").last ?? ""
+            profileImageURL = user.profileImage
         }
         
         // Fetch stats and issues in parallel

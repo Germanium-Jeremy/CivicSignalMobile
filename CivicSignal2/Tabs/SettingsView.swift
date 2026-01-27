@@ -93,49 +93,11 @@ struct SettingsView: View {
     
     private var profileHeader: some View {
         VStack(spacing: 8) {
-            ZStack {
-                Circle()
-                    .fill(Color.neutralGray.opacity(0.2))
-                    .frame(width: 90, height: 90)
-                
-                if let urlString = viewModel.profileImageURL, let url = URL(string: urlString) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        case .failure, .empty:
-                            if let initials = initials(from: viewModel.userFullName), !initials.isEmpty {
-                                Text(initials)
-                                    .font(AppFont.title.weight(.bold))
-                                    .foregroundColor(.almostBlack)
-                            } else {
-                                Image("civicsignal")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 48, height: 48)
-                            }
-                        @unknown default:
-                            Image("civicsignal")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 48, height: 48)
-                        }
-                    }
-                    .frame(width: 90, height: 90)
-                    .clipShape(Circle())
-                } else if let initials = initials(from: viewModel.userFullName), !initials.isEmpty {
-                    Text(initials)
-                        .font(AppFont.title.weight(.bold))
-                        .foregroundColor(.almostBlack)
-                } else {
-                    Image("civicsignal")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 48, height: 48)
-                }
-            }
+            ProfileAvatar(
+                size: 90,
+                profileImageURL: viewModel.profileImageURL,
+                userName: viewModel.userFullName
+            )
             
             Text(viewModel.userFullName)
                 .font(AppFont.title3)
@@ -148,16 +110,6 @@ struct SettingsView: View {
         .padding(.bottom, 16)
     }
 
-    private func initials(from name: String) -> String? {
-        let parts = name
-            .split(separator: " ")
-            .filter { !$0.isEmpty }
-        guard !parts.isEmpty else { return nil }
-        let first = parts.first?.first.map(String.init) ?? ""
-        let last = parts.dropFirst().first?.first.map(String.init) ?? ""
-        return (first + last).uppercased()
-    }
-    
     private var statsRow: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 12) {

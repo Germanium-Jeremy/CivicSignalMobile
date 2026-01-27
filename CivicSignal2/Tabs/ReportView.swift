@@ -25,6 +25,7 @@ struct ReportView: View {
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
     @State private var isLoading: Bool = false
+    @State private var profileImageURL: String? = nil
     @ObservedObject var locationManager = LocationManager.shared
     
     init() {
@@ -117,6 +118,10 @@ struct ReportView: View {
         .onAppear {
             locationManager.requestLocation()
             loadCategories() // Ensure categories are loaded on appear
+            // Fetch user profile image
+            if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
+                profileImageURL = user.profileImage
+            }
         }
         .alert(alertTitle, isPresented: $showAlert) { Button("OK", role: .cancel) {} } message: { Text(alertMessage) }
         .sheet(isPresented: Binding(get: { showCategorySheet || showPrioritySheet }, set: { newValue in
@@ -140,15 +145,7 @@ struct ReportView: View {
 
     private var header: some View {
         HStack {
-            ZStack {
-                Circle()
-                    .fill(Color.lightGray)
-                    .frame(width: 40, height: 40)
-                Image("civicsignal")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 28, height: 28)
-            }
+            ProfileAvatar(size: 40, profileImageURL: profileImageURL)
 
             Spacer()
 
