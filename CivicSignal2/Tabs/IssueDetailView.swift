@@ -4,6 +4,18 @@ struct IssueDetailView: View {
     let issueId: String
     @StateObject private var viewModel = IssueDetailViewModel()
     
+    private func absoluteMediaURL(_ pathOrURL: String) -> URL? {
+        // If backend already returns absolute URL, use it
+        if let url = URL(string: pathOrURL), url.scheme != nil {
+            return url
+        }
+        // Otherwise, build from API baseURL by removing "/api" then appending path
+        let apiBase = APIConfig.baseURL
+        let hostBase = apiBase.lastPathComponent == "api" ? apiBase.deletingLastPathComponent() : apiBase
+        let trimmed = pathOrURL.hasPrefix("/") ? String(pathOrURL.dropFirst()) : pathOrURL
+        return hostBase.appendingPathComponent(trimmed)
+    }
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -55,7 +67,7 @@ struct IssueDetailView: View {
                                 HStack(spacing: 12) {
                                     ForEach(photos, id: \.url) { photo in
                                         // Using AsyncImage to load images asynchronously
-                                        if let url = URL(string: photo.url) {
+                                        if let url = absoluteMediaURL(photo.url) {
                                             AsyncImage(url: url) { image in
                                                 image
                                                     .resizable()

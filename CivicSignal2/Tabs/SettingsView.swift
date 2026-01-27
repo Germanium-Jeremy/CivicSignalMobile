@@ -13,6 +13,7 @@ struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
     @State private var showLogoutAlert = false
     @State private var isLoggingOut = false
+    @State private var showEditProfile = false
     
     var body: some View {
         ZStack {
@@ -44,6 +45,11 @@ struct SettingsView: View {
             }
         }
         .onAppear { Task { await viewModel.fetchData() } }
+        .sheet(isPresented: $showEditProfile, onDismiss: {
+            Task { await viewModel.fetchData(forceRefresh: true) }
+        }) {
+            EditProfileView()
+        }
         .confirmationDialog("Logout", isPresented: $showLogoutAlert, titleVisibility: .visible) {
             Button("Logout All Devices", role: .destructive) {
                 Task {
@@ -76,8 +82,10 @@ struct SettingsView: View {
             
             Spacer()
             
-            Image(systemName: "square.and.pencil")
-                .foregroundColor(.primaryBlue)
+            Button(action: { showEditProfile = true }) {
+                Image(systemName: "square.and.pencil")
+                    .foregroundColor(.primaryBlue)
+            }
         }
         .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20)
         .padding(.top, 12)
@@ -90,7 +98,34 @@ struct SettingsView: View {
                     .fill(Color.neutralGray.opacity(0.2))
                     .frame(width: 90, height: 90)
                 
-                if let initials = initials(from: viewModel.userFullName), !initials.isEmpty {
+                if let urlString = viewModel.profileImageURL, let url = URL(string: urlString) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        case .failure, .empty:
+                            if let initials = initials(from: viewModel.userFullName), !initials.isEmpty {
+                                Text(initials)
+                                    .font(AppFont.title.weight(.bold))
+                                    .foregroundColor(.almostBlack)
+                            } else {
+                                Image("civicsignal")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 48, height: 48)
+                            }
+                        @unknown default:
+                            Image("civicsignal")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 48, height: 48)
+                        }
+                    }
+                    .frame(width: 90, height: 90)
+                    .clipShape(Circle())
+                } else if let initials = initials(from: viewModel.userFullName), !initials.isEmpty {
                     Text(initials)
                         .font(AppFont.title.weight(.bold))
                         .foregroundColor(.almostBlack)
@@ -235,6 +270,7 @@ class SettingsViewModel: ObservableObject {
     
     @Published var userFullName: String = "User"
     @Published var userRole: String = "Citizen"
+    @Published var profileImageURL: String? = nil
     @Published var stats = UserStats()
     @Published var isLoading = true
     
@@ -245,6 +281,7 @@ class SettingsViewModel: ObservableObject {
         // Fetch user data
         if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
             userFullName = user.fullName ?? "User"
+            profileImageURL = user.profileImage
             // UserDTO has no explicit role field; default to a generic role label
             userRole = "Citizen"
         }

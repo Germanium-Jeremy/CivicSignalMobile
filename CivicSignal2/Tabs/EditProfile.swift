@@ -126,6 +126,10 @@ struct EditProfileView: View {
         }
         .onChange(of: pickerImages) { newImages in
             selectedImage = newImages.first
+            // Prevent stale selections and re-triggering
+            if !newImages.isEmpty {
+                pickerImages = []
+            }
         }
         .alert(alertTitle, isPresented: $showAlert) {
             Button("OK", role: .cancel) {
@@ -158,6 +162,7 @@ struct EditProfileView: View {
             // Update local state
             profileImageURL = data.url
             selectedImage = nil // Clear selection after successful upload
+            pickerImages = []
         } else {
             alertTitle = "Error"
             alertMessage = result.error ?? "Failed to update profile image."
