@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 // MARK: - DTOs matching your backend
 
@@ -399,7 +400,7 @@ enum AuthService {
             )
 
             return ServiceResult(success: true, data: response, error: nil, details: response.details)
-        } catch let APIError.httpStatus(code, data) {
+        } catch let APIError.httpStatus(_, data) {
             let parsed = parseAuthError(from: data)
             print("Failed to send forgot password request (")
             return ServiceResult(success: false, data: nil, error: parsed.error ?? "Request failed", details: parsed.details)

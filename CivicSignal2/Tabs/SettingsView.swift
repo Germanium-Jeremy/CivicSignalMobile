@@ -204,7 +204,7 @@ struct SettingsView: View {
         isLoggingOut = true
         defer { isLoggingOut = false }
         
-        let result = await AuthService.logout(logoutAll: logoutAll)
+        let _ = await AuthService.logout(logoutAll: logoutAll)
         
         // Always navigate to login screen, even if API call fails
         // (tokens are cleared locally regardless)
