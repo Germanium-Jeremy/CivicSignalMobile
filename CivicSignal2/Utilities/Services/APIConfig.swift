@@ -5,9 +5,9 @@ enum APIConfig {
 //   static let baseURL = URL(string: "http://169.254.224.202:3000/api")!
 
     // For prod, you can switch these or use build configs
-      static let baseURL = URL(string: "https://civic-signal.vercel.app/api")!
+//      static let baseURL = URL(string: "https://civic-signal.vercel.app/api")!
     
-//    static let baseURL = URL(string: "http://10.12.73.15:3000/api")!
+    static let baseURL = URL(string: "http://10.12.74.117:3000/api")!
 
     static let timeout: TimeInterval = 100 // seconds
 }

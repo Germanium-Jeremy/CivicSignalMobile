@@ -28,6 +28,7 @@ enum IssueFilter: String, CaseIterable, Identifiable {
 struct IssuesView: View {
     @StateObject private var viewModel = IssuesViewModel()
     @State private var selectedFilter: IssueFilter = .submitted
+    @State private var profileImageURL: String? = nil
 
     private var tabs: [IssueFilter] = [.submitted, .acknowledged, .pending, .resolved]
 

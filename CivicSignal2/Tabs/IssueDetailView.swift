@@ -140,6 +140,7 @@ struct IssueDetailView: View {
                 }
             }
             .padding()
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 100 : 20)
         }
         .navigationBarTitle("Issue Details", displayMode: .inline)
         .onAppear {
@@ -148,7 +149,6 @@ struct IssueDetailView: View {
             }
         }
         .background(.white)
-        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 80 : 20)
     }
     
     private func statusBadge(_ status: String) -> some View {
