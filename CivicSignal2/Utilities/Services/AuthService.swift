@@ -1,8 +1,6 @@
 import Foundation
 import UIKit
 
-// MARK: - DTOs matching your backend
-
 struct TokensDTO: Codable {
     let accessToken: String
     let refreshToken: String
@@ -14,7 +12,6 @@ struct UserDTO: Codable {
     let email: String?
     let phone: String?
     let profileImage: String?
-    // add more fields if you know them
 }
 
 struct AuthBaseResponse: Codable {
@@ -77,7 +74,6 @@ struct VerificationRequiredInfo {
 	let codesSent: Bool
 }
 
-// For login we sometimes need extra info
 struct LoginResult {
     let success: Bool
     let data: AuthBaseResponse?
@@ -479,5 +475,37 @@ enum AuthService {
             print("Failed to upload profile image: \(error)")
             return ServiceResult(success: false, data: nil, error: "Failed to upload profile image", details: nil)
         }
+    }
+}
+
+// MARK: - Profile Image Management
+extension AuthService {
+    private static let profileImageDirectory: URL = {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0].appendingPathComponent("ProfileImages")
+    }()
+
+    static func saveProfileImage(_ image: UIImage, for userId: String) {
+        do {
+            let directory = profileImageDirectory
+            if !FileManager.default.fileExists(atPath: directory.path) {
+                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
+            }
+
+            let imagePath = directory.appendingPathComponent("")
+            if let imageData = image.jpegData(compressionQuality: 0.8) {
+                try imageData.write(to: imagePath)
+            }
+        } catch {
+            print("Failed to save profile image: \(error.localizedDescription)")
+        }
+    }
+
+    static func getProfileImage(for userId: String) -> UIImage? {
+        let imagePath = profileImageDirectory.appendingPathComponent("")
+        if FileManager.default.fileExists(atPath: imagePath.path) {
+            return UIImage(contentsOfFile: imagePath.path)
+        }
+        return nil
     }
 }

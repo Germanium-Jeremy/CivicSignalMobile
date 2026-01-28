@@ -96,9 +96,10 @@ struct SettingsView: View {
             ProfileAvatar(
                 size: 90,
                 profileImageURL: viewModel.profileImageURL,
-                userName: viewModel.userFullName
+                userName: viewModel.userFullName,
+                localImage: viewModel.profileImage
             )
-            
+
             Text(viewModel.userFullName)
                 .font(AppFont.title3)
                 .foregroundColor(.almostBlack)
@@ -223,28 +224,34 @@ class SettingsViewModel: ObservableObject {
     @Published var userFullName: String = "User"
     @Published var userRole: String = "Citizen"
     @Published var profileImageURL: String? = nil
+    @Published var profileImage: UIImage? = nil
     @Published var stats = UserStats()
     @Published var isLoading = true
     
     func fetchData(forceRefresh: Bool = false) async {
         isLoading = true
         defer { isLoading = false }
-        
+
         // Fetch user data
         if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
             userFullName = user.fullName ?? "User"
             profileImageURL = user.profileImage
-            // UserDTO has no explicit role field; default to a generic role label
             userRole = "Citizen"
+
+            // Check for local profile image
+            if let userId = user.id, let localImage = AuthService.getProfileImage(for: userId) {
+                profileImageURL = nil
+                profileImage = localImage
+            }
         }
-        
+
         // Fetch stats with cache-busting
         let result = await IssueService.getMyStats(forceRefresh: forceRefresh)
         guard result.success, let response = result.data else {
             print("Failed to fetch stats: \(result.error ?? "Unknown error")")
             return
         }
-        
+
         self.stats = UserStats(
             total: response.data.total,
             submitted: response.data.submitted,
@@ -252,6 +259,38 @@ class SettingsViewModel: ObservableObject {
             pending: response.data.inProgress,
             resolved: response.data.resolved
         )
+    }
+}
+
+struct ProfileAvatar: View {
+    let size: CGFloat
+    let profileImageURL: String?
+    let userName: String
+    let localImage: UIImage?
+
+    var body: some View {
+        if let localImage = localImage {
+            Image(uiImage: localImage)
+                .resizable()
+                .scaledToFill()
+                .frame(width: size, height: size)
+                .clipShape(Circle())
+        } else if let profileImageURL = profileImageURL, let url = URL(string: profileImageURL) {
+            AsyncImage(url: url) { image in
+                image.resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .clipShape(Circle())
+            } placeholder: {
+                Circle()
+                    .fill(Color.gray)
+                    .frame(width: size, height: size)
+            }
+        } else {
+            Circle()
+                .fill(Color.gray)
+                .frame(width: size, height: size)
+        }
     }
 }
 
