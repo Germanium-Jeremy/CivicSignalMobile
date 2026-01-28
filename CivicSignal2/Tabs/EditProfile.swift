@@ -2,18 +2,6 @@ import SwiftUI
 import PhotosUI
 
 struct EditProfileView: View {
-    // Helper to convert relative media paths to absolute URLs
-    private func absoluteMediaURL(_ pathOrURL: String) -> URL? {
-        // If backend already returns absolute URL, use it
-        if let url = URL(string: pathOrURL), url.scheme != nil {
-            return url
-        }
-        // Otherwise, build from API baseURL by removing "/api" then appending path
-        let apiBase = APIConfig.baseURL
-        let hostBase = apiBase.lastPathComponent == "api" ? apiBase.deletingLastPathComponent() : apiBase
-        let trimmed = pathOrURL.hasPrefix("/") ? String(pathOrURL.dropFirst()) : pathOrURL
-        return hostBase.appendingPathComponent(trimmed)
-    }
     @Environment(\.dismiss) private var dismiss
     @State private var selectedImage: UIImage? = nil
     @State private var pickerImages: [UIImage] = []
@@ -52,46 +40,13 @@ struct EditProfileView: View {
 
                     // Profile image preview
                     VStack(spacing: 12) {
-                        ZStack {
-                            Circle()
-                                .fill(Color.neutralGray.opacity(0.2))
-                                .frame(width: 120, height: 120)
-                            
-                            if let image = selectedImage {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 120, height: 120)
-                                    .clipShape(Circle())
-                            } else if !profileImageURL.isEmpty {
-                                AsyncImage(url: absoluteMediaURL(profileImageURL)) { phase in
-                                    switch phase {
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                    case .failure, .empty:
-                                        Image("civicsignal")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 60, height: 60)
-                                    @unknown default:
-                                        Image("civicsignal")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 60, height: 60)
-                                    }
-                                }
-                                .frame(width: 120, height: 120)
-                                .clipShape(Circle())
-                            } else {
-                                Image("civicsignal")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 60, height: 60)
-                            }
-                        }
-                        
+                        ProfileAvatar(
+                            size: 120,
+                            profileImageURL: profileImageURL,
+                            userName: nil,
+                            localImage: selectedImage
+                        )
+
                         Button(action: {
                             // Clear previous selection to start fresh
                             pickerImages = []
@@ -136,6 +91,12 @@ struct EditProfileView: View {
                let current = user.profileImage {
                 profileImageURL = current
             }
+
+            // Check for local profile image
+            if let userId = TokenManager.getUserData(UserDTO.self)?.id,
+               let localImage = AuthService.getProfileImage(for: userId) {
+                selectedImage = localImage
+            }
         }
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(images: $pickerImages, selectionLimit: 1)
@@ -174,12 +135,12 @@ struct EditProfileView: View {
             showAlert = true
             return
         }
-        
+
         isSaving = true
         defer { isSaving = false }
 
         let result = await AuthService.uploadProfileImage(image)
-        
+
         if result.success, let data = result.data {
             alertTitle = "Success"
             alertMessage = "Profile image updated successfully."
@@ -188,6 +149,11 @@ struct EditProfileView: View {
             profileImageURL = data.url
             selectedImage = nil // Clear selection after successful upload
             pickerImages = []
+
+            // Save image locally
+            if let userId = TokenManager.getUserData(UserDTO.self)?.id {
+                AuthService.saveProfileImage(image, for: userId)
+            }
         } else {
             alertTitle = "Error"
             alertMessage = result.error ?? "Failed to update profile image."
