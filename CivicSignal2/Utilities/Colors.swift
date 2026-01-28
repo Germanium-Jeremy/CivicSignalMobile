@@ -11,6 +11,7 @@ extension Color {
     static let errorRed = Color(hex: "#E63946")
     static let warningYellow = Color(hex: "#FFB703")
     static let almostBlack = Color(hex: "#010D15")
+    static let acknowledgedBrown = Color(hex: "#7e2a0c")
 }
 
 extension Color {

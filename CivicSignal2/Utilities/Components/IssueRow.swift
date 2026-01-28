@@ -5,10 +5,10 @@ struct IssueRow: View {
     
     private var statusColor: Color {
         switch issue.status.lowercased() {
-        case "submitted": return .blue
-        case "acknowledged": return .orange
-        case "pending": return .yellow
-        case "resolved": return .green
+        case "submitted": return .errorRed
+        case "acknowledged": return .acknowledgedBrown
+        case "pending": return .warningYellow
+        case "resolved": return .secondaryGreen
         default: return .black
         }
     }
@@ -39,9 +39,8 @@ struct IssueRow: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            Image("civicsignal") // Make sure to add this image to your assets
-                .resizable()
-                .scaledToFit()
+            Circle()
+                .fill(statusColor)
                 .frame(width: 40, height: 40)
             
             VStack(alignment: .leading, spacing: 4) {

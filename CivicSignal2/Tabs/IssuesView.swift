@@ -149,6 +149,17 @@ struct IssuesView: View {
         }
     }
 
+    private var issuesList: some View {
+        ScrollView {
+            LazyVStack(spacing: 16) {
+                ForEach(currentIssues) { issue in
+                    IssueRow(issue: issue)
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+
     private struct TabButton: View {
         let title: String
         let count: Int

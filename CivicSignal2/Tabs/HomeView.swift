@@ -42,9 +42,7 @@ struct HomeView: View {
                                 if viewModel.recentIssues.isEmpty {
                                     emptyIssuesCard
                                 } else {
-                                    ForEach(viewModel.recentIssues, id: \.id) { issue in
-                                        IssueRow(issue: issue)
-                                    }
+                                    recentIssuesList
                                 }
                             }
                         }
@@ -153,6 +151,15 @@ struct HomeView: View {
         .background(Color.lightGray)
         .cornerRadius(16)
         .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0)
+    }
+    
+    private var recentIssuesList: some View {
+        VStack(spacing: 16) {
+            ForEach(viewModel.recentIssues) { issue in
+                IssueRow(issue: issue)
+            }
+        }
+        .padding(.horizontal, 20)
     }
 }
 
