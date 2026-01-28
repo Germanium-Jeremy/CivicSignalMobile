@@ -262,38 +262,6 @@ class SettingsViewModel: ObservableObject {
     }
 }
 
-struct ProfileAvatar: View {
-    let size: CGFloat
-    let profileImageURL: String?
-    let userName: String
-    let localImage: UIImage?
-
-    var body: some View {
-        if let localImage = localImage {
-            Image(uiImage: localImage)
-                .resizable()
-                .scaledToFill()
-                .frame(width: size, height: size)
-                .clipShape(Circle())
-        } else if let profileImageURL = profileImageURL, let url = URL(string: profileImageURL) {
-            AsyncImage(url: url) { image in
-                image.resizable()
-                    .scaledToFill()
-                    .frame(width: size, height: size)
-                    .clipShape(Circle())
-            } placeholder: {
-                Circle()
-                    .fill(Color.gray)
-                    .frame(width: size, height: size)
-            }
-        } else {
-            Circle()
-                .fill(Color.gray)
-                .frame(width: size, height: size)
-        }
-    }
-}
-
 #Preview {
     SettingsView()
         .environmentObject(AppSession())

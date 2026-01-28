@@ -5,20 +5,28 @@ struct ProfileAvatar: View {
     let size: CGFloat
     let profileImageURL: String?
     let userName: String?
-    
-    init(size: CGFloat = 40, profileImageURL: String? = nil, userName: String? = nil) {
+    let localImage: UIImage?
+
+    init(size: CGFloat = 40, profileImageURL: String? = nil, userName: String? = nil, localImage: UIImage? = nil) {
         self.size = size
         self.profileImageURL = profileImageURL
         self.userName = userName
+        self.localImage = localImage
     }
-    
+
     var body: some View {
         ZStack {
             Circle()
                 .fill(Color.lightGray)
                 .frame(width: size, height: size)
-            
-            if let urlString = profileImageURL, let url = absoluteMediaURL(urlString) {
+
+            if let localImage = localImage {
+                Image(uiImage: localImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .clipShape(Circle())
+            } else if let urlString = profileImageURL, let url = absoluteMediaURL(urlString) {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .success(let image):
@@ -38,7 +46,7 @@ struct ProfileAvatar: View {
             }
         }
     }
-    
+
     private var fallbackView: some View {
         Group {
             if let initials = initials(from: userName ?? ""), !initials.isEmpty {
@@ -53,7 +61,7 @@ struct ProfileAvatar: View {
             }
         }
     }
-    
+
     private func initials(from name: String) -> String? {
         let parts = name
             .split(separator: " ")
@@ -63,7 +71,7 @@ struct ProfileAvatar: View {
         let last = parts.dropFirst().first?.first.map(String.init) ?? ""
         return (first + last).uppercased()
     }
-    
+
     // Helper to convert relative media paths to absolute URLs
     private func absoluteMediaURL(_ pathOrURL: String) -> URL? {
         // If backend already returns absolute URL, use it
