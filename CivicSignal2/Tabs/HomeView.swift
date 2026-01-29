@@ -187,11 +187,11 @@ class HomeViewModel: ObservableObject {
     func fetchData(forceRefresh: Bool = false) async {
         isLoading = true
         defer { isLoading = false }
-        
+
         // Fetch user data
         if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
-            userName = user.fullName?.components(separatedBy: " ").last ?? ""
-            profileImageURL = user.profileImage
+            userName = user.fullName ?? ""
+            profileImageURL = user.profileImage // Updated to fetch profile image URL
         }
         
         // Fetch stats and issues in parallel

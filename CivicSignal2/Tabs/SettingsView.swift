@@ -235,8 +235,8 @@ class SettingsViewModel: ObservableObject {
         // Fetch user data
         if let user: UserDTO = TokenManager.getUserData(UserDTO.self) {
             userFullName = user.fullName ?? "User"
-            profileImageURL = user.profileImage
-            userRole = "Citizen"
+            userRole = user.role ?? "Citizen"
+            profileImageURL = user.profileImage // Updated to fetch profile image URL
 
             // Check for local profile image
             if let userId = user.id, let localImage = AuthService.getProfileImage(for: userId) {

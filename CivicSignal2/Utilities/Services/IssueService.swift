@@ -405,10 +405,6 @@ enum IssueService {
                 authorized: true
             )
             
-            
-            // Debug print the raw response
-            print("Raw response: \(response)")
-            
             // Manually decode the response to handle the nested structure
             guard let success = response["success"] as? Bool,
                   let data = response["data"] as? [String: Any],
@@ -437,7 +433,6 @@ enum IssueService {
                 )
             )
             
-            print("Successfully created issue: \(responseObj)")
             return ServiceResult(success: true, data: responseObj, error: nil)
         } catch let APIError.httpStatus(code, data) {
             let msg = String(data: data, encoding: .utf8) ?? "Failed to create issue"
@@ -490,7 +485,6 @@ enum IssueService {
                 authorized: true,
                 responseType: IssueListResponse.self
             )
-            print("IssueService Response: \(res)")
             return ServiceResult(success: true, data: res, error: nil)
         } catch let APIError.httpStatus(code, data) {
             let msg = String(data: data, encoding: .utf8) ?? "Failed to fetch issues"

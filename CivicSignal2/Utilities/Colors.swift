@@ -9,9 +9,9 @@ extension Color {
     static let lightGray = Color(hex: "#EAEDF0")
     static let mainBackground = Color(hex: "#FFFFFF")
     static let errorRed = Color(hex: "#E63946")
-    static let warningYellow = Color(hex: "#FFB703")
+    static let warningYellow = Color(hex: "#ffff1c")
     static let almostBlack = Color(hex: "#010D15")
-    static let acknowledgedBrown = Color(hex: "#7e2a0c")
+    static let acknowledgedBrown = Color(hex: "#d07c0e")
 }
 
 extension Color {

@@ -243,6 +243,8 @@ enum AuthService {
             if let user = response.user {
                 TokenManager.saveUserData(user)
             }
+
+            print("Logged in User: \(response)")
             
             return LoginResult(
                 success: true,
