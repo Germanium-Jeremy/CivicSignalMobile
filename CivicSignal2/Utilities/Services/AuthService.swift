@@ -11,6 +11,7 @@ struct UserDTO: Codable {
     let fullName: String?
     let email: String?
     let phone: String?
+    let role: String?
     let profileImage: String?
 }
 
@@ -458,6 +459,7 @@ enum AuthService {
                         fullName: user.fullName,
                         email: user.email,
                         phone: user.phone,
+                        role: "citizen",
                         profileImage: data.url
                     )
                     TokenManager.saveUserData(updatedUser)
